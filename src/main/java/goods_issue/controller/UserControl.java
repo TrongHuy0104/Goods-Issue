@@ -7,6 +7,7 @@ package goods_issue.controller;
 
 import goods_issue.dataAccess.UserDAO;
 import goods_issue.model.User;
+import goods_issue.util.Encode;
 import static goods_issue.util.Encode.encodeToSHA256;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,12 +69,17 @@ public class UserControl extends HttpServlet {
         if (action.equals("sign-in")) {
             signIn(request, response);
         }
+        if (action.equals("validate-email")) {
+            validateEmail(request, response);
+        }
     }
 
     private void signIn(HttpServletRequest request, HttpServletResponse response) {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
+            System.out.println(username);
+            System.out.println(password);
             request.setAttribute("username", username);
             password = encodeToSHA256(password);
             User tempUser = new User();
@@ -81,17 +87,68 @@ public class UserControl extends HttpServlet {
             tempUser.setPassword(password);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.checkSignIn(tempUser);
+            System.out.println(user);
             String url = "";
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                url = "/admin.jsp";
+                url = "admin.jsp";
             } else {
                 request.setAttribute("error", "Username or password is incorrect!");
                 url = "/index.jsp";
-
             }
             request.getRequestDispatcher(url).forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void validateEmail(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String userName = request.getParameter("username");
+            String email = request.getParameter("email");
+            String note = "";
+            String url = "";
+
+            UserDAO userDAO = new UserDAO();
+            User user = new User();
+            user.setUserName(userName);
+            user.setEmail(email);
+
+            if (!userDAO.checkUsernameEmailIsDuplicated(userName, email)) {
+                note = "Username or email is incorrect!";
+                url = "/reset-password.jsp";
+            } else {
+//            userDAO.resetPassword(user);
+                HttpSession session = request.getSession();
+                session.setAttribute("reset-key", userName);
+                note = "Reset your password!";
+                url = "/reset-password-emailed.jsp";
+            }
+            request.setAttribute("note", note);
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void resetPassword(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String password = request.getParameter("password");
+            password = Encode.encodeToSHA256(password);
+            String username = (String) request.getSession().getAttribute("reset-key");
+            User user = new User();
+            user.setPassword(password);
+            user.setUserName(username);
+
+            UserDAO userDAO = new UserDAO();
+            userDAO.resetPassword(user);
+            request.setAttribute("note", "Reset password successfully. Please sign in again!");
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         } catch (ServletException ex) {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

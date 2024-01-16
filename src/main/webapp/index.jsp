@@ -102,7 +102,7 @@
                                 <input type="checkbox" name="" id="" class="form__checkbox-input d-none" />
                                 <span class="form__checkbox-label">Set as default card</span>
                             </label>
-                            <a href="/reset-password.jsp" class="auth__link form__pull-right" previewlistener="true"
+                            <a href="./reset-password.jsp" class="auth__link form__pull-right" previewlistener="true"
                                >Forgot password?</a
                             >
                         </div>

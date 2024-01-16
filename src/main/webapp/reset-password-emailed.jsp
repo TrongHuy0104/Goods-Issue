@@ -1,4 +1,8 @@
-
+<%-- 
+    Document   : reset-password-emailed
+    Created on : Nov 20, 2023, 2:48:27 PM
+    Author     : Trong Huy
+--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,7 +26,7 @@
         <link rel="stylesheet" href="./assets/css/main.css" />
         <!-- Scripts -->
         <script src="./assets/js/scripts.js"></script>
-        <style>
+    <style>
             .form__error {
                 font-size: 1.6rem;
                 color: red;
@@ -44,43 +48,34 @@
             <div class="auth__content">
                 <div class="auth__content-inner">
                     <!-- Logo -->
-                    <a href="Home" class="logo">
+                    <a href="./" class="logo">
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                         <h2 class="logo__title top-bar__logo-title">grocerymart</h2>
                     </a>
-                    <h1 class="auth__heading">Forgot password</h1>
-                    <p class="auth__desc">Enter your email and we'll send you a link to reset your password.</p>
-                    <p class="form__error">${note == "" ? "" : note}</p>
+                    <h1 class="auth__heading">Reset your password</h1>
+                    <p class="auth__desc">Reset your password.</p>
+                    <div class="auth__message message message--success">${note == "" ? "" : note}</div>
                     <form action="user" method="POST" class="form auth__form" id="sign-up-form">
-                        <input type="hidden" name="action" value="validate-email"/>
-                        
+                        <input type="hidden" name="action" value="resetpassword"/>
                         <div class="form__group">
                             <div class="form__text-input">
                                 <input
-                                    type="text"
-                                    placeholder="Username"
+                                    id="password"
+                                    type="password"
+                                    placeholder="Reset Password"
                                     class="form__input"
-                                    name="username"
-                                    rules="required"
+                                    name="password"
+                                    rules="required|minLength:6"
                                     />
-                                <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
+                                <img
+                                    src="./assets/icons/eye.svg"
+                                    alt=""
+                                    class="form__input-icon"
+                                    id="togglePassword"
+                                    />
                             </div>
                             <span class="form__message"></span>
                         </div>
-                        <div class="form__group">
-                            <div class="form__text-input">
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    class="form__input"
-                                    name="email"
-                                    rules="required|email"
-                                    />
-                                <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
-                            </div>
-                            <span class="form__message"></span>
-                        </div>
-                        
                         <div class="form__group auth__btn-group">
                             <button class="btn btn--primary auth__btn form__submit-btn">Reset password</button>
                         </div>

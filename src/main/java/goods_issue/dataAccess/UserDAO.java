@@ -173,7 +173,7 @@ public class UserDAO implements DAO<User> {
     }
 
     public User checkSignIn(User t) {
-        User user = new User();
+        User user = null;
 
         try {
             Connection conn = CreateConnection();
@@ -186,24 +186,70 @@ public class UserDAO implements DAO<User> {
             ResultSet rs = ptmt.executeQuery();
 
             while (rs.next()) {
-                user.setId(rs.getString("u_id"));
-                user.setFullName(rs.getString("full_name"));
-                user.setUserName(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setAddress(rs.getString("address"));
-                user.setDeliveryAddress(rs.getString("ship_address"));
-                user.setGender(rs.getString("gender"));
-                user.setPhone(rs.getString("phone"));
-                user.setEmail(rs.getString("email"));
-                user.setAvatar(rs.getString("image"));
+                String id = rs.getString("u_id");
+                String userName = rs.getString("username");
+                String pass = rs.getString("password");
+                String address = rs.getString("address");
+                String name = rs.getString("full_name");
+                String gender = rs.getString("gender");
+                String deliveryAddress = rs.getString("ship_address");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String avatar = rs.getString("image");
+                int status = rs.getInt("status");
+
+                user = new User(id, userName, pass, address, email, name, gender, phone, deliveryAddress, avatar, status);
             }
-            
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
+    }
+    
+    public boolean checkUsernameEmailIsDuplicated(String username, String email) {
+        boolean result = false;
+        try {
+            Connection conn = CreateConnection();
+
+            String sql = "SELECT * FROM users WHERE username = ? AND email = ?";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, username);
+            ptmt.setString(2, email);
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                result = true;
+            }
+            ptmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public boolean resetPassword(User t) {
+        boolean result = true;
+        try {
+            String sql = "UPDATE users SET users.password = ?  WHERE username = ?";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getPassword());
+            ptmt.setString(2, t.getUserName());
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static void main(String[] args) {
