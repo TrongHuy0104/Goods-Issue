@@ -1,0 +1,278 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 28, 2023, 11:28:46 PM
+    Author     : Trong Huy
+*/
+
+.admin-sidebar {
+    position: fixed;
+    width: 260px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #0c2556;
+    box-shadow: 0 0 30px rgba(12, 37, 86, 0.05);
+    padding: 15px;
+}
+
+.admin-logo {
+    margin-left: 0;
+}
+
+.admin-logo h1 {
+    font-size: 1.9rem;
+    color: #fff;
+}
+
+.sidebar__heading {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: rgb(143, 159, 188);
+    padding: 20px 0 10px;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1.4rem;
+    color: rgb(143, 159, 188);
+    border-radius: 5px;
+}
+
+.sidebar__item--active .sidebar__link,
+.sidebar__link:hover {
+    color: #fff;
+    background-color: hsla(0, 0%, 100%, 0.08);
+}
+
+.admin-navbar {
+    background: #fff;
+    padding: 0 30px;
+    min-height: 73px;
+    position: fixed;
+    top: 0;
+    left: auto;
+    right: 0;
+    width: calc(100% - 260px);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 99;
+    margin: 0;
+    box-shadow: 0 0 30px rgba(12, 37, 86, 0.05);
+}
+
+.admin-navbar__item {
+    line-height: 73px;
+}
+
+.admin-navbar__link {
+    display: flex;
+    align-items: center;
+}
+
+.admin-navbar__img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.admin-navbar__text {
+    font-size: 1.6rem;
+    color: #324253;
+    margin-left: 10px;
+}
+
+.main {
+    margin-top: 73px;
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.admin-top {
+    display: flex;
+    align-items: center;
+}
+
+.admin__heading {
+    font-size: 2.5rem;
+    color: #213446;
+    font-weight: 700;
+}
+
+.admin__search-bar {
+    margin-left: auto;
+}
+
+.admin__add-btn {
+    background-color: #3378ff;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.table__head {
+    background-color: rgba(51, 120, 255, 0.05);
+}
+
+.table__heading {
+    font-size: 1.6rem;
+    color: #213446;
+    font-weight: 500;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 15px 20px;
+    vertical-align: middle;
+}
+
+.table__user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.table__user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.table__user-product {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.table__user-name {
+    font-size: 1.6rem;
+    color: #324253;
+    font-weight: 700;
+}
+.table__data {
+    font-size: 1.6rem;
+    color: #213446;
+}
+
+.table__act-btn + .table__act-btn {
+    margin-left: 20px;
+}
+
+.table__act-btn {
+    padding: 10px;
+    font-size: 2rem;
+    display: inline-block;
+}
+
+.table__act-btn-remove {
+    border-radius: 6px;
+    background-color: red;
+}
+
+.admin-content-inner {
+    width: calc(100% - 260px);
+}
+
+.auth__form {
+    margin-top: 0;
+}
+
+.sign-up-content-inner {
+    margin: 0;
+    width: auto;
+}
+
+.form__group {
+    text-align: left;
+}
+
+.form__group--inline {
+    flex-direction: column;
+    align-items: unset;
+}
+
+.form__title {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin: 40px 0 20px;
+    text-align: left;
+}
+
+.gender-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.gender-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.form__error {
+    font-size: 1.6rem;
+    color: red;
+    margin-top: 20px;
+    font-weight: 500;
+    align-self: flex-start;
+    margin-left: 15px;
+}
+
+.form__note {
+    font-size: 1.6rem;
+    color: green;
+    margin-top: 20px;
+    font-weight: 500;
+    align-self: flex-start;
+    margin-left: 15px;
+}
+
+.btn--primary {
+    color: #fff;
+    background-color: #0c2556;
+}
+
+.admin-upload-image {
+    text-align: center;
+}
+
+.admin-upload-image img {
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.admin-upload-btn-group button {
+    max-width: 500px !important;
+    margin: 0 auto;
+}
+
+.admin-upload-image .product-preview-thumb {
+    width: 300px;
+    height: 300px;
+    border-radius: 0;
+}
