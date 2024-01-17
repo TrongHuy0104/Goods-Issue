@@ -44,7 +44,7 @@
             <div class="auth__content">
                 <div class="auth__content-inner">
                     <!-- Logo -->
-                    <a href="Home" class="logo">
+                    <a href="index.jsp" class="logo">
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                         <h2 class="logo__title top-bar__logo-title">grocerymart</h2>
                     </a>

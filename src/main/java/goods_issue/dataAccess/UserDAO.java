@@ -196,9 +196,9 @@ public class UserDAO implements DAO<User> {
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
                 String avatar = rs.getString("image");
-                int status = rs.getInt("status");
+                int role = rs.getInt("role");
 
-                user = new User(id, userName, pass, address, email, name, gender, phone, deliveryAddress, avatar, status);
+                user = new User(id, userName, pass, address, email, name, gender, phone, deliveryAddress, avatar, role);
             }
             ptmt.close();
             conn.close();

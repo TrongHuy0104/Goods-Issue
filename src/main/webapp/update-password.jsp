@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="./assets/css/main.css" />
         <!-- Scripts -->
         <script src="./assets/js/scripts.js"></script>
-        <style>
+    <style>
             .form__error {
                 font-size: 1.6rem;
                 color: red;
@@ -48,30 +48,36 @@
             <div class="auth__content">
                 <div class="auth__content-inner">
                     <!-- Logo -->
-                    <a href="./index.jsp" class="logo">
+                    <a href="index.jsp" class="logo">
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                         <h2 class="logo__title top-bar__logo-title">grocerymart</h2>
                     </a>
-                    <h1 class="auth__heading">Check OTP code</h1>
-                    <p class="auth__desc">We have just emailed you an otp code for confirmation</p>
+                    <h1 class="auth__heading">Reset your password</h1>
+                    <p class="auth__desc">Reset your password.</p>
                     <div class="auth__message message message--success">${note == "" ? "" : note}</div>
                     <form action="user" method="POST" class="form auth__form" id="sign-up-form">
-                        <input type="hidden" name="action" value="check-otp"/>
+                        <input type="hidden" name="action" value="resetpassword"/>
                         <div class="form__group">
                             <div class="form__text-input">
                                 <input
-                                    id="otp"
-                                    type="number"
-                                    placeholder="Enter your OTP"
+                                    id="password"
+                                    type="password"
+                                    placeholder="Reset Password"
                                     class="form__input"
-                                    name="otp"
-                                    rules="required"
+                                    name="password"
+                                    rules="required|minLength:6"
+                                    />
+                                <img
+                                    src="./assets/icons/eye.svg"
+                                    alt=""
+                                    class="form__input-icon"
+                                    id="togglePassword"
                                     />
                             </div>
                             <span class="form__message"></span>
                         </div>
                         <div class="form__group auth__btn-group">
-                            <button class="btn btn--primary auth__btn form__submit-btn">Check</button>
+                            <button class="btn btn--primary auth__btn form__submit-btn">Reset password</button>
                         </div>
                     </form>
                     <p class="auth__text">

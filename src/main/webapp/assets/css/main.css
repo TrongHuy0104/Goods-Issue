@@ -1672,10 +1672,10 @@ html.dark {
         height: calc(100% - 124px);
     }
 }
-nav li ul {
+/*nav li ul {
     --max-inner-height: min(300px, 100vh - 158px);
     --inner-padding: 30px;
-    display: none !important;
+    display: none;
     gap: var(--inner-padding);
     grid-template-columns: repeat(5, 1fr);
     height: calc(var(--max-inner-height) - var(--inner-padding) * 2);
@@ -1691,7 +1691,7 @@ nav li ul {
     box-shadow: 0px 40px 90px 20px var(--dropdown-shadow);
     margin-left: auto;
     margin-right: auto;
-}
+}*/
 
 @media (max-width: 991.98px) {
     nav li ul {

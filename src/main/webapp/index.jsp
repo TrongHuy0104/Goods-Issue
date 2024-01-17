@@ -56,7 +56,7 @@
             <div class="auth__content">
                 <div class="auth__content-inner">
                     <!-- Logo -->
-                    <a href="Home" class="logo">
+                    <a href="index.jsp" class="logo">
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                         <h2 class="logo__title top-bar__logo-title">grocerymart</h2>
                     </a>
@@ -110,10 +110,10 @@
                             <button class="btn btn--primary auth__btn form__submit-btn">Login</button>
                         </div>
                     </form>
-                    <p class="auth__text">
+<!--                    <p class="auth__text">
                         You have an account yet?
                         <a href="./sign-up.jsp" class="auth__link auth__text-link">Sign Up</a>
-                    </p>
+                    </p>-->
                 </div>
             </div>
         </main>

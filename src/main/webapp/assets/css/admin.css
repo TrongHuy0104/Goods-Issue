@@ -63,6 +63,7 @@ and open the template in the editor.
     width: calc(100% - 260px);
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     z-index: 99;
     margin: 0;
     box-shadow: 0 0 30px rgba(12, 37, 86, 0.05);
@@ -70,6 +71,7 @@ and open the template in the editor.
 
 .admin-navbar__item {
     line-height: 73px;
+    position: relative;
 }
 
 .admin-navbar__link {
@@ -88,6 +90,31 @@ and open the template in the editor.
     font-size: 1.6rem;
     color: #324253;
     margin-left: 10px;
+}
+
+.admin-navbar__submenu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    display: block;
+    background: #fff;
+    height: 60%;
+    /*width: 100%;*/
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.admin-navbar_submenu-item {
+    height: 100%;
+}
+
+.admin-navbar_submenu-item a {
+    height: 100%;
+    line-height: 100%;
+    font-size: 16px;
+    display: inline-block;
+    min-width: 120px;
+    padding: 0 20px;
 }
 
 .main {

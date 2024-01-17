@@ -7,10 +7,12 @@ package goods_issue.controller;
 
 import goods_issue.dataAccess.UserDAO;
 import goods_issue.model.User;
+import goods_issue.util.Email;
 import goods_issue.util.Encode;
 import static goods_issue.util.Encode.encodeToSHA256;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -72,14 +74,39 @@ public class UserControl extends HttpServlet {
         if (action.equals("validate-email")) {
             validateEmail(request, response);
         }
+        if (action.equals("resetpassword")) {
+            resetPassword(request, response);
+        }
+        if (action.equals("check-otp")) {
+            checkOTP(request, response);
+        }
+        if (action.equals("log-out")) {
+            logOut(request, response);
+        }
+    }
+
+    public Boolean isAdmin(HttpServletRequest request, HttpServletResponse response) {
+        Boolean result = false;
+        Object obj = request.getSession().getAttribute("user");
+        User user = null;
+        if (obj != null) {
+            user = (User) obj;
+            if (user != null) {
+                int isAdmin = user.getRole();
+                if (isAdmin == 0) {
+                    result = false;
+                } else {
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 
     private void signIn(HttpServletRequest request, HttpServletResponse response) {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            System.out.println(username);
-            System.out.println(password);
             request.setAttribute("username", username);
             password = encodeToSHA256(password);
             User tempUser = new User();
@@ -87,12 +114,17 @@ public class UserControl extends HttpServlet {
             tempUser.setPassword(password);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.checkSignIn(tempUser);
-            System.out.println(user);
             String url = "";
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                url = "admin.jsp";
+                if (isAdmin(request, response)) {
+                    session.setAttribute("admin", user);
+                    url = "admin.jsp";
+                } else {
+                    request.setAttribute("error", "You are not a manager of this website!");
+                    url = "/index.jsp";
+                }
             } else {
                 request.setAttribute("error", "Username or password is incorrect!");
                 url = "/index.jsp";
@@ -104,7 +136,7 @@ public class UserControl extends HttpServlet {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void validateEmail(HttpServletRequest request, HttpServletResponse response) {
         try {
             String userName = request.getParameter("username");
@@ -121,10 +153,12 @@ public class UserControl extends HttpServlet {
                 note = "Username or email is incorrect!";
                 url = "/reset-password.jsp";
             } else {
-//            userDAO.resetPassword(user);
                 HttpSession session = request.getSession();
                 session.setAttribute("reset-key", userName);
-                note = "Reset your password!";
+                note = "Email and username is correctly";
+                String OTP = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
+                session.setAttribute("otp", OTP);
+                Email.sendEmail(user.getEmail(), "Verify Goods Issue Account.", OTP);
                 url = "/reset-password-emailed.jsp";
             }
             request.setAttribute("note", note);
@@ -135,7 +169,7 @@ public class UserControl extends HttpServlet {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void resetPassword(HttpServletRequest request, HttpServletResponse response) {
         try {
             String password = request.getParameter("password");
@@ -151,6 +185,39 @@ public class UserControl extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } catch (ServletException ex) {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void checkOTP(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String curOTP = (String) session.getAttribute("otp");
+            System.out.println(curOTP);
+            String userOTP = (String) request.getParameter("otp");
+            System.out.println(userOTP);
+            String url = "";
+            if (curOTP.equals(userOTP)) {
+                request.setAttribute("note", "Reset your password!");
+                url = "/update-password.jsp";
+            } else {
+                request.setAttribute("note", "OTP is not correct");
+                url = "/reset-password-emailed.jsp";
+            }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void logOut(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            session.removeAttribute("user");
+            response.sendRedirect("./index.jsp");
         } catch (IOException ex) {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
         }

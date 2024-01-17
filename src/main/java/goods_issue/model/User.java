@@ -21,12 +21,12 @@ public class User {
     private String phone;
     private String deliveryAddress;
     private String avatar;
-    private int status;
+    private int role;
 
     public User() {
     }
 
-    public User(String id, String userName, String password, String address, String email, String fullName, String gender, String phone, String deliveryAddress, String avatar, int status) {
+    public User(String id, String userName, String password, String address, String email, String fullName, String gender, String phone, String deliveryAddress, String avatar, int role) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -37,7 +37,7 @@ public class User {
         this.phone = phone;
         this.deliveryAddress = deliveryAddress;
         this.avatar = avatar;
-        this.status = status;
+        this.role = role;
     }
 
     public String getId() {
@@ -80,8 +80,8 @@ public class User {
         return avatar;
     }
 
-    public int getStatus() {
-        return status;
+    public int getRole() {
+        return role;
     }
 
     public void setId(String id) {
@@ -124,13 +124,13 @@ public class User {
         this.avatar = avatar;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setRole(int role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", address=" + address + ", email=" + email + ", fullName=" + fullName + ", gender=" + gender + ", phone=" + phone + ", deliveryAddress=" + deliveryAddress + ", avatar=" + avatar + ", status=" + status + '}';
+        return "User{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", address=" + address + ", email=" + email + ", fullName=" + fullName + ", gender=" + gender + ", phone=" + phone + ", deliveryAddress=" + deliveryAddress + ", avatar=" + avatar + ", role=" + role + '}';
     }
 
 }
