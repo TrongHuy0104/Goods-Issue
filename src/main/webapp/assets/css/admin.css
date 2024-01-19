@@ -303,3 +303,7 @@ td {
     height: 300px;
     border-radius: 0;
 }
+
+.avatar-preview {
+    cursor: pointer;
+}

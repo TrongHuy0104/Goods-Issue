@@ -8,6 +8,18 @@
         <servlet-name>HomeControl</servlet-name>
         <servlet-class>goods_issue.controller.HomeControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>customer</servlet-name>
+        <servlet-class>goods_issue.controller.CustomerControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerAddControl</servlet-name>
+        <servlet-class>goods_issue.controller.CustomerAddControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerUpdateControl</servlet-name>
+        <servlet-class>goods_issue.controller.CustomerUpdateControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -15,6 +27,18 @@
     <servlet-mapping>
         <servlet-name>HomeControl</servlet-name>
         <url-pattern>/HomeControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>customer</servlet-name>
+        <url-pattern>/customer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerAddControl</servlet-name>
+        <url-pattern>/customer-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerUpdateControl</servlet-name>
+        <url-pattern>/customer-update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

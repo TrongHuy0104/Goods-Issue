@@ -6,10 +6,12 @@
 
 <%@page import="java.util.*"%>
 <%@page import="goods_issue.model.*" %>
-<%@page import="goods_issue.dataAcess.*" %>
+<%@page import="goods_issue.dataAccess.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
+<%    
     User user = (User) request.getSession().getAttribute("admin");
+    UserDAO userDao = new UserDAO();
+    List<User> userList = userDao.selectAllCustomer();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +39,7 @@
         <%
         if(user == null) {
         %>
-        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='sign-in.jsp'>Sign In</a></h3>")
+        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
         <!-- Sidebar -->
         <div class="admin-sidebar">
@@ -49,7 +51,7 @@
             <h3 class="sidebar__heading">APPLICATION</h3>
             <ul class="sidebar__list">
                 <li class="sidebar__item sidebar__item--active">
-                    <a href="customer.jsp" class="sidebar__link">
+                    <a href="admin.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -185,9 +187,19 @@
                         <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
                     </button>
                 </form>
-                <a href="admin-add.jsp" class="admin__add-btn">+ Add Customer</a>
+                <a href="customer-add.jsp" class="admin__add-btn">+ Add Customer</a>
             </div>
-            
+            <%
+            if(userList == null) {
+            %>
+
+            <div style="font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center">
+                Empty
+            </div> 
+            <%} else {
+//            if(!userListSearch.isEmpty()) {
+//            userList = userListSearch;
+            %>
             <table class="table">
                 <thead class="table__head">
                     <tr>
@@ -199,34 +211,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <%
+                    for(User u : userList) {
+                    %>
                     <tr>
                         <td>
                             <div class="table__user">
-                                
+                                <%
+                                    root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                                    + request.getContextPath();
+                                    avatarURL= u.getAvatar();
+                                        if (avatarURL != null) {
+                                        url = root + "/assets/img/avatar/" + avatarURL;
+                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                                %>
                                 <img
-                                    src=""
+                                    src="<%=url%>"
                                     alt=""
                                     class="table__user-avatar"
                                     />
                                 <div class="table__user-info">
-                                    <span class="table__user-name">fullname</span>
+                                    <span class="table__user-name"><%=u.getFullName()%></span>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <p class="table__data">email</p>
+                            <p class="table__data"><%=u.getEmail()%></p>
                         </td>
                         <td>
-                            <p class="table__data">address</p>
+                            <p class="table__data"><%=u.getAddress()%></p>
                         </td>
 
                         <td>
-                            <p class="table__data">phone</p>
+                            <p class="table__data"><%=u.getPhone()%></p>
                         </td>
                         <td>
                             <div class="table__act">
-                                <a href="#!" class="table__act-btn table__act-btn-edit" title="edit">
+                                <a href="customer-update.jsp?id=<%=u.getId()%>" class="table__act-btn table__act-btn-edit" title="edit">
                                     <svg
                                         fill="rgb(143, 159, 188)"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -239,10 +260,7 @@
                                         />
                                     </svg>
                                 </a>
-                                <a href="#!" class="table__act-btn table__act-btn-avatar"  title="avatar">
-                                    <svg fill="rgb(143, 159, 188)" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg>
-                                </a>
-                                
+
                                 <a href="#!" class="table__act-btn table__act-btn-remove"  title="remove">
                                     <svg
                                         fill="#fff"
@@ -259,8 +277,10 @@
                             </div>
                         </td>
                     </tr>
+                    <%}%>
                 </tbody>
             </table>
+            <%}%>
         </main>
         <%}%>
     </body>

@@ -39,7 +39,21 @@ public class User {
         this.avatar = avatar;
         this.role = role;
     }
-
+    
+    
+    
+    public User(String id, String userName, String password, String address, String email, String fullName, String gender, String phone, String deliveryAddress) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.address = address;
+        this.email = email;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.phone = phone;
+        this.deliveryAddress = deliveryAddress;
+    }
+    
     public String getId() {
         return id;
     }
