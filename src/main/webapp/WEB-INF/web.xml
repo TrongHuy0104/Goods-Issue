@@ -20,6 +20,18 @@
         <servlet-name>CustomerUpdateControl</servlet-name>
         <servlet-class>goods_issue.controller.CustomerUpdateControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddProductControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductAddControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductDeleteControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -39,6 +51,18 @@
     <servlet-mapping>
         <servlet-name>CustomerUpdateControl</servlet-name>
         <url-pattern>/customer-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductControl</servlet-name>
+        <url-pattern>/AddProductControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateControl</servlet-name>
+        <url-pattern>/ProductUpdateControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDeleteControl</servlet-name>
+        <url-pattern>/ProductDeleteControl</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
