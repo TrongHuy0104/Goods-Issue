@@ -8,7 +8,7 @@
 <%@page import="goods_issue.model.*" %>
 <%@page import="goods_issue.dataAccess.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%    
+<%
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     List<User> userList = userDao.selectAllCustomer();
@@ -37,7 +37,7 @@
     </head>
     <body>
         <%
-        if(user == null) {
+            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
@@ -123,15 +123,16 @@
             <ul class="admin-navbar__list">
                 <div class="top-act__user top-act__btn-wrap">
                     <%
-                                    String url;
-                                    String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                    + request.getContextPath();
-                                    String avatarURL= user.getAvatar();
+                        String url;
+                        String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                                + request.getContextPath();
+                        String avatarURL = user.getAvatar();
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        if (avatarURL != null) {
+                        if (avatarURL != null) {
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        url = root + "/assets/img/avatar/" + avatarURL;
-                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                            url = root + "/assets/img/avatar/" + avatarURL;
+                        } else
+                            url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                     %>
                     <img src="<%=url%>" alt="" class="top-act__avatar" />
                     <!-- Dropdown -->
@@ -190,7 +191,7 @@
                 <a href="customer-add.jsp" class="admin__add-btn">+ Add Customer</a>
             </div>
             <%
-            if(userList == null) {
+                if (userList == null) {
             %>
 
             <div style="font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center">
@@ -212,18 +213,19 @@
                 </thead>
                 <tbody>
                     <%
-                    for(User u : userList) {
+                        for (User u : userList) {
                     %>
                     <tr>
                         <td>
                             <div class="table__user">
                                 <%
                                     root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                    + request.getContextPath();
-                                    avatarURL= u.getAvatar();
-                                        if (avatarURL != null) {
+                                            + request.getContextPath();
+                                    avatarURL = u.getAvatar();
+                                    if (avatarURL != null) {
                                         url = root + "/assets/img/avatar/" + avatarURL;
-                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                                    } else
+                                        url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                                 %>
                                 <img
                                     src="<%=url%>"
@@ -261,7 +263,7 @@
                                     </svg>
                                 </a>
 
-                                <a href="#!" class="table__act-btn table__act-btn-remove"  title="remove">
+                                <a href="#" onclick="confirmRemove(<%=u.getId()%>)" class="table__act-btn table__act-btn-remove"  title="remove">
                                     <svg
                                         fill="#fff"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -282,7 +284,15 @@
             </table>
             <%}%>
         </main>
-        <%}%>
+        <%}%>       
     </body>
+    <script>
+        function confirmRemove(id) {
+            var option = confirm("Are you sure to remove!");
+            if (option === true) {
+                window.location.href = 'customer-delete?id=' + id;
+            }
+        }
+    </script>
 </html>
 
