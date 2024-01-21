@@ -20,6 +20,10 @@
         <servlet-name>CustomerUpdateControl</servlet-name>
         <servlet-class>goods_issue.controller.CustomerUpdateControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.CustomerDeleteControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>CustomerUpdateControl</servlet-name>
         <url-pattern>/customer-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDeleteControl</servlet-name>
+        <url-pattern>/customer-delete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
