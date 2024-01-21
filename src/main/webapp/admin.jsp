@@ -263,7 +263,7 @@
                                     </svg>
                                 </a>
 
-                                <a href="#" onclick="confirmRemove(<%=u.getId()%>)" class="table__act-btn table__act-btn-remove"  title="remove">
+                                <button  class="table__act-btn table__act-btn-remove js-toggle" data-id="<%=u.getId()%>" id="btn-del" toggle-target="#delete-confirm"  title="remove">
                                     <svg
                                         fill="#fff"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -275,7 +275,7 @@
                                         d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
                                         />
                                     </svg>
-                                </a>
+                                    <button/>
                             </div>
                         </td>
                     </tr>
@@ -285,13 +285,25 @@
             <%}%>
         </main>
         <%}%>       
+        <div id="delete-confirm" class="modal modal--small hide">
+            <div class="modal__content">
+                <p class="modal__text">Do you want to remove this item</p>
+                <div class="modal__bottom">
+                    <button class="btn btn--small btn--outline modal__btn js-toggle" toggle-target="#delete-confirm">
+                        Cancel
+                    </button>
+                    <button onclick="handleDelete(event)" class="btn btn--small btn--danger btn--primary modal__btn btn--no-margin">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <div class="modal__overlay js-toggle" toggle-target="#delete-confirm"></div>
+        </div>
     </body>
+    <script>window.dispatchEvent(new Event("template-loaded"));</script>
     <script>
-        function confirmRemove(id) {
-            var option = confirm("Are you sure to remove!");
-            if (option === true) {
-                window.location.href = 'customer-delete?id=' + id;
-            }
+        function handleDelete(e) {
+            if(curID) window.location.href = 'customer-delete?id=' + curID;
         }
     </script>
 </html>
