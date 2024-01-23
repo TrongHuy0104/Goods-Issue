@@ -14,11 +14,63 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;/**
+import java.util.ArrayList;import java.util.List;
+/**
  *
  * @author ACER
  */
 public class ProductDAO implements DAO<Product>{
+    
+    public List<Product> pagingProduct(int index) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb,pd.p_id, pd.price, "
+                + "pd.description, pd.place_product,pd.number_of_product, pd.number_left "
+                + "FROM products p, product_detail pd WHERE p.p_id = pd.p_id "
+                + "ORDER BY `p`.`p_id` ASC LIMIT 16 OFFSET ?";
+        Connection conn = CreateConnection();
+        try {
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, (index - 1) * 16);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("p_id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin));
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public int countTotalByName(String data) {
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sql = "select count(*) from products WHERE name LIKE ?";
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     @Override
     public ArrayList<Product> selectAll() {
@@ -55,7 +107,7 @@ public class ProductDAO implements DAO<Product>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result; //To change body of generated methods, choose Tools | Templates.
+        return result; 
     }
     
     public boolean checkProductIsDuplicated(String name) {
@@ -104,6 +156,83 @@ public class ProductDAO implements DAO<Product>{
         }
         return result;
     }
+    
+    public List<Product> searchByName(String data, int index) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb,\n"
+                + " pd.p_id, pd.price, pd.description, pd.place_product, \n"
+                + " pd.number_of_product, pd.number_left, pd.status\n"
+                + "FROM  products p, product_detail pd \n"
+                + "WHERE p.p_id = pd.p_id AND p.name LIKE ? \n"
+                + "ORDER BY p.p_id\n"
+                + "LIMIT 16 \n"
+                + "OFFSET ?;";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ptmt.setInt(2, (index - 1) * 16);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                int status = rs.getInt("status");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, status));
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Product> searchAllByName(String data) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
+                + "pd.number_of_product, pd.number_left, pd.status\n"
+                + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name LIKE ? \n"
+                + "ORDER BY p.p_id\n";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("p_id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                String category = rs.getString("name_category");
+                int status = rs.getInt("status");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status));
+                
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     @Override
     public Product selectById(Product t) {
@@ -114,7 +243,7 @@ public class ProductDAO implements DAO<Product>{
                 + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
                 + "pd.number_of_product, pd.number_left, pd.status\n"
                 + "FROM  products p, product_detail pd, product_category pc, categories c \n"
-                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.id AND c.c_id = pc.c_id AND p.p_id = ?";
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.p_id = ?";
         Connection conn = CreateConnection();
         PreparedStatement ptmt = null;
         try {
@@ -210,11 +339,27 @@ public class ProductDAO implements DAO<Product>{
         }//To change body of generated methods, choose Tools | Templates.
     }
     
-    public void deleteProductDetail(Product t
-    ) {
+    public void deleteProductDetail(Product t) {
         try {
 
             String sql = "DELETE from product_detail WHERE p_id=?";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getpId());
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteProductCategory(Product t
+    ) {
+        try {
+
+            String sql = "DELETE from product_category WHERE product_id=?";
             Connection conn = CreateConnection();
             PreparedStatement ptmt;
             ptmt = conn.prepareStatement(sql);
@@ -274,6 +419,15 @@ public class ProductDAO implements DAO<Product>{
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        ProductDAO dao = new ProductDAO();
+        List<Product> p = new ArrayList<>();
+        p= dao.selectAll();
+        for (Product product : p) {
+            System.out.println(product);
         }
     }
     

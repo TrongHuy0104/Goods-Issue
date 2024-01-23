@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
+
+
 public class ProductAddControl extends HttpServlet {
 
     /**
@@ -151,7 +153,7 @@ public class ProductAddControl extends HttpServlet {
 //                dao.insertProductCate(p);
                 dao.insertProductDetail(p);
                 request.setAttribute("note", "Product created successfully");
-                url = "/product-add.jsp";
+                url = "/admin-product.jsp";
             }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             rd.forward(request, response);

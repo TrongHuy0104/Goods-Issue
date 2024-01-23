@@ -40,7 +40,7 @@ public class ProductDeleteControl extends HttpServlet {
                 product.setpId(id);
                 ProductDAO Dao = new ProductDAO();
                 Dao.delete(product);
-//                Dao.deleteProductCategory(product);
+                Dao.deleteProductCategory(product);
                 Dao.deleteProductDetail(product);
                 url = "admin-product.jsp";
             } else {
