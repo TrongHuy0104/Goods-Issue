@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package goods_issue.dataAccess;
+
 import static goods_issue.context.DBContext.CreateConnection;
 import goods_issue.model.Product;
 /**
@@ -14,13 +15,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author ACER
  */
-public class ProductDAO implements DAO<Product>{
-    
+public class ProductDAO implements DAO<Product> {
+
     public List<Product> pagingProduct(int index) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb,pd.p_id, pd.price, "
@@ -52,7 +55,7 @@ public class ProductDAO implements DAO<Product>{
         }
         return list;
     }
-    
+
     public int countTotalByName(String data) {
         try {
             Connection conn = CreateConnection();
@@ -74,7 +77,7 @@ public class ProductDAO implements DAO<Product>{
 
     @Override
     public ArrayList<Product> selectAll() {
-       ArrayList<Product> result = new ArrayList<>();
+        ArrayList<Product> result = new ArrayList<>();
 
         try {
             Connection conn = CreateConnection();
@@ -107,9 +110,9 @@ public class ProductDAO implements DAO<Product>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result; 
+        return result;
     }
-    
+
     public boolean checkProductIsDuplicated(String name) {
         boolean result = false;
         try {
@@ -132,7 +135,7 @@ public class ProductDAO implements DAO<Product>{
         }
         return result;
     }
-    
+
     public boolean checkProductIsDuplicated2(String name, String id) {
         boolean result = false;
         try {
@@ -156,7 +159,7 @@ public class ProductDAO implements DAO<Product>{
         }
         return result;
     }
-    
+
     public List<Product> searchByName(String data, int index) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb,\n"
@@ -195,7 +198,7 @@ public class ProductDAO implements DAO<Product>{
         }
         return list;
     }
-    
+
     public List<Product> searchAllByName(String data) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
@@ -223,7 +226,7 @@ public class ProductDAO implements DAO<Product>{
                 String category = rs.getString("name_category");
                 int status = rs.getInt("status");
                 list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status));
-                
+
             }
 
             ptmt.close();
@@ -318,35 +321,18 @@ public class ProductDAO implements DAO<Product>{
         }
     }
     
-    @Override
-    public void insertAll(ArrayList<Product> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void insertProductCate(Product t) {
 
-    @Override
-    public void delete(Product t) {
         try {
+            String sql = "INSERT INTO product_category (p_id, c_id) "
+                    + " VALUES (?,?)";
             Connection conn = CreateConnection();
-            PreparedStatement ptmt;
-            String sql = "DELETE from products WHERE p_id=?";
+            PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
-            ptmt.setString(1, t.getpId());
-            ptmt.executeUpdate();
-            ptmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }//To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public void deleteProductDetail(Product t) {
-        try {
 
-            String sql = "DELETE from product_detail WHERE p_id=?";
-            Connection conn = CreateConnection();
-            PreparedStatement ptmt;
-            ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, t.getpId());
+            ptmt.setInt(2, t.getpCateId());;
+
             ptmt.executeUpdate();
             ptmt.close();
             conn.close();
@@ -354,14 +340,63 @@ public class ProductDAO implements DAO<Product>{
             e.printStackTrace();
         }
     }
-    
-    public void deleteProductCategory(Product t
-    ) {
+
+    @Override
+    public void insertAll(ArrayList<Product> arr) {
+//        for (Product product : arr) {
+//            this.insert(product);
+//        } //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(Product t) {
+        try {
+            Connection conn = CreateConnection();
+
+//            PreparedStatement ptmt;
+            String sql = "DELETE from products WHERE p_id=?";
+
+//            Connection conn = CreateConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getpId());
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+            System.out.println(t.getpId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }//To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void deleteProductDetail(Product t) {
         try {
 
-            String sql = "DELETE from product_category WHERE product_id=?";
+            String sql = "DELETE from product_detail WHERE p_id=?";
             Connection conn = CreateConnection();
-            PreparedStatement ptmt;
+//            PreparedStatement ptmt;
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getpId());
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+            System.out.println(t.getpId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(t.getpId());
+    }
+
+    public void deleteProductCategory(Product t) {
+        try {
+
+            String sql = "DELETE from product_category WHERE p_id=?";
+            Connection conn = CreateConnection();
+//            PreparedStatement ptmt;
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, t.getpId());
             ptmt.executeUpdate();
@@ -381,7 +416,7 @@ public class ProductDAO implements DAO<Product>{
     public void update(Product t) {
         try {
             String sql = "UPDATE products SET name = ?, code = ? "
-                    + "WHERE id = ?;";
+                    + "WHERE p_id = ?;";
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
@@ -397,12 +432,12 @@ public class ProductDAO implements DAO<Product>{
             e.printStackTrace();
         }//To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public void updateProductDetail(Product t) {
 
         try {
             String sql = "UPDATE product_detail SET description = ?, number_left = ?, place_product = ?, price = ?, status = ? "
-                    + "WHERE product_id = ?;";
+                    + "WHERE p_id = ?;";
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
@@ -422,13 +457,32 @@ public class ProductDAO implements DAO<Product>{
         }
     }
     
-    public static void main(String[] args) {
-        ProductDAO dao = new ProductDAO();
-        List<Product> p = new ArrayList<>();
-        p= dao.selectAll();
-        for (Product product : p) {
-            System.out.println(product);
+    public void updateProductCate(Product t) {
+
+        try {
+            String sql = "UPDATE product_category SET  c_id = ? "
+                    + "WHERE p_id = ?;";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+
+            ptmt.setString(2, t.getpId());
+            ptmt.setInt(1, t.getpCateId());
+
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-    
+
+    public static void main(String[] args) {
+        ProductDAO dao = new ProductDAO();
+        List<Product> list = dao.selectAll();
+        for(Product p : list){
+            System.out.println(p);
+        }
+    }
+
 }

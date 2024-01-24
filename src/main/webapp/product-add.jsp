@@ -42,7 +42,7 @@
         <%
         if(user == null) {
         %>
-        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='sign-in.jsp'>Sign In</a></h3>")
+        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='index.jsp'>Sign In</a></h3>")
         <%} else {%>   
         <!-- Sidebar -->
         <div class="admin-sidebar">

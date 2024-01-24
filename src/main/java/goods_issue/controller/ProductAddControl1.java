@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 
-public class ProductAddControl extends HttpServlet {
+public class ProductAddControl1 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -80,7 +80,7 @@ public class ProductAddControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         try {
@@ -102,7 +102,7 @@ public class ProductAddControl extends HttpServlet {
                 category = "Tablet";
                 code = "3";
             }
-            int status = 0;
+            int status;
             if (quantity == 0) {
                 status = 0;
             } else if (quantity > 10) {
@@ -119,7 +119,7 @@ public class ProductAddControl extends HttpServlet {
             request.setAttribute("category", category);
             request.setAttribute("desc", desc);
 
-            String url = "";
+            String url;
             String error = "";
 
             ProductDAO dao = new ProductDAO();
@@ -131,7 +131,7 @@ public class ProductAddControl extends HttpServlet {
             request.setAttribute("error", error);
 
             if (error.length() > 0) {
-                url = "/product-add.jsp";
+                url = "product-add.jsp";
             } else {
                 Random rd = new Random();
                 long id = Instant.now().getEpochSecond();
@@ -150,12 +150,12 @@ public class ProductAddControl extends HttpServlet {
                 p.setpStatus(status);
 
                 dao.insert(p);
-//                dao.insertProductCate(p);
+                dao.insertProductCate(p);
                 dao.insertProductDetail(p);
                 request.setAttribute("note", "Product created successfully");
-                url = "/admin-product.jsp";
+                url = "product-add.jsp";
             }
-            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         } catch (ServletException ex) {
             Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);

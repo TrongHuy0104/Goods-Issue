@@ -32,23 +32,25 @@ public class ProductDeleteControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String id = request.getParameter("id");
-            String url = "";
-            if (id != null) {
-                Product product = new Product();
-                product.setpId(id);
-                ProductDAO Dao = new ProductDAO();
-                Dao.delete(product);
-                Dao.deleteProductCategory(product);
-                Dao.deleteProductDetail(product);
-                url = "admin-product.jsp";
-            } else {
-                url = "admin-product.jsp";
-            }
-            
-            response.sendRedirect(url);
-        }
+//        try (PrintWriter out = response.getWriter()) {
+//            String id = request.getParameter("id");
+//            String url = "";
+//            if (id != null) {
+//                Product product = new Product();
+//                product.setpId(id);
+//                ProductDAO Dao = new ProductDAO();
+//                
+//                Dao.deleteProductDetail(product);
+//                Dao.deleteProductCategory(product);
+//                Dao.delete(product);
+//                
+//                url = "admin-product.jsp";
+//            } else {
+//                url = "admin-product.jsp";
+//            }
+//            
+//            response.sendRedirect(url);
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,7 +65,18 @@ public class ProductDeleteControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        String id = request.getParameter("id");
+        ProductDAO productDao = new ProductDAO();
+        Product p = new Product();
+        p.setpId(id);
+        
+        productDao.delete(p);
+        productDao.deleteProductDetail(p);
+        productDao.deleteProductCategory(p);
+        
+        response.sendRedirect("admin-product.jsp");
+            
     }
 
     /**

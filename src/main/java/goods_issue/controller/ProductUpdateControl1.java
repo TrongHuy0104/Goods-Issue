@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class ProductUpdateControl extends HttpServlet {
+public class ProductUpdateControl1 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,22 +47,19 @@ public class ProductUpdateControl extends HttpServlet {
             out.println("</html>");
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        
-        response.setContentType("text/html;charset=UTF-8");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+//        processRequest(request, response);
+
+         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
         String productName = request.getParameter("productName");
@@ -100,19 +97,19 @@ public class ProductUpdateControl extends HttpServlet {
         request.setAttribute("category", category);
         request.setAttribute("desc", desc);
 
-        String url = "";
+        String url;
         String error = "";
 
         ProductDAO dao = new ProductDAO();
 
-        if (dao.checkProductIsDuplicated2(productName, id)) {
+        if (dao.checkProductIsDuplicated2(productName,id)) {
             error += "Product already exists, please choose another product name!";
         }
 
         request.setAttribute("error", error);
 
         if (error.length() > 0) {
-            url = "/product-update.jsp";
+            url = "product-update.jsp";
         } else {
 
             Product p = new Product();
@@ -129,18 +126,19 @@ public class ProductUpdateControl extends HttpServlet {
 
             dao.update(p);
             dao.updateProductDetail(p);
-//            dao.updateProductCate(p);
+            dao.updateProductCate(p);
             request.setAttribute("note", "Product update successfully");
-            url = "/product-update.jsp";
+            request.getRequestDispatcher("product-update.jsp?id="+p.getpId()).forward(request, response);
         }
-        RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-        rd.forward(request, response);
+//        RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+//        rd.forward(request, response);
+        
     }
     
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

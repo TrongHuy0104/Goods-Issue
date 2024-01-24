@@ -46,7 +46,7 @@
         <%
         if(user == null) {
         %>
-        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='sign-in.jsp'>Sign In</a></h3>")
+        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='index.jsp'>Sign In</a></h3>")
         <%} else {%>  
         <%     
                String pID= currentProduct.getpId();
@@ -167,7 +167,7 @@
                     <p class="form__note">${note == "" ? "" : note}</p>
                     <p class="form__title">UPDATE INFORMATION</p>
                     <form
-                        action="product-update"
+                        action="./product-update1"
                         method="POST"
                         class="form auth__form row row-cols-2 row-cols-md-1 gx-5"
                         id="sign-up-form"

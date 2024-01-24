@@ -36,6 +36,14 @@
         <servlet-name>ProductUpdateControl</servlet-name>
         <servlet-class>goods_issue.controller.ProductUpdateControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductAddControl1</servlet-name>
+        <servlet-class>goods_issue.controller.ProductAddControl1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateControl1</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateControl1</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -70,7 +78,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductUpdateControl</servlet-name>
-        <url-pattern>/ProductUpdateControl</url-pattern>
+        <url-pattern>/product-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductAddControl1</servlet-name>
+        <url-pattern>/product-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateControl1</servlet-name>
+        <url-pattern>/product-update1</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
