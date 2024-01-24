@@ -310,6 +310,7 @@ public class UserDAO implements DAO<User> {
         try {
             Connection conn = CreateConnection();
             
+<<<<<<< HEAD
             String sql = "SELECT * FROM `users` WHERE role = 0 ORDER BY u_id LIMIT ? OFFSET ?;";
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
@@ -317,6 +318,13 @@ public class UserDAO implements DAO<User> {
             int pageLimit = 10;
             ptmt.setInt(1, pageLimit);
             ptmt.setInt(2, (index*pageLimit)-pageLimit);
+=======
+            String sql = "SELECT * FROM `users` WHERE role = 0 ORDER BY u_id LIMIT 10 OFFSET ?;";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            //offset = (index*limit)-limit
+            ptmt.setInt(1, (index*10)-10);
+>>>>>>> c0e4770f299f526df6e0bc76ae9cd398ab017fa6
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
