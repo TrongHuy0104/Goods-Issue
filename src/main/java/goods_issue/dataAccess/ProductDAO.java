@@ -331,7 +331,7 @@ public class ProductDAO implements DAO<Product> {
             ptmt = conn.prepareStatement(sql);
 
             ptmt.setString(1, t.getpId());
-            ptmt.setInt(2, t.getpCateId());;
+            ptmt.setInt(2, t.getpCateId());
 
             ptmt.executeUpdate();
             ptmt.close();

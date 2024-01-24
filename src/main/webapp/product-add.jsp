@@ -12,7 +12,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     UserDAO userDao = new UserDAO();
-    List<User> userList = userDao.selectAllCustomer();
+//    List<User> userList = userDao.selectAllCustomer();
+//    System.out.println(userList);
     User user = (User) request.getSession().getAttribute("admin");
     
 %>
