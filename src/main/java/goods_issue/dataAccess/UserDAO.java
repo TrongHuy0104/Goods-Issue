@@ -310,11 +310,11 @@ public class UserDAO implements DAO<User> {
         try {
             Connection conn = CreateConnection();
             
-            String sql = "SELECT * FROM `users` WHERE role = 0 ORDER BY u_id LIMIT 3 OFFSET ?;";
+            String sql = "SELECT * FROM `users` WHERE role = 0 ORDER BY u_id LIMIT 10 OFFSET ?;";
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
             //offset = (index*limit)-limit
-            ptmt.setInt(1, (index*3)-3);
+            ptmt.setInt(1, (index*10)-10);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
