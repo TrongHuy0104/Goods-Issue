@@ -14,7 +14,6 @@
     List<User> userList = userDao.selectAllCustomer();
     String dataSearch = request.getParameter("data-search");
     List<User> userListSearch = userDao.searchByName(dataSearch);
-    System.out.println(userListSearch);
     
     String indexPage = request.getParameter("index");
     if (indexPage == null) {
@@ -25,13 +24,16 @@
     int pCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
     
     int endPage = pCount / pageLimit;
-    if (endPage == 0 && endPage % pageLimit != 0) {
+    if (endPage == 0 || endPage % pageLimit != 0) {
         endPage++;
     }
 
     int itemStart = (index - 1) * pageLimit + 1;
     int itemEnd;
     if (index == endPage || !userListSearch.isEmpty()) {
+        System.out.println(userListSearch);
+        System.out.println(index);
+        System.out.println(endPage);
         itemEnd = pCount;
     } else {
         itemEnd = index * pageLimit;
@@ -41,6 +43,7 @@
         customerList = userListSearch;
     } else {
         customerList = userDao.paging(index, pageLimit);
+        System.out.println(customerList);
     }
     
 %>
