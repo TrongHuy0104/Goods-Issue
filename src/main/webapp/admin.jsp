@@ -8,10 +8,31 @@
 <%@page import="goods_issue.model.*" %>
 <%@page import="goods_issue.dataAccess.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     List<User> userList = userDao.selectAllCustomer();
+
+    Integer index = (Integer) request.getAttribute("index");
+    Integer totalPage = (Integer) request.getAttribute("totalPage");
+    Integer productStart = (Integer) request.getAttribute("productStart");
+    Integer productEnd = (Integer) request.getAttribute("productEnd");
+    if (index == null || totalPage == null) {
+        index = 1;
+        totalPage = 1;
+    }
+    if (productStart == null) {
+        productStart = 1;
+    }
+    if (productEnd == null) {
+        productEnd = 1;
+    }
+    List<User> customerList = userDao.pagingCustomer(index);
+     int startPage = Math.max(index - 2, 1);
+     int endPage = Math.min(startPage + 4, totalPage);   
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +57,7 @@
         <script src="./assets/js/scripts.js"></script>
     </head>
     <body>
-        <%
-            if (user == null) {
+        <%            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
@@ -50,8 +70,24 @@
             </a>
             <h3 class="sidebar__heading">APPLICATION</h3>
             <ul class="sidebar__list">
+                <li class="sidebar__item ">
+                    <a href="dashboard.jsp" class="sidebar__link">                       
+                        <svg
+                            fill="rgb(143, 159, 188)"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 448 512"
+                            >
+                        <path
+                            d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"
+                            />
+                        </svg>
+
+                        Dashboard</a
+                    >
+                </li>
                 <li class="sidebar__item sidebar__item--active">
-                    <a href="admin.jsp" class="sidebar__link">
+                    <a href="customer-page-control" class="sidebar__link">                       
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -175,31 +211,29 @@
         <main class="main">
             <div class="admin-top">
                 <h1 class="admin__heading">Customer</h1>
-                <form action="admin.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <form action="customer-search-control" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data"
+                        name="dataSearch"
                         id=""
                         value=""
                         placeholder="Search for item"
                         class="search-bar__input"
                         />
-                    <button class="search-bar__submit">
+                    <button class="search-bar__submit" type="submit">
                         <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
                     </button>
                 </form>
                 <a href="customer-add.jsp" class="admin__add-btn">+ Add Customer</a>
             </div>
             <%
-                if (userList == null) {
+                if (customerList == null) {
             %>
 
             <div style="font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center">
                 Empty
             </div> 
             <%} else {
-//            if(!userListSearch.isEmpty()) {
-//            userList = userListSearch;
             %>
             <table class="table">
                 <thead class="table__head">
@@ -213,8 +247,8 @@
                 </thead>
                 <tbody>
                     <%
-                        for (User u : userList) {
-                    %>
+                        for (User u : customerList) {
+                    %>                   
                     <tr>
                         <td>
                             <div class="table__user">
@@ -279,10 +313,50 @@
                             </div>
                         </td>
                     </tr>
+                    <%}%>                 
+                </tbody>                  
+            </table> 
+            <div class="paging-info">
+                Showing <span class="paging-start"><%=productStart%></span> to <span class="paging-end"><%=productEnd%></span> of <span class="paging-total"><%=userList.size()%></span> entries
+            </div>                                      
+            <div class="paging">
+                <ul class="paging__list">
+                    <!-- Previous Button -->
+                    <%
+                        if (index <= 1) {
+                    %>
+                    <li class="paging__item  paging__item--disable" >
+                        <a class="paging__link" href="customer-page-control?index=${index - 1}" >Previous</a>
+                    </li>
+                    <%} else {%>
+                    <li class="paging__item" >
+                        <a class="paging__link" href="customer-page-control?index=${index - 1}" >Previous</a>
+                    </li>
                     <%}%>
-                </tbody>
-            </table>
+                    <!-- Dynamic Page Numbers -->                   
+                                       
+                    <c:forEach var="i" begin="<%= startPage%>" end="<%= endPage%>">
+                        <li class="paging__item paging__item--${index == i ? "active" : ""}">
+                            <a class="paging__link" href="customer-page-control?index=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <!-- Next Button -->
+                    <%
+                        if (index == totalPage) {
+                    %>
+                    <li class="paging__item--disable">
+                        <a class="paging__link" href="customer-page-control?index=${index + 1}" >Next</a>
+                    </li>
+                    <%} else {%>
+                    <li class="paging__item">
+                        <a class="paging__link" href="customer-page-control?index=${index + 1}" >Next</a>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+
             <%}%>
+
         </main>
         <%}%>       
         <div id="delete-confirm" class="modal modal--small hide">
@@ -303,7 +377,8 @@
     <script>window.dispatchEvent(new Event("template-loaded"));</script>
     <script>
         function handleDelete(e) {
-            if(curID) window.location.href = 'customer-delete?id=' + curID;
+            if (curID)
+                window.location.href = 'customer-delete?id=' + curID;
         }
     </script>
 </html>

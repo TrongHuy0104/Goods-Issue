@@ -55,7 +55,7 @@
             <h3 class="sidebar__heading">APPLICATION</h3>
             <ul class="sidebar__list">
                 <li class="sidebar__item sidebar__item--active">
-                    <a href="admin.jsp" class="sidebar__link">
+                    <a href="customer-page-control" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -380,7 +380,7 @@
                                 <span class="form__message"></span>
                             </div>  
                             <div class="form__group auth__btn-group">
-                                <button class="btn btn--primary auth__btn form__submit-btn">Add</button>
+                                <button href="customer-add" class="btn btn--primary auth__btn form__submit-btn">Add</button>
                             </div>
                         </div>
                     </form>

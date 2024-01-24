@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -286,6 +287,59 @@ public class UserDAO implements DAO<User> {
         return result;
     }
     
+    public int countAllCustomer(){
+        try {
+            Connection conn = CreateConnection();
+            
+            String sql = "SELECT count(*) FROM users WHERE role = 0";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);         
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {                
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }     
+        return 0;
+    }
+    
+    public List<User> pagingCustomer(int index){
+        List<User> listCustomer = new ArrayList<>();
+        
+        try {
+            Connection conn = CreateConnection();
+            
+            String sql = "SELECT * FROM `users` WHERE role = 0 ORDER BY u_id LIMIT 3 OFFSET ?;";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            //offset = (index*limit)-limit
+            ptmt.setInt(1, (index*3)-3);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+                
+                listCustomer.add(user);
+            }            
+            ptmt.close();
+            conn.close();
+            return listCustomer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }     
+        return listCustomer;
+    }
+       
     public boolean checkUserIsDuplicated(String userName) {
         boolean result = false;
         try {
@@ -383,6 +437,7 @@ public class UserDAO implements DAO<User> {
         User us = new User();
         us.setId("1");
         UserDAO u = new UserDAO();
-        System.out.println(u.selectAllCustomer());
+        System.out.println(u.countAllCustomer());
+     
     }
 }
