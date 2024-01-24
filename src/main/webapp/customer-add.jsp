@@ -365,7 +365,7 @@
                             <div class="form__group admin-upload-image">
                                 <label for="avatar" class="form__label ">Avatar</label>
                                 <input id="avatar" name="avatar" type="file" class="form__input" 
-                                       accept="image/png, image/gif, image/jpeg" hidden rules="required">
+                                       accept="image/png, image/gif, image/jpeg" hidden>
                                 <label for="avatar">
                                     <%
                                         url = "http://localhost:8080/Goods_Issue/assets/img/avatar/images.png";
@@ -380,7 +380,7 @@
                                 <span class="form__message"></span>
                             </div>  
                             <div class="form__group auth__btn-group">
-                                <button href="customer-add" class="btn btn--primary auth__btn form__submit-btn">Add</button>
+                                <button class="btn btn--primary auth__btn form__submit-btn">Add</button>
                             </div>
                         </div>
                     </form>

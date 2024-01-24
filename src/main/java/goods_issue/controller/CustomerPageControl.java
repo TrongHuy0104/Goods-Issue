@@ -43,7 +43,7 @@ public class CustomerPageControl extends HttpServlet {
         //b1: get total customer
         UserDAO userDao = new UserDAO();
         int count = userDao.countAllCustomer();
-        int productStart, pageLimit=3,productEnd;
+        int productStart, pageLimit=10,productEnd;
         int totalPage = count/pageLimit;
         if (count % pageLimit != 0) {
             totalPage++;

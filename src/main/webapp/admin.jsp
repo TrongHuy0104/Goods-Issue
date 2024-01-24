@@ -29,9 +29,22 @@
     if (productEnd == null) {
         productEnd = 1;
     }
+    
     List<User> customerList = userDao.pagingCustomer(index);
-     int startPage = Math.max(index - 2, 1);
-     int endPage = Math.min(startPage + 4, totalPage);   
+    int delta = 2; // Determines the range of pages before and after the current page
+    int startPage = Math.max(index - delta, 1);
+    int endPage = Math.min(index + delta, totalPage);
+    if (endPage - startPage < delta * 2) {
+        if (index - startPage < delta) {
+            endPage = Math.min(startPage + delta * 2, totalPage);
+        } else if (endPage - index < delta) {
+            startPage = Math.max(endPage - delta * 2, 1);
+        }
+    }
+    if (endPage - startPage > 4) {
+        endPage = startPage + 4; // Ensure the maximum displayed range is 5
+    }
+%>
 
 %>
 <!DOCTYPE html>
@@ -235,6 +248,7 @@
             </div> 
             <%} else {
             %>
+            <div class="container ">
             <table class="table">
                 <thead class="table__head">
                     <tr>
@@ -244,6 +258,7 @@
                         <th class="table__heading">Phone</th>
                         <th class="table__heading">Action</th>
                     </tr>
+                    
                 </thead>
                 <tbody>
                     <%
@@ -315,27 +330,35 @@
                     </tr>
                     <%}%>                 
                 </tbody>                  
-            </table> 
+            </table>
+            </div>
+            <div class="paging">
             <div class="paging-info">
                 Showing <span class="paging-start"><%=productStart%></span> to <span class="paging-end"><%=productEnd%></span> of <span class="paging-total"><%=userList.size()%></span> entries
             </div>                                      
-            <div class="paging">
+            
                 <ul class="paging__list">
                     <!-- Previous Button -->
                     <%
                         if (index <= 1) {
                     %>
+                    <li class="paging__item paging__item--disable">
+                        <a class="paging__link" href="customer-page-control?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                    </li>
                     <li class="paging__item  paging__item--disable" >
                         <a class="paging__link" href="customer-page-control?index=${index - 1}" >Previous</a>
                     </li>
                     <%} else {%>
+                    <li class="paging__item ">
+                        <a class="paging__link" href="customer-page-control?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                    </li>
                     <li class="paging__item" >
                         <a class="paging__link" href="customer-page-control?index=${index - 1}" >Previous</a>
                     </li>
                     <%}%>
                     <!-- Dynamic Page Numbers -->                   
-                                       
-                    <c:forEach var="i" begin="<%= startPage%>" end="<%= endPage%>">
+
+                    <c:forEach var="i" begin="<%=startPage%>" end="<%=endPage%>">
                         <li class="paging__item paging__item--${index == i ? "active" : ""}">
                             <a class="paging__link" href="customer-page-control?index=${i}">${i}</a>
                         </li>
@@ -347,9 +370,15 @@
                     <li class="paging__item--disable">
                         <a class="paging__link" href="customer-page-control?index=${index + 1}" >Next</a>
                     </li>
+                    <li class="paging__item paging__item--disable">
+                        <a class="paging__link" href="customer-page-control?index=<%=totalPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
+                    </li>
                     <%} else {%>
                     <li class="paging__item">
                         <a class="paging__link" href="customer-page-control?index=${index + 1}" >Next</a>
+                    </li>
+                    <li class="paging__item">
+                        <a class="paging__link" href="customer-page-control?index=<%=totalPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
                     </li>
                     <%}%>
                 </ul>
