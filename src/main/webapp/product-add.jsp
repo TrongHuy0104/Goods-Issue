@@ -282,9 +282,9 @@
                                             rules="required">
                                         <option value="" hidden="">Store</option>
                                         <optgroup label="Store">
-                                            <option value="4">Store 1</option>
-                                            <option value="5">Store 2</option>
-                                            <option value="6">Store 3</option>
+                                            <option value="STR_01">Store 1</option>
+                                            <option value="STR_02">Store 2</option>
+                                            <option value="STR_03">Store 3</option>
                                         </optgroup>
                                     </select>
                                 </div>

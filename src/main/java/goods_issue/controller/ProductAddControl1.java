@@ -111,6 +111,8 @@ public class ProductAddControl1 extends HttpServlet {
                 status = 1;
             }
             System.out.println(price);
+            
+            String store = request.getParameter("store");
 
             request.setAttribute("productName", productName);
             request.setAttribute("from", from);
@@ -118,6 +120,7 @@ public class ProductAddControl1 extends HttpServlet {
             request.setAttribute("quantity", quantity);
             request.setAttribute("category", category);
             request.setAttribute("desc", desc);
+            request.setAttribute("store", store);
 
             String url;
             String error = "";
@@ -148,6 +151,7 @@ public class ProductAddControl1 extends HttpServlet {
                 p.setpCode(code);
                 p.setpCateId(cId);
                 p.setpStatus(status);
+                p.setsId(store);
 
                 dao.insert(p);
                 dao.insertProductCate(p);
