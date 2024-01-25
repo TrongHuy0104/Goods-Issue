@@ -85,7 +85,7 @@ public class ProductDAO implements DAO<Product> {
 
             String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
                     + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
-                    + "pd.number_of_product, pd.number_left, pd.status\n"
+                    + "pd.number_of_product, pd.number_left, pd.status,p.s_id\n"
                     + "FROM  products p, product_detail pd, product_category pc, categories c \n"
                     + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id \n"
                     + "ORDER BY p.p_id\n";
@@ -103,7 +103,8 @@ public class ProductDAO implements DAO<Product> {
                 String origin = rs.getString("place_product");
                 String category = rs.getString("name_category");
                 int status = rs.getInt("status");
-                result.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status));
+                String store = rs.getString("s_id");
+                result.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber,category, status,store));
             }
             ptmt.close();
             conn.close();
@@ -279,8 +280,8 @@ public class ProductDAO implements DAO<Product> {
     @Override
     public void insert(Product t) {
         try {
-            String sql = "INSERT INTO products (p_id, name, code) "
-                    + " VALUES (?,?,?)";
+            String sql = "INSERT INTO products (p_id, name, code,s_id) "
+                    + " VALUES (?,?,?,?)";
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
@@ -288,7 +289,7 @@ public class ProductDAO implements DAO<Product> {
             ptmt.setString(1, t.getpId());
             ptmt.setString(2, t.getpName());
             ptmt.setString(3, t.getpCode());
-
+            ptmt.setString(4, t.getsId());
             ptmt.executeUpdate();
             ptmt.close();
             conn.close();
@@ -415,16 +416,16 @@ public class ProductDAO implements DAO<Product> {
     @Override
     public void update(Product t) {
         try {
-            String sql = "UPDATE products SET name = ?, code = ? "
+            String sql = "UPDATE products SET name = ?, code = ?, s_id = ? "
                     + "WHERE p_id = ?;";
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
 
-            ptmt.setString(3, t.getpId());
+            ptmt.setString(4, t.getpId());
             ptmt.setString(1, t.getpName());
             ptmt.setString(2, t.getpCode());
-
+            ptmt.setString(3, t.getsId());
             ptmt.executeUpdate();
             ptmt.close();
             conn.close();
@@ -481,7 +482,7 @@ public class ProductDAO implements DAO<Product> {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.selectAll();
         for(Product p : list){
-            System.out.println(p);
+            System.out.println(p.getsId());
         }
     }
 
