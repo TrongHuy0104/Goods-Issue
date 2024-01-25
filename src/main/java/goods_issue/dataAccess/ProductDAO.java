@@ -203,7 +203,7 @@ public class ProductDAO implements DAO<Product> {
     public List<Product> searchAllByName(String data) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
-                + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,p.s_id\n"
                 + "pd.number_of_product, pd.number_left, pd.status\n"
                 + "FROM  products p, product_detail pd, product_category pc, categories c \n"
                 + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name LIKE ? \n"
@@ -226,7 +226,8 @@ public class ProductDAO implements DAO<Product> {
                 String origin = rs.getString("place_product");
                 String category = rs.getString("name_category");
                 int status = rs.getInt("status");
-                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status));
+                String store = rs.getString("s_id");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber,category, status,store));
 
             }
 

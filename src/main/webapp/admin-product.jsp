@@ -222,8 +222,6 @@
                         <td>
                             <p class="table__data"><%=p.getpNumberLeft()%></p>
                         </td>
-                        
-
                         <td>
                             <%
                                 System.out.println(p.getpStatus());
@@ -254,8 +252,8 @@
                                         />
                                     </svg>
                                 </a>
-                                
-                                
+
+
                                 <a href="ProductDeleteControl?id=<%=p.getpId()%>" onclick="confirmRemove(<%=p.getpId()%>)" class="table__act-btn table__act-btn-remove"  title="remove">
                                     <svg
                                         fill="#fff"
@@ -279,7 +277,7 @@
         </main>
         <%}%>  
     </body>
-    
+
     <script>
         function confirmRemove(id) {
             var option = confirm("Are you sure to remove!");
