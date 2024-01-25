@@ -15,7 +15,7 @@
 //    List<User> userList = userDao.selectAllCustomer();
 //    System.out.println(userList);
     User user = (User) request.getSession().getAttribute("admin");
-    
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,8 +40,7 @@
         <script src="./assets/js/scripts.js"></script>
     </head>
     <body>
-        <%
-        if(user == null) {
+        <%            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='index.jsp'>Sign In</a></h3>")
         <%} else {%>   
@@ -196,6 +195,25 @@
                                 </div>
                                 <span class="form__message"></span>
                             </div>
+                            <div class="form__group admin-upload-image">
+                                <label for="avatar" class="form__label ">Avatar</label>
+                                <input id="avatar" name="avatar" type="file" class="form__input" 
+                                       accept="image/png, image/gif, image/jpeg" hidden rules="required">
+                                <label for="avatar">
+                                    <%
+                                        String url;
+                                        url = "http://localhost:8080/Goods_Issue/assets/img/avatar/images.png";
+                                    %>
+                                    <img
+                                        id="preview"
+                                        class="avatar-preview"
+                                        src="<%=url%>"
+                                        alt=""
+                                        />
+                                </label>
+                                <span class="form__message"></span>
+                            </div> 
+
                         </div>
                         <div class="col">
                             <div class="form__group">
@@ -258,6 +276,20 @@
                                     <img src="./assets/icons/form-error.svg" alt="" class="form__input-icon-error">
                                 </div>
                             </div>
+                            <div class="form__group">
+                                <div class="form__text-input">
+                                    <select name="store" class="form__input"
+                                            rules="required">
+                                        <option value="" hidden="">Store</option>
+                                        <optgroup label="Store">
+                                            <option value="4">Store 1</option>
+                                            <option value="5">Store 2</option>
+                                            <option value="6">Store 3</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <span class="form__message"></span>
+                            </div>            
                             <div class="form__group auth__btn-group">
                                 <button class="btn btn--primary auth__btn form__submit-btn">Add</button>
                             </div>
