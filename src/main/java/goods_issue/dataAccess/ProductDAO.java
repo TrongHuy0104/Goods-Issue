@@ -241,7 +241,7 @@ public class ProductDAO implements DAO<Product> {
 
     @Override
     public Product selectById(Product t) {
-        Product p ;
+        Product p = null ;
 
         String sql
                 = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
@@ -268,7 +268,7 @@ public class ProductDAO implements DAO<Product> {
                 String category = rs.getString("name_category");
                 int status = rs.getInt("status");
                 String store = rs.getString("s_id");
-                p = new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status,store);
+                p = new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status, store);
             }
 
             ptmt.close();

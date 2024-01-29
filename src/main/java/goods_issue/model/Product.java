@@ -179,6 +179,21 @@ public class Product {
         this.pCategory = pCategory;
         this.pStatus = pStatus;
     }
+    
+    public Product(String pId, String pName, double pRating, String pThumb, double pPrice, String pDescription, int pNumberLeft, int pNumberOfProduct, String pOrigin, String pCategory , int pStatus, String sId) {
+        this.pId = pId;
+        this.pName = pName;
+        this.pRating = pRating;
+        this.pThumb = pThumb;
+        this.pPrice = pPrice;
+        this.pDescription = pDescription;
+        this.pNumberLeft = pNumberLeft;
+        this.pNumberOfProduct = pNumberOfProduct;
+        this.pOrigin = pOrigin;
+        this.pCategory = pCategory;
+        this.pStatus = pStatus;
+        this.sId = sId;
+    }
 
     public String getpCategory() {
         return pCategory;
