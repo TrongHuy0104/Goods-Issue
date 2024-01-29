@@ -241,12 +241,12 @@ public class ProductDAO implements DAO<Product> {
 
     @Override
     public Product selectById(Product t) {
-        Product p = null;
+        Product p ;
 
         String sql
                 = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
                 + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
-                + "pd.number_of_product, pd.number_left, pd.status\n"
+                + "pd.number_of_product, pd.number_left, pd.status, p.s_id\n"
                 + "FROM  products p, product_detail pd, product_category pc, categories c \n"
                 + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.p_id = ?";
         Connection conn = CreateConnection();
@@ -267,7 +267,8 @@ public class ProductDAO implements DAO<Product> {
                 String origin = rs.getString("place_product");
                 String category = rs.getString("name_category");
                 int status = rs.getInt("status");
-                p = new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status);
+                String store = rs.getString("s_id");
+                p = new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, origin, category, status,store);
             }
 
             ptmt.close();

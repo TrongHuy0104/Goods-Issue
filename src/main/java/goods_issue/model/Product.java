@@ -34,9 +34,6 @@ public class Product {
     public String getsId() {
         return sId;
     }
-    
-    
-
     public Product(String pId, String pName, double pRating, String pThumb, double pPrice,String pDescription, int pNumberLeft, int pNumberOfProduct, String pCategory, int pStatus, String sId) {
         this.pId = pId;
         this.pName = pName;
@@ -47,8 +44,24 @@ public class Product {
         this.pNumberLeft = pNumberLeft;
         this.pNumberOfProduct = pNumberOfProduct;
         this.pCategory = pCategory;
+        this.pStatus = pStatus;
         this.sId = sId;
     }
+    
+    
+
+//    public Product(String pId, String pName, double pRating, String pThumb, double pPrice,String pDescription, int pNumberLeft, int pNumberOfProduct, String pCategory, int pStatus, String sId) {
+//        this.pId = pId;
+//        this.pName = pName;
+//        this.pRating = pRating;
+//        this.pThumb = pThumb;
+//        this.pPrice = pPrice;
+//        this.pDescription = pDescription;
+//        this.pNumberLeft = pNumberLeft;
+//        this.pNumberOfProduct = pNumberOfProduct;
+//        this.pCategory = pCategory;
+//        this.sId = sId;
+//    }
 
     @Override
     public String toString() {
