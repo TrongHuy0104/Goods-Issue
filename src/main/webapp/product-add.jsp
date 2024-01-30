@@ -149,6 +149,7 @@
                     <form
                         action="product-add"
                         method="POST"
+                        enctype="multipart/form-data"
                         class="form auth__form row row-cols-2 row-cols-md-1 gx-5"
                         id="sign-up-form"
                         >
@@ -196,13 +197,15 @@
                                 <span class="form__message"></span>
                             </div>
                             <div class="form__group admin-upload-image">
-                                <label for="avatar" class="form__label ">Avatar</label>
+                                <label for="avatar" class="form__label ">Image</label>
                                 <input id="avatar" name="avatar" type="file" class="form__input" 
                                        accept="image/png, image/gif, image/jpeg" hidden rules="required">
                                 <label for="avatar">
                                     <%
-                                        String url;
-                                        url = "http://localhost:8080/Goods_Issue/assets/img/avatar/images.png";
+                                    String avatarURL= user.getAvatar();
+                                        if (avatarURL != null) {
+                                        url = root + "/assets/img/product/" + avatarURL;
+                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                                     %>
                                     <img
                                         id="preview"
@@ -305,6 +308,16 @@
         <script src="./assets/js/validator.js"></script>
         <script>
             new Validator("#sign-up-form");
+        </script>
+        <script>
+            let avatar = document.querySelector("#preview");
+            let file = document.querySelector("#avatar");
+            function updateImg() {
+                avatar.src = window.URL.createObjectURL(file.files[0]);
+            }
+            file.onchange = function () {
+                updateImg();
+            };
         </script>
     </body>
 </html>

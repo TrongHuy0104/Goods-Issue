@@ -8,9 +8,12 @@ package goods_issue.controller;
 import goods_issue.dataAccess.DAO;
 import goods_issue.dataAccess.ProductDAO;
 import goods_issue.model.Product;
+import goods_issue.model.User;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,13 +22,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
  * @author ACER
  */
-
-
 public class ProductAddControl1 extends HttpServlet {
 
     /**
@@ -45,7 +49,7 @@ public class ProductAddControl1 extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddProductControl</title>");            
+            out.println("<title>Servlet AddProductControl</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AddProductControl at " + request.getContextPath() + "</h1>");
@@ -83,90 +87,241 @@ public class ProductAddControl1 extends HttpServlet {
 //        processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        try {
-            String productName = request.getParameter("productName");
-            String from = request.getParameter("from");
-            String code = null;
-            Double price = Double.parseDouble(request.getParameter("price"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            int cId = Integer.parseInt(request.getParameter("category"));
-            String desc = request.getParameter("desc");
-            String category = null;
-            if (cId >= 4 && cId <= 11) {
-                category = "Mobile";
-                code = "1";
-            } else if ((cId >= 12 && cId <= 19) || cId == 27 || cId == 28) {
-                category = "Laptop";
-                code = "2";
-            } else if (cId >= 20 && cId <= 26) {
-                category = "Tablet";
-                code = "3";
-            }
-            int status;
-            if (quantity == 0) {
-                status = 0;
-            } else if (quantity > 10) {
-                status = 2;
-            }  else {
-                status = 1;
-            }
-            System.out.println(price);
-            
-            String store = request.getParameter("store");
-
-            request.setAttribute("productName", productName);
-            request.setAttribute("from", from);
-            request.setAttribute("price", price);
-            request.setAttribute("quantity", quantity);
-            request.setAttribute("category", category);
-            request.setAttribute("desc", desc);
-            request.setAttribute("store", store);
-
-            String url;
-            String error = "";
-
-            ProductDAO dao = new ProductDAO();
-
-            if (dao.checkProductIsDuplicated(productName)) {
-                error += "Product already exists, please choose another product name!";
-            }
-
-            request.setAttribute("error", error);
-
-            if (error.length() > 0) {
-                url = "product-add.jsp";
-            } else {
-                Random rd = new Random();
-                long id = Instant.now().getEpochSecond();
-                String idString = Long.toString(id);
-                
-                Product p = new Product();
-                p.setpId(idString);
-                p.setpName(productName);
-                p.setpCategory(category);
-                p.setpOrigin(from);
-                p.setpPrice(price);
-                p.setpNumberLeft(quantity);
-                p.setpDescription(desc);
-                p.setpCode(code);
-                p.setpCateId(cId);
-                p.setpStatus(status);
-                p.setsId(store);
-
-                dao.insert(p);
-                dao.insertProductCate(p);
-                dao.insertProductDetail(p);
-                request.setAttribute("note", "Product created successfully");
-                url = "product-add.jsp";
-            }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+        Object obj = request.getSession().getAttribute("user");
+        User user = null;
+        if (obj != null) {
+            user = (User) obj;
         }
-        
+        if (user != null) {
+            try {
+                ProductDAO pDao = new ProductDAO();
+                Product tempProduct = new Product();
+                String folder = getServletContext().getRealPath("\\assets\\img\\product");
+                File file;
+                int maxFileSize = 5000 * 1024;
+                int maxMemSize = 5000 * 1024;
+                Boolean isValid = true;
+                String url = "";
+                String error = "";
+
+                String contentType = request.getContentType();
+                if (contentType.indexOf(contentType) >= 0) {
+                    DiskFileItemFactory factory = new DiskFileItemFactory();
+                    factory.setSizeThreshold(maxMemSize);
+
+                    ServletFileUpload upload = new ServletFileUpload(factory);
+
+                    upload.setSizeMax(maxFileSize);
+
+                    List<FileItem> files = upload.parseRequest(request);
+                    for (FileItem fileItem : files) {
+                        if (fileItem.isFormField()) {
+                            switch (fileItem.getFieldName()) {
+                                case "productName": {
+                                    String productName = fileItem.getString("UTF-8");
+                                    tempProduct.setpName(productName);
+                                    request.setAttribute("productName", productName);
+                                    break;
+                                }
+                                case "from": {
+                                    String from = fileItem.getString("UTF-8");
+                                    tempProduct.setpOrigin(from);
+                                    request.setAttribute("from", from);
+                                    break;
+                                }
+                                case "price": {
+                                    String price = fileItem.getString("UTF-8");
+                                    tempProduct.setpPrice(Integer.valueOf(price));
+                                    request.setAttribute("price", price);
+                                    break;
+                                }
+                                case "quantity": {
+                                    int quantity = Integer.valueOf(fileItem.getString("UTF-8"));
+
+                                    int status;
+                                    if (quantity == 0) {
+                                        status = 0;
+                                    } else if (quantity > 10) {
+                                        status = 2;
+                                    } else {
+                                        status = 1;
+                                    }
+                                    tempProduct.setpNumberLeft(quantity);
+                                    tempProduct.setpStatus(status);
+                                    request.setAttribute("quantity", quantity);
+                                    request.setAttribute("status", status);
+                                    break;
+                                }
+                                case "desc": {
+                                    String desc = fileItem.getString("UTF-8");
+                                    tempProduct.setpDescription(desc);
+                                    request.setAttribute("desc", desc);
+                                    break;
+                                }
+                                case "store": {
+                                    String store = fileItem.getString("UTF-8");
+                                    tempProduct.setsId(store);
+                                    request.setAttribute("store", store);
+                                    break;
+                                }
+                                case "category": {
+                                    int cId = Integer.valueOf(fileItem.getString("UTF-8"));
+                                    String category = null;
+                                    String code = null;
+                                    if (cId >= 4 && cId <= 11) {
+                                        category = "Mobile";
+                                        code = "1";
+                                    } else if ((cId >= 12 && cId <= 19) || cId == 27 || cId == 28) {
+                                        category = "Laptop";
+                                        code = "2";
+                                    } else if (cId >= 20 && cId <= 26) {
+                                        category = "Tablet";
+                                        code = "3";
+                                    }
+                                    tempProduct.setpCateId(cId);
+                                    tempProduct.setpCategory(category);
+                                    tempProduct.setpCode(code);
+                                    request.setAttribute("category", category);
+                                    request.setAttribute("code", code);
+
+                                    break;
+                                }
+                            }
+
+                            if (pDao.checkProductIsDuplicated(tempProduct.getpName())) {
+                                error += "Product already exists, please choose another product name!";
+                                isValid = false;
+                            } else {
+                                isValid = true;
+                            }
+
+                            request.setAttribute("error", error);
+                            if (error.length() > 0) {
+                                url = "/product-add.jsp";
+                            } else {
+                                Random rd = new Random();
+                                String id = System.currentTimeMillis() + rd.nextInt(1000) + "";
+                                tempProduct.setpId(id);
+                            }
+                        }
+                        if (!fileItem.isFormField()) {
+                            if (isValid) {
+                                if (!fileItem.getName().equals("")) {
+                                    String fileName = System.currentTimeMillis() + fileItem.getName();
+                                    String path = folder + "\\" + fileName;
+                                    file = new File(path);
+                                    fileItem.write(file);
+                                    tempProduct.setpThumb(fileName);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (isValid) {
+                    request.setAttribute("productName", "");
+                    request.setAttribute("from", "");
+                    request.setAttribute("price", 0);
+                    request.setAttribute("quantity", 0);
+                    request.setAttribute("category", "");
+                    request.setAttribute("desc", "");
+                    request.setAttribute("store", "");
+                    request.setAttribute("status", 1);
+                    request.setAttribute("code", "");
+                    request.setAttribute("store", "");
+                    
+                    pDao.insert(tempProduct);
+                    pDao.insertProductCate(tempProduct);
+                    pDao.insertProductDetail(tempProduct);
+                }
+                request.getRequestDispatcher("product-add.jsp").forward(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+//        try {
+//            String productName = request.getParameter("productName");
+//            String from = request.getParameter("from");
+//            String code = null;
+//            Double price = Double.parseDouble(request.getParameter("price"));
+//            int quantity = Integer.parseInt(request.getParameter("quantity"));
+//            int cId = Integer.parseInt(request.getParameter("category"));
+//            String desc = request.getParameter("desc");
+//            String category = null;
+//            if (cId >= 4 && cId <= 11) {
+//                category = "Mobile";
+//                code = "1";
+//            } else if ((cId >= 12 && cId <= 19) || cId == 27 || cId == 28) {
+//                category = "Laptop";
+//                code = "2";
+//            } else if (cId >= 20 && cId <= 26) {
+//                category = "Tablet";
+//                code = "3";
+//            }
+//            int status;
+//            if (quantity == 0) {
+//                status = 0;
+//            } else if (quantity > 10) {
+//                status = 2;
+//            } else {
+//                status = 1;
+//            }
+//            System.out.println(price);
+//
+//            String store = request.getParameter("store");
+//
+//            request.setAttribute("productName", productName);
+//            request.setAttribute("from", from);
+//            request.setAttribute("price", price);
+//            request.setAttribute("quantity", quantity);
+//            request.setAttribute("category", category);
+//            request.setAttribute("desc", desc);
+//            request.setAttribute("store", store);
+//
+//            String url;
+//            String error = "";
+//
+//            ProductDAO dao = new ProductDAO();
+//
+//            if (dao.checkProductIsDuplicated(productName)) {
+//                error += "Product already exists, please choose another product name!";
+//            }
+//
+//            request.setAttribute("error", error);
+//
+//            if (error.length() > 0) {
+//                url = "product-add.jsp";
+//            } else {
+//                Random rd = new Random();
+//                long id = Instant.now().getEpochSecond();
+//                String idString = Long.toString(id);
+//
+//                Product p = new Product();
+//                p.setpId(idString);
+//                p.setpName(productName);
+//                p.setpCategory(category);
+//                p.setpOrigin(from);
+//                p.setpPrice(price);
+//                p.setpNumberLeft(quantity);
+//                p.setpDescription(desc);
+//                p.setpCode(code);
+//                p.setpCateId(cId);
+//                p.setpStatus(status);
+//                p.setsId(store);
+//
+//                dao.insert(p);
+//                dao.insertProductCate(p);
+//                dao.insertProductDetail(p);
+//                request.setAttribute("note", "Product created successfully");
+//                url = "product-add.jsp";
+//            }
+//            RequestDispatcher rd = request.getRequestDispatcher(url);
+//            rd.forward(request, response);
+//        } catch (ServletException ex) {
+//            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(UserControl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
     }
 
     /**
