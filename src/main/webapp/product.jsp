@@ -11,37 +11,8 @@
 <%
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
-    List<User> userList = userDao.selectAllCustomer();
-    String dataSearch = request.getParameter("data-search");
-    List<User> userListSearch = userDao.searchByName(dataSearch);
-    
-    String indexPage = request.getParameter("index");
-    if (indexPage == null) {
-        indexPage = "1";
-    }
-    int index = Integer.parseInt(indexPage);
-    int pageLimit = 10;
-    int pCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
-    
-    int endPage = pCount / pageLimit;
-    if (endPage == 0 || endPage % pageLimit != 0) {
-        endPage++;
-    }
-
-    int itemStart = (index - 1) * pageLimit + 1;
-    int itemEnd;
-    if (index == endPage || !userListSearch.isEmpty()) {
-        itemEnd = pCount;
-    } else {
-        itemEnd = index * pageLimit;
-    }
-    List<User> customerList = new ArrayList<>();
-    if (dataSearch != null) {
-        customerList = userListSearch;
-    } else {
-        customerList = userDao.paging(index, pageLimit);
-    }
-    
+    ProductDAO productDao = new ProductDAO();
+    List<Product> productList = productDao.selectAll();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +67,7 @@
                         Dashboard</a
                     >
                 </li>
-                <li class="sidebar__item sidebar__item--active">
+                <li class="sidebar__item">
                     <a href="admin.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
@@ -128,7 +99,7 @@
                         Admin</a
                     >
                 </li>
-                <li class="sidebar__item">
+                <li class="sidebar__item sidebar__item--active">
                     <a href="product.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
@@ -220,13 +191,18 @@
         <!-- Main -->
         <main class="main">
             <div class="admin-top">
-                <h1 class="admin__heading">Customer</h1>
-                <form action="admin.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <h1 class="admin__heading">Product</h1>
+                <form action="admin-product.jsp" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data-search"
+                        name="data"
                         id=""
                         value=""
+                        <%--<%if(dataSearch == null) {
+                            dataSearch = "";
+                        } else {
+                            dataSearch = dataSearch;
+}%><%=dataSearch%>--%>
                         placeholder="Search for item"
                         class="search-bar__input"
                         />
@@ -234,70 +210,82 @@
                         <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
                     </button>
                 </form>
-                <a href="customer-add.jsp" class="admin__add-btn">+ Add Customer</a>
+                <a href="product-add.jsp" class="admin__add-btn">+ Add Product</a>
             </div>
             <%
-                if (customerList == null) {
+            if(productList == null) {
             %>
 
             <div style="font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center">
                 Empty
             </div> 
             <%} else {
-//            if(!userListSearch.isEmpty()) {
-//            customerList = userListSearch}
-//            if(!userListSearch.isEmpty()) {
-//            customerList = userListSearch;
+//            if(!productListSearch.isEmpty()) {
+//            productList = productListSearch;
+//            }
             %>
             <table class="table">
                 <thead class="table__head">
                     <tr>
-                        <th class="table__heading">Name</th>
-                        <th class="table__heading">Email</th>
-                        <th class="table__heading">Location</th>
-                        <th class="table__heading">Phone</th>
+                        <th class="table__heading">Product Name</th>
+                        <th class="table__heading">Category</th>
+                        <th class="table__heading">Price</th>
+                        <th class="table__heading">Quantity</th>
+                        <th class="table__heading">Inventory</th>
+                        <th class="table__heading">Store</th>
                         <th class="table__heading">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        for (User u : customerList) {
+                    for(Product p : productList) {
                     %>
                     <tr>
                         <td>
                             <div class="table__user">
                                 <%
-                                    root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                            + request.getContextPath();
-                                    avatarURL = u.getAvatar();
-                                    if (avatarURL != null) {
-                                        url = root + "/assets/img/avatar/" + avatarURL;
-                                    } else
-                                        url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                                     avatarURL= p.getpThumb();
+                                        if (avatarURL != null) {
+                                        url = root + "/assets/img/product/" + avatarURL;
+                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                                 %>
                                 <img
                                     src="<%=url%>"
                                     alt=""
-                                    class="table__user-avatar"
+                                    class="table__user-product"
                                     />
                                 <div class="table__user-info">
-                                    <span class="table__user-name"><%=u.getFullName()%></span>
+                                    <span class="table__user-name"><%=p.getpName()%></span>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <p class="table__data"><%=u.getEmail()%></p>
+                            <p class="table__data"><%=p.getpCategory()%></p>
                         </td>
                         <td>
-                            <p class="table__data"><%=u.getAddress()%></p>
+                            <p class="table__data">$<%=p.getpPrice()%></p>
                         </td>
 
                         <td>
-                            <p class="table__data"><%=u.getPhone()%></p>
+                            <p class="table__data"><%=p.getpNumberLeft()%></p>
+                        </td>
+                        <td>
+                            <%
+                            if(p.getpStatus() == 0 || p.getpNumberLeft() == 0) {
+                            %>
+                            <p class="table__data" style="color: red; font-weight: 500">Out Of Stock</p>
+                            <%} else if (p.getpStatus() == 1 || (p.getpNumberLeft() > 0 && p.getpNumberLeft() <= 10)) {%>
+                            <p class="table__data" style="color: #db7e06; font-weight: 500">Limited</p>
+                            <% } else {%>
+                            <p class="table__data" style="color: #3cb72c; font-weight: 500">In Stock</p>
+                            <%}%>
+                        </td>
+                        <td>
+                            <p class="table__data"><%=p.getsId()%></p>
                         </td>
                         <td>
                             <div class="table__act">
-                                <a href="customer-update.jsp?id=<%=u.getId()%>" class="table__act-btn table__act-btn-edit" title="edit">
+                                <a href="product-update.jsp?id=<%=p.getpId()%>" class="table__act-btn table__act-btn-edit" title="edit">
                                     <svg
                                         fill="rgb(143, 159, 188)"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -310,8 +298,7 @@
                                         />
                                     </svg>
                                 </a>
-
-                                <button  class="table__act-btn table__act-btn-remove js-toggle" data-id="<%=u.getId()%>" id="btn-del" toggle-target="#delete-confirm"  title="remove">
+                                <button  class="table__act-btn table__act-btn-remove js-toggle" data-id="<%=p.getpId()%>" id="btn-del" toggle-target="#delete-confirm"  title="remove">
                                     <svg
                                         fill="#fff"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -330,30 +317,10 @@
                     <%}%>
                 </tbody>
             </table>
-            <%} if(customerList != null && !customerList.isEmpty()) {%>
-            <div class="paging">
-                <div class="paging-info">
-                    Showing <span class="paging-start"><%=itemStart%></span> to <span class="paging-end"><%=itemEnd%></span> of <span class="paging-total"><%=pCount%></span> entries
-                </div>
-                <ul class="paging__list">
-                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
-                    </li>
-                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=index - 1%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
-                    </li>
-                    <li class="paging__item  paging__item--active"><a class="paging__link"><%=index%></a></li>
-                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=index + 1%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
-                    </li>
-                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=endPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
-                    </li>
-                </ul>
-            </div>
             <%}%>
         </main>
-        <%}%>       
+        <%}%>
+
         <div id="delete-confirm" class="modal modal--small hide">
             <div class="modal__content">
                 <p class="modal__text">Do you want to remove this item</p>
@@ -373,7 +340,7 @@
     <script>
         function handleDelete(e) {
             if (curID)
-                window.location.href = 'customer-delete?id=' + curID;
+                window.location.href = 'product-delete?id=' + curID;
         }
     </script>
 </html>
