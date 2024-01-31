@@ -266,7 +266,12 @@ td {
     align-self: flex-start;
     margin-left: 15px;
 }
-
+.form__error1 {
+    font-size: 1.6rem;
+    color: red;
+    margin-top: 20px;
+    font-weight: 500;
+}    
 .form__note {
     font-size: 1.6rem;
     color: green;

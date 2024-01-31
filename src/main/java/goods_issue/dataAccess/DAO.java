@@ -5,6 +5,7 @@
  */
 package goods_issue.dataAccess;
 
+import goods_issue.model.Storage;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +27,8 @@ public interface DAO<T> {
     public void deleteAll(ArrayList<T> arr);
 
     public void update(T t);
-}
+    
+   } 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
