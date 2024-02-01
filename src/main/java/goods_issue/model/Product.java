@@ -180,7 +180,7 @@ public class Product {
         this.pStatus = pStatus;
     }
     
-    public Product(String pId, String pName, double pRating, String pThumb, double pPrice, String pDescription, int pNumberLeft, int pNumberOfProduct, String pOrigin, String pCategory , int pStatus, String sId) {
+    public Product(String pId, String pName, double pRating, String pThumb, double pPrice, String pDescription, int pNumberLeft, int pNumberOfProduct, String pOrigin, String pCategory , int pStatus, String sId, int pCateId) {
         this.pId = pId;
         this.pName = pName;
         this.pRating = pRating;
@@ -193,6 +193,7 @@ public class Product {
         this.pCategory = pCategory;
         this.pStatus = pStatus;
         this.sId = sId;
+        this.pCateId = pCateId;
     }
 
     public String getpCategory() {

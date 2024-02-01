@@ -38,9 +38,9 @@ public class ProductDeleteControl extends HttpServlet {
         ProductDAO productDao = new ProductDAO();
         Product product = new Product();
         product.setpId(id);
-        productDao.deleteProduct(product);
         productDao.deleteProductDetail(product);
         productDao.deleteProductCategory(product);
+        productDao.deleteProduct(product);
         response.sendRedirect("product.jsp");
 
         }

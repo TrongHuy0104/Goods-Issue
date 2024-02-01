@@ -52,6 +52,18 @@
         <servlet-name>ProductAddCtrl</servlet-name>
         <servlet-class>goods_issue.controller.ProductAddCtrl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductUpdate</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateServlet</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProduct</servlet-name>
+        <servlet-class>goods_issue.controller.UpdateProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -103,6 +115,18 @@
     <servlet-mapping>
         <servlet-name>ProductAddCtrl</servlet-name>
         <url-pattern>/product-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdate</servlet-name>
+        <url-pattern>/updateproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateServlet</servlet-name>
+        <url-pattern>/update-product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProduct</servlet-name>
+        <url-pattern>/updateProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

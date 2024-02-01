@@ -381,6 +381,32 @@ public class UserDAO implements DAO<User> {
             e.printStackTrace();
         }
     }
+    
+    public void updateUserInfoNonImg(User t
+    ) {
+        try {
+
+            String sql = "UPDATE users SET address = ?, full_name = ?, gender = ?, ship_address = ?, phone = ?, email = ? "
+                    + " WHERE u_id = ?";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getAddress());
+            ptmt.setString(2, t.getFullName());
+            ptmt.setString(3, t.getGender());
+            ptmt.setString(4, t.getDeliveryAddress());
+            ptmt.setString(5, t.getPhone());
+            ptmt.setString(6, t.getEmail());
+            ptmt.setString(7, t.getId());
+
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int countTotal() {
         try {

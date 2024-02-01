@@ -80,45 +80,6 @@ public class CustomerUpdateControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        request.setCharacterEncoding("UTF-8");
-//        String id = request.getParameter("id");
-//        String name = request.getParameter("name");
-//        String gender = request.getParameter("gender");
-//        String address = request.getParameter("address");
-//        String deliveryAddress = request.getParameter("delivery-address");
-//        String phone = request.getParameter("phone");
-//        String email = request.getParameter("email");
-//        String avatar = request.getParameter("avatar");
-//
-//        request.setAttribute("name", name);
-//        request.setAttribute("gender", gender);
-//        request.setAttribute("address", address);
-//        request.setAttribute("deliveryAddress", deliveryAddress);
-//        request.setAttribute("phone", phone);
-//        request.setAttribute("email", email);
-//        request.setAttribute("avatar", avatar);
-//
-//        String url = "";
-//        String note = "";
-//        UserDAO userDAO = new UserDAO();
-//
-//        if (note.length() > 0) {
-//            url = "customer-update.jsp";
-//        } else {
-//            User tempUser = new User();
-//            User currentUser = new User();
-//            tempUser.setId(id);
-//            currentUser = userDAO.selectById(tempUser);
-//            String uid = currentUser.getId();
-//            User uUser1 = new User(uid, "", "", address, email, name, gender, phone, deliveryAddress, avatar, 0);
-//            userDAO.updateUserInfo(uUser1);
-//
-//            note = "Information has been updated!";
-//            url = "customer-update.jsp";
-//        }
-//        request.setAttribute("note", note);
-//        request.getRequestDispatcher(url).forward(request, response);
         Object obj = request.getSession().getAttribute("user");
         User user = null;
         if (obj != null) {
@@ -132,19 +93,19 @@ public class CustomerUpdateControl extends HttpServlet {
                 File file;
                 int maxFileSize = 5000 * 1024;
                 int maxMemSize = 5000 * 1024;
-                Boolean isValid = true;
+                Boolean isValid = false;
                 String url = "";
                 String note = "";
-
+                
                 String contentType = request.getContentType();
                 if (contentType.indexOf(contentType) >= 0) {
                     DiskFileItemFactory factory = new DiskFileItemFactory();
                     factory.setSizeThreshold(maxMemSize);
-
+                    
                     ServletFileUpload upload = new ServletFileUpload(factory);
-
+                    
                     upload.setSizeMax(maxFileSize);
-
+                    
                     List<FileItem> files = upload.parseRequest(request);
                     for (FileItem fileItem : files) {
                         if (fileItem.isFormField()) {
@@ -155,7 +116,7 @@ public class CustomerUpdateControl extends HttpServlet {
                                     tempUser.setId(id);
                                     request.setAttribute("id", id);
                                 }
-
+                                
                                 case "name": {
                                     String name = fileItem.getString("UTF-8");
                                     tempUser.setFullName(name);
@@ -193,47 +154,29 @@ public class CustomerUpdateControl extends HttpServlet {
                                     break;
                                 }
                             }
-
-//                            if (userDAO.checkUserIsDuplicated(tempUser.getUserName())) {
-//                                error = "Username already exists, please choose another username!";
-//                                isValid = false;
-//                            } else {
-//                                isValid = true;
-//                                if (userDAO.checkEmailIsDuplicated(tempUser.getEmail())) {
-//                                    error = "Email already exists, please choose another email!";
-//                                    isValid = false;
-//                                }
-//                            }
-
-//                            request.setAttribute("error", error);
-//
-//                            if (error.length() > 0) {
-//                                url = "/customer-add.jsp";
-//                            } else {
-//                                Random rd = new Random();
-//                                String id = System.currentTimeMillis() + rd.nextInt(1000) + "";
-//                                tempUser.setPassword(encodeToSHA256(tempUser.getPassword()));
-//                                tempUser.setId(id);
-//                            }
                         }
                         if (!fileItem.isFormField()) {
 //                            if (isValid) {
-                                if (!fileItem.getName().equals("")) {
-                                    String fileName = System.currentTimeMillis() + fileItem.getName();
-                                    String path = folder + "\\" + fileName;
-                                    file = new File(path);
-                                    fileItem.write(file);
-                                    tempUser.setAvatar(fileName);
-                                }
+                            if (!fileItem.getName().equals("")) {
+                                isValid = true;
+                                String fileName = System.currentTimeMillis() + fileItem.getName();
+                                String path = folder + "\\" + fileName;
+                                file = new File(path);
+                                fileItem.write(file);
+                                tempUser.setAvatar(fileName);
+                            }
 //                            }
                         }
-
+                        
                     }
-                    System.out.println(tempUser);
-                    userDAO.updateUserInfo(tempUser);
+                    if (isValid) {
+                        userDAO.updateUserInfo(tempUser);
+                    } else {
+                        userDAO.updateUserInfoNonImg(tempUser);
+                    }
                 }
                 request.setAttribute("note", "Information has been updated!");
-                request.getRequestDispatcher("customer-update.jsp?id="+tempUser.getId()).forward(request, response);
+                request.getRequestDispatcher("customer-update.jsp?id=" + tempUser.getId()).forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }

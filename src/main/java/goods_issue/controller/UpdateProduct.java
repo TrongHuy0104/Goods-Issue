@@ -11,12 +11,8 @@ import goods_issue.model.User;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Instant;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +25,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author Trong Huy
  */
-public class ProductAddCtrl extends HttpServlet {
+public class UpdateProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,10 +44,10 @@ public class ProductAddCtrl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductAddCtrl</title>");
+            out.println("<title>Servlet UpdateProduct</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductAddCtrl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -83,8 +79,6 @@ public class ProductAddCtrl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
         Object obj = request.getSession().getAttribute("user");
         User user = null;
         if (obj != null) {
@@ -98,7 +92,7 @@ public class ProductAddCtrl extends HttpServlet {
                 File file;
                 int maxFileSize = 5000 * 1024;
                 int maxMemSize = 5000 * 1024;
-                Boolean isValid = true;
+                Boolean isValid = false;
                 String url = "";
                 String error = "";
 
@@ -115,6 +109,12 @@ public class ProductAddCtrl extends HttpServlet {
                     for (FileItem fileItem : files) {
                         if (fileItem.isFormField()) {
                             switch (fileItem.getFieldName()) {
+                                case "id": {
+                                    String pId = fileItem.getString("UTF-8");
+                                    tempProduct.setpId(pId);
+                                    request.setAttribute("pId", pId);
+                                    break;
+                                }
                                 case "productName": {
                                     String productName = fileItem.getString("UTF-8");
                                     tempProduct.setpName(productName);
@@ -134,7 +134,7 @@ public class ProductAddCtrl extends HttpServlet {
                                     break;
                                 }
                                 case "quantity": {
-                                    int quantity = Integer.parseInt(fileItem.getString("UTF-8"));
+                                    int quantity = (int) Double.parseDouble(fileItem.getString());
 
                                     int status;
                                     if (quantity == 0) {
@@ -185,59 +185,33 @@ public class ProductAddCtrl extends HttpServlet {
                                     break;
                                 }
                             }
-
-                            if (pDao.checkProductIsDuplicated(tempProduct.getpName())) {
-                                error = "Product already exists, please choose another product name!";
-                                isValid = false;
-                            } else {
-                                isValid = true;
-                            }
-
-                            request.setAttribute("error", error);
-                            if (error.length() > 0) {
-                                url = "/product-add.jsp";
-                            } else {
-                                Random rd = new Random();
-                                String id = System.currentTimeMillis() + rd.nextInt(1000) + "";
-                                tempProduct.setpId(id);
-                            }
                         }
                         if (!fileItem.isFormField()) {
-                            if (isValid) {
-                                if (!fileItem.getName().equals("")) {
-                                    String fileName = System.currentTimeMillis() + fileItem.getName();
-                                    String path = folder + "\\" + fileName;
-                                    file = new File(path);
-                                    fileItem.write(file);
-                                    tempProduct.setpThumb(fileName);
-                                }
+                            if (!fileItem.getName().equals("")) {
+                                isValid = true;
+                                System.out.println("1");
+                                String fileName = System.currentTimeMillis() + fileItem.getName();
+                                String path = folder + "\\" + fileName;
+                                file = new File(path);
+                                fileItem.write(file);
+                                tempProduct.setpThumb(fileName);
                             }
                         }
                     }
+                        pDao.updateProductDetail(tempProduct);
+                        pDao.updateProductCate(tempProduct);
+                    if (isValid) {
+                        pDao.update(tempProduct);
+                    } else {
+                        pDao.updateNonImg(tempProduct);
+                    }
                 }
-                if (isValid) {
-                    request.setAttribute("productName", "");
-                    request.setAttribute("from", "");
-                    request.setAttribute("price", "");
-                    request.setAttribute("quantity", "");
-                    request.setAttribute("category", "");
-                    request.setAttribute("desc", "");
-                    request.setAttribute("store", "");
-//                    request.setAttribute("status", 1);
-                    request.setAttribute("code", "");
-                    request.setAttribute("store", "");
-                    request.setAttribute("note", "Account created successfully!");
-
-                    pDao.insert(tempProduct);
-                    pDao.insertProductCate(tempProduct);
-                    pDao.insertProductDetail(tempProduct);
-                }
-                request.getRequestDispatcher("product-add.jsp").forward(request, response);
+                request.setAttribute("note", "Information has been updated!");
+                request.getRequestDispatcher("product-update.jsp?id=" + tempProduct.getpId()).forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**
