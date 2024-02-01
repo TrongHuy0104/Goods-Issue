@@ -25,12 +25,12 @@ public class ProductDAO implements DAO<Product> {
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb,pd.p_id, pd.price, "
                 + "pd.description, pd.place_product,pd.number_of_product, pd.number_left "
                 + "FROM products p, product_detail pd WHERE p.p_id = pd.p_id "
-                + "ORDER BY `p`.`p_id` ASC LIMIT 16 OFFSET ?";
+                + "ORDER BY `p`.`p_id` ASC LIMIT 10 OFFSET ?";
         Connection conn = CreateConnection();
         try {
             PreparedStatement ptmt = null;
             ptmt = conn.prepareStatement(sql);
-            ptmt.setInt(1, (index - 1) * 16);
+            ptmt.setInt(1, (index - 1) * 10);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("p_id");
@@ -52,6 +52,44 @@ public class ProductDAO implements DAO<Product> {
         return list;
     }
 
+    public List<Product> paging(int index, int limit) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
+                + "pd.number_of_product, pd.number_left, pd.status,p.s_id\n"
+                + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id \n"
+                + "ORDER BY `p`.`p_id` LIMIT ? OFFSET ?";
+        Connection conn = CreateConnection();
+        try {
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, limit);
+            ptmt.setInt(2, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("p_id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                String category = rs.getString("name_category");
+                int status = rs.getInt("status");
+                String store = rs.getString("s_id");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, category, status, store));
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public int countTotalByName(String data) {
         try {
             Connection conn = CreateConnection();
@@ -59,6 +97,26 @@ public class ProductDAO implements DAO<Product> {
             String sql = "select count(*) from products WHERE name LIKE ?";
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countTotal() {
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sql = "select count(*)"
+                    + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                    + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id";
+            ptmt = conn.prepareStatement(sql);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
                 return rs.getInt(1);
@@ -199,7 +257,7 @@ public class ProductDAO implements DAO<Product> {
     public List<Product> searchAllByName(String data) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
-                + "pd.p_id, pd.price, pd.description, pd.place_product,p.s_id\n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,p.s_id, \n"
                 + "pd.number_of_product, pd.number_left, pd.status\n"
                 + "FROM  products p, product_detail pd, product_category pc, categories c \n"
                 + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name LIKE ? \n"
@@ -371,7 +429,6 @@ public class ProductDAO implements DAO<Product> {
         }//To change body of generated methods, choose Tools | Templates.
     }
 
-
     /**
      *
      * @param arr
@@ -402,7 +459,7 @@ public class ProductDAO implements DAO<Product> {
             e.printStackTrace();
         }//To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public void updateNonImg(Product t) {
         try {
             String sql = "UPDATE products SET name = ?, code = ?, s_id = ? "
@@ -518,10 +575,8 @@ public class ProductDAO implements DAO<Product> {
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<Product> list = dao.selectAll();
-        for (Product p : list) {
-            System.out.println(p.getsId());
-        }
+        System.out.println(dao.countTotal());
+
     }
 
 }

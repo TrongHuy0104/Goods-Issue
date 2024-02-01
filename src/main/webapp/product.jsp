@@ -12,7 +12,43 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
-    List<Product> productList = productDao.selectAll();
+//    List<Product> productList = productDao.selectAll();
+    String dataSearch = request.getParameter("data-search");
+    List<Product> productListSearch = productDao.searchAllByName(dataSearch);
+    
+    String indexPage = request.getParameter("index");
+    if (indexPage == null) {
+        indexPage = "1";
+    }
+    
+    int index = Integer.parseInt(indexPage);
+    int pageLimit = 10;
+    int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
+    
+    int endPage = pCount / pageLimit;
+    if (endPage == 0 || endPage % pageLimit != 0) {
+        endPage++;
+    }
+    
+    int itemStart = (index - 1) * pageLimit + 1;
+    int itemEnd;
+    if (index == endPage || !productListSearch.isEmpty()) {
+        itemEnd = pCount;
+    } else {
+        itemEnd = index * pageLimit;
+    }
+    System.out.println("pCOunt: " + pCount);
+    System.out.println("endPage " + endPage);
+    System.out.println("itemStart " + itemStart);
+    System.out.println("itemEnd " + itemEnd);
+    System.out.println("index " + index);
+//    System.out.println("pCOunt: " + pCount);
+    List<Product> productList = new ArrayList<>();
+    if (dataSearch != null) {
+        productList = productListSearch;
+    } else {
+        productList = productDao.paging(index, pageLimit);
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -192,10 +228,10 @@
         <main class="main">
             <div class="admin-top">
                 <h1 class="admin__heading">Product</h1>
-                <form action="admin-product.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <form action="product.jsp" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data"
+                        name="data-search"
                         id=""
                         value=""
                         <%--<%if(dataSearch == null) {
@@ -318,9 +354,30 @@
                 </tbody>
             </table>
             <%}%>
+            <% if(productList != null && !productList.isEmpty()) {%>
+            <div class="paging">
+                <div class="paging-info">
+                    Showing <span class="paging-start"><%=itemStart%></span> to <span class="paging-end"><%=itemEnd%></span> of <span class="paging-total"><%=pCount%></span> entries
+                </div>
+                <ul class="paging__list">
+                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="product.jsp?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                    </li>
+                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="product.jsp?index=<%=index - 1%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
+                    </li>
+                    <li class="paging__item  paging__item--active"><a class="paging__link"><%=index%></a></li>
+                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="product.jsp?index=<%=index + 1%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
+                    </li>
+                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="product.jsp?index=<%=endPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
+                    </li>
+                </ul>
+            </div>
+            <%}%>
         </main>
         <%}%>
-
         <div id="delete-confirm" class="modal modal--small hide">
             <div class="modal__content">
                 <p class="modal__text">Do you want to remove this item</p>

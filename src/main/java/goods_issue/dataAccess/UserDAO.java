@@ -498,6 +498,6 @@ public class UserDAO implements DAO<User> {
         User us = new User();
         us.setId("1");
         UserDAO u = new UserDAO();
-        System.out.println(u.searchByName(""));
+        System.out.println(u.paging(3, 10));
     }
 }

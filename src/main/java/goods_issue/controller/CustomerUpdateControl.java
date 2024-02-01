@@ -96,27 +96,27 @@ public class CustomerUpdateControl extends HttpServlet {
                 Boolean isValid = false;
                 String url = "";
                 String note = "";
-                
+
                 String contentType = request.getContentType();
                 if (contentType.indexOf(contentType) >= 0) {
                     DiskFileItemFactory factory = new DiskFileItemFactory();
                     factory.setSizeThreshold(maxMemSize);
-                    
+
                     ServletFileUpload upload = new ServletFileUpload(factory);
-                    
+
                     upload.setSizeMax(maxFileSize);
-                    
+
                     List<FileItem> files = upload.parseRequest(request);
                     for (FileItem fileItem : files) {
                         if (fileItem.isFormField()) {
                             switch (fileItem.getFieldName()) {
-                                
+
                                 case "id": {
                                     String id = fileItem.getString("UTF-8");
                                     tempUser.setId(id);
                                     request.setAttribute("id", id);
                                 }
-                                
+
                                 case "name": {
                                     String name = fileItem.getString("UTF-8");
                                     tempUser.setFullName(name);
@@ -156,7 +156,6 @@ public class CustomerUpdateControl extends HttpServlet {
                             }
                         }
                         if (!fileItem.isFormField()) {
-//                            if (isValid) {
                             if (!fileItem.getName().equals("")) {
                                 isValid = true;
                                 String fileName = System.currentTimeMillis() + fileItem.getName();
@@ -165,9 +164,8 @@ public class CustomerUpdateControl extends HttpServlet {
                                 fileItem.write(file);
                                 tempUser.setAvatar(fileName);
                             }
-//                            }
                         }
-                        
+
                     }
                     if (isValid) {
                         userDAO.updateUserInfo(tempUser);
