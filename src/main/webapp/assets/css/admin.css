@@ -125,6 +125,7 @@ and open the template in the editor.
 
 .admin-top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 

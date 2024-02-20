@@ -12,7 +12,6 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
-//    List<Product> productList = productDao.selectAll();
     String dataSearch = request.getParameter("data-search");
     List<Product> productListSearch = productDao.searchAllByName(dataSearch);
     
@@ -37,12 +36,6 @@
     } else {
         itemEnd = index * pageLimit;
     }
-    System.out.println("pCOunt: " + pCount);
-    System.out.println("endPage " + endPage);
-    System.out.println("itemStart " + itemStart);
-    System.out.println("itemEnd " + itemEnd);
-    System.out.println("index " + index);
-//    System.out.println("pCOunt: " + pCount);
     List<Product> productList = new ArrayList<>();
     if (dataSearch != null) {
         productList = productListSearch;
@@ -120,7 +113,7 @@
                     >
                 </li>
                 <li class="sidebar__item ">
-                    <a href="admin.jsp" class="sidebar__link">
+                    <a href="storage.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +125,7 @@
                             />
                         </svg>
 
-                        Admin</a
+                        Storage</a
                     >
                 </li>
                 <li class="sidebar__item sidebar__item--active">

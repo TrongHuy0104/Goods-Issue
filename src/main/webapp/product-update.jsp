@@ -18,7 +18,6 @@
     String id = request.getParameter("id");
     tempProduct.setpId(id);
     currentProduct = productDao.selectById(tempProduct);
-    System.out.println(currentProduct);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +109,7 @@
                     >
                 </li>
                 <li class="sidebar__item ">
-                    <a href="admin.jsp" class="sidebar__link">
+                    <a href="storage.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +121,7 @@
                             />
                         </svg>
 
-                        Admin</a
+                        Storage</a
                     >
                 </li>
                 <li class="sidebar__item sidebar__item--active">

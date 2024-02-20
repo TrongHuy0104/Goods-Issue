@@ -7,23 +7,17 @@
 <%@page import="java.util.*"%>
 <%@page import="goods_issue.model.*" %>
 <%@page import="goods_issue.dataAccess.*" %>
-<%@page import="java.io.*" %>
-<%@page import="javax.servlet.*" %>
-<%@page import="org.apache.commons.fileupload.FileItem" %>
-<%@page import="org.apache.commons.fileupload.FileUploadException" %>
-<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
-<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    UserDAO userDao = new UserDAO();
-    List<User> userList = userDao.selectAllCustomer();
     User user = (User) request.getSession().getAttribute("admin");
-    User tempUser = new User();
-    User currentUser = new User();
+    UserDAO userDao = new UserDAO();
+    StorageDAO storageDao = new StorageDAO();
+    Storage tempStorage = new Storage();
+    Storage currentStorage = new Storage();
     String id = request.getParameter("id");
-    tempUser.setId(id);
-    currentUser = userDao.selectById(tempUser);
+    tempStorage.setsID(id);
+    currentStorage = storageDao.selectById(tempStorage);
+//    System.out.println(currentStorage);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,32 +43,27 @@
     </head>
     <body>
         <%
-        if(user == null) {
+            if (user == null) {
         %>
-        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='index.jsp'>Sign In</a></h3>")
-        <%} else {%>  
+        <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
+        <%} else {%> 
         <%     
-               String uID= currentUser.getId();
+               String sId = currentStorage.getsID();
                
-               String name= currentUser.getFullName();
-		
-               String gender = currentUser.getGender();
-		
-               String address= currentUser.getAddress();
-		
-               String email= currentUser.getEmail();
-		
-               String phone= currentUser.getPhone();
-		
-               String deliveryAddress= currentUser.getDeliveryAddress();
+               String sName = currentStorage.getsName();
                
-               String avatar = currentUser.getAvatar();
+               String sAddress = currentStorage.getsAddress();
 		
+               int sSize = currentStorage.getsSize();
+		
+               String sType = currentStorage.getsType();
+		
+               String sStatus= currentStorage.getStatus();
         %>
         <!-- Sidebar -->
         <div class="admin-sidebar">
             <!-- Logo -->
-            <a href="admin.jsp" class="logo top-bar__logo admin-logo">
+            <a href="customer.jsp" class="logo top-bar__logo admin-logo">
                 <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                 <h1 class="logo__title top-bar__logo-title">grocerymart</h1>
             </a>
@@ -96,7 +85,7 @@
                         Dashboard</a
                     >
                 </li>
-                <li class="sidebar__item sidebar__item--active">
+                <li class="sidebar__item">
                     <a href="admin.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
@@ -112,7 +101,7 @@
                         Customer</a
                     >
                 </li>
-                <li class="sidebar__item">
+                <li class="sidebar__item sidebar__item--active">
                     <a href="storage.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
@@ -146,7 +135,7 @@
                     >
                 </li>
                 <li class="sidebar__item">
-                    <a href="#!" class="sidebar__link">
+                    <a href="admin-order.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -169,15 +158,16 @@
             <ul class="admin-navbar__list">
                 <div class="top-act__user top-act__btn-wrap">
                     <%
-                                    String url;
-                                    String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                    + request.getContextPath();
-                                    String avatarURL= user.getAvatar();
+                        String url;
+                        String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                                + request.getContextPath();
+                        String avatarURL = user.getAvatar();
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        if (avatarURL != null) {
+                        if (avatarURL != null) {
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        url = root + "/assets/img/avatar/" + avatarURL;
-                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                            url = root + "/assets/img/avatar/" + avatarURL;
+                        } else
+                            url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                     %>
                     <img src="<%=url%>" alt="" class="top-act__avatar" />
                     <!-- Dropdown -->
@@ -217,7 +207,6 @@
             </ul>
         </nav>
         <!-- Main -->
-        <!-- Main -->
         <main class="auth main">
 
             <!-- Auth Content -->
@@ -225,163 +214,70 @@
                 <div class="auth__content-inner admin-content-inner">
                     <p class="form__error">${error == "" ? "" : error}</p>
                     <p class="form__note">${note == "" ? "" : note}</p>
+                    <p class="form__title">BASIC INFORMATION</p>
                     <form
-                        action="customer-update"
+                        action="storage-update"
                         method="POST"
-                        enctype="multipart/form-data"
                         class="form auth__form row row-cols-2 row-cols-md-1 gx-5"
                         id="sign-up-form"
                         >
-
-                        <input type="hidden" name="id" value="<%=uID%>"/>
                         <div class="col">
-                            <p class="form__title">User Information</p>
                             <div class="form__group">
-                                <label for="fullname" class="form__label">Full name</label>
                                 <div class="form__text-input">
+                                    <input type="hidden" name="id" value=<%=sId%>>
                                     <input
-                                        id="fullname"
                                         type="text"
-                                        placeholder="Name"
+                                        placeholder="Storage Name"
                                         class="form__input"
                                         name="name"
-                                        value="<%=name%>"
-                                        rules="required"
+                                        value="<%=sName%>"
+                                        rules="required|minLength:2"
                                         />
-                                    <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg>
                                 </div>
                                 <span class="form__message"></span>
                             </div>
                             <div class="form__group">
-                                <label for="gender" class="form__label">Gender</label>
-                                <div class="gender-container">
-                                    <div class="gender-group">
-                                        <label>
-                                            <input
-                                                name="gender"
-                                                type="radio"
-                                                rules="required"
-                                                value="male"
-                                                <%=(gender.equals("male"))?"checked":"" %>
-                                                class="form__input"
-                                                />
-                                            Male
-                                        </label>
-                                    </div>
-                                    <div class="gender-group">
-                                        <label>
-                                            <input
-                                                name="gender"
-                                                type="radio"
-                                                rules="required"
-                                                value="female"
-                                                <%=(gender.equals("female"))?"checked":"" %>
-                                                class="form__input"
-                                                />Female
-                                        </label>
-                                    </div>
-                                    <div class="gender-group">
-                                        <label>
-                                            <input
-                                                name="gender"
-                                                type="radio"
-                                                rules="required"
-                                                value="other"
-                                                <%=(gender.equals("other"))?"checked":"" %>
-                                                class="form__input"
-                                                />Other
-                                        </label>
-                                    </div>
-                                </div>
-                                <span class="form__message"></span>
-                            </div>
-                            <div class="form__group admin-upload-image">
-                                <label for="avatar" class="form__label ">Avatar</label>
-                                <input id="avatar" name="avatar" type="file" class="form__input" 
-                                       accept="image/png, image/gif, image/jpeg" hidden>
-                                <label for="avatar">
-                                    <%
-                                     root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                    + request.getContextPath();
-                                     avatarURL= currentUser.getAvatar();
-                                        if (avatarURL != null) {
-                                        url = root + "/assets/img/avatar/" + avatar;
-                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
-                                    %>
-                                    <img
-                                        id="preview"
-                                        class="avatar-preview"
-                                        src="<%=url%>"
-                                        alt=""
-                                        />
-                                </label>
-                                <span class="form__message"></span>
-                            </div> 
-                        </div>
-                        <div class="col">
-                            <p class="form__title">Address</p>
-                            <div class="form__group">
-                                <label for="address" class="form__label">Address</label>
                                 <div class="form__text-input">
                                     <input
-                                        id="address"
+                                        type="number"
+                                        placeholder="Size"
+                                        class="form__input"
+                                        name="size"
+                                        value="<%=sSize%>"
+                                        rules="required|integer|isNonNegative"
+                                        />
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg>
+                                </div>
+                                <span class="form__message"></span>
+                            </div>
+
+
+                        </div>
+                        <div class="col">
+                            <div class="form__group">
+                                <div class="form__text-input">
+                                    <input
                                         type="text"
                                         placeholder="Address"
                                         class="form__input"
                                         name="address"
-                                        value="<%=address%>"
+                                        value="<%=sAddress%>"
                                         rules="required"
                                         />
-                                    <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
-                                </div>
-                                <span class="form__message"></span>
-                            </div>
-                            <div class="form__group">
-                                <label for="delivery-address" class="form__label">Delivery address</label>
-                                <div class="form__text-input">
-                                    <input
-                                        id="delivery-address"
-                                        type="text"
-                                        placeholder="Delivery Address"
-                                        class="form__input"
-                                        name="delivery-address"
-                                        value="<%=deliveryAddress%>"
-                                        rules="required"
-                                        />
-                                    <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
-                                </div>
-                                <span class="form__message"></span>
-                            </div>
-                            <div class="form__group">
-                                <label for="phone" class="form__label">Phone</label>
-                                <div class="form__text-input">
-                                    <input
-                                        id="phone"
-                                        type="text"
-                                        placeholder="Phone number"
-                                        class="form__input"
-                                        name="phone"
-                                        value="<%=phone%>"
-                                        rules="required|phone"
-                                        />
-                                    <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg>
                                 </div>
                                 <span class="form__message"></span>
                             </div>
 
                             <div class="form__group">
-                                <label for="email" class="form__label">Email</label>
                                 <div class="form__text-input">
-                                    <input
-                                        id="email"
-                                        type="email"
-                                        placeholder="Email"
-                                        class="form__input"
-                                        name="email"
-                                        value="<%=email%>"
-                                        rules="required|email"
-                                        />
-                                    <img src="./assets/icons/letter.svg" alt="" class="form__input-icon" />
+                                    <select name="type" class="form__input"
+                                            rules="required">
+                                        <option value="" hidden="">Type</option>
+                                        <option value="store" <%=!sType.equals("storehouse") ? "" : "selected"%>>Store</option>
+                                        <option value="factory" <%=!sType.equals("factory") ? "" : "selected"%>>Factory</option>
+                                    </select>
                                 </div>
                                 <span class="form__message"></span>
                             </div>
@@ -393,24 +289,14 @@
                 </div>
             </div>
         </main>
-        <%}%>                                
-        <script>
-            window.dispatchEvent(new Event("template-loaded"));
-        </script>
-        <script src="./assets/js/validator.js"></script>
-        <script>
-            new Validator("#sign-up-form");
-        </script>
-        <script>
-            let avatar = document.querySelector("#preview");
-            let file = document.querySelector("#avatar");
-            function updateImg() {
-                avatar.src = window.URL.createObjectURL(file.files[0]);
-            }
-            file.onchange = function () {
-                updateImg();
-            };
-        </script>
+        <%}%>
+
     </body>
+    <script>window.dispatchEvent(new Event("template-loaded"));</script>
+    <script src="./assets/js/validator.js"></script>
+    <script>
+        new Validator("#sign-up-form");
+    </script>
+
 </html>
 

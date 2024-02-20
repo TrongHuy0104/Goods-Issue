@@ -64,6 +64,18 @@
         <servlet-name>UpdateProduct</servlet-name>
         <servlet-class>goods_issue.controller.UpdateProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StorageAddControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageAddControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StorageDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageDeleteControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StorageUpdateControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageUpdateControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -127,6 +139,18 @@
     <servlet-mapping>
         <servlet-name>UpdateProduct</servlet-name>
         <url-pattern>/updateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageAddControl</servlet-name>
+        <url-pattern>/storage-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageDeleteControl</servlet-name>
+        <url-pattern>/storage-delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageUpdateControl</servlet-name>
+        <url-pattern>/storage-update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
