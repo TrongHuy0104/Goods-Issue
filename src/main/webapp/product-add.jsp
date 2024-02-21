@@ -12,7 +12,12 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
+    StorageDAO strDao = new StorageDAO();
+    List<Storage> strList = strDao.selectAll();
     List<Product> productList = productDao.selectAll();
+    Storage sID = new Storage();
+    
+    String psId = sID.getsID();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -334,9 +339,13 @@
                                             rules="required">
                                         <option value="" hidden="">Store</option>
                                         <optgroup label="Store">
-                                            <option value="STR_01">Store 1</option>
-                                            <option value="STR_02">Store 2</option>
-                                            <option value="STR_03">Store 3</option>
+                                            <%
+                                                for(Storage s : strList){
+                                            %>
+                                            <option value="<%=s.getsID()%>" <%=!sID.equals(s.getsID()) ? "" : "selected"%>><%=s.getsName()%></option>
+                                            <%
+                                                }
+                                            %>
                                         </optgroup>
                                     </select>
                                 </div>
