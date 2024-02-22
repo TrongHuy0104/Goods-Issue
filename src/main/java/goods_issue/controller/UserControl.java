@@ -120,7 +120,7 @@ public class UserControl extends HttpServlet {
                 session.setAttribute("user", user);
                 if (isAdmin(request, response)) {
                     session.setAttribute("admin", user);
-                    url = "admin.jsp";
+                    url = "/dashboard.jsp";
                 } else {
                     request.setAttribute("error", "You are not a manager of this website!");
                     url = "/index.jsp";

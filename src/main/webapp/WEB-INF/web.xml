@@ -20,6 +20,62 @@
         <servlet-name>CustomerUpdateControl</servlet-name>
         <servlet-class>goods_issue.controller.CustomerUpdateControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.CustomerDeleteControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductAddControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductAddControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductDeleteControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateControl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductAddControl1</servlet-name>
+        <servlet-class>goods_issue.controller.ProductAddControl1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateControl1</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateControl1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDeleteCtrl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductDeleteControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductAddCtrl</servlet-name>
+        <servlet-class>goods_issue.controller.ProductAddCtrl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdate</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductUpdateServlet</servlet-name>
+        <servlet-class>goods_issue.controller.ProductUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProduct</servlet-name>
+        <servlet-class>goods_issue.controller.UpdateProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StorageAddControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageAddControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StorageDeleteControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageDeleteControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StorageUpdateControl</servlet-name>
+        <servlet-class>goods_issue.controller.StorageUpdateControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -39,6 +95,62 @@
     <servlet-mapping>
         <servlet-name>CustomerUpdateControl</servlet-name>
         <url-pattern>/customer-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDeleteControl</servlet-name>
+        <url-pattern>/customer-delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductAddControl</servlet-name>
+        <url-pattern>/ProductAddControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDeleteControl</servlet-name>
+        <url-pattern>/ProductDeleteControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateControl</servlet-name>
+        <url-pattern>/product-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductAddControl1</servlet-name>
+        <url-pattern>/product-adddd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateControl1</servlet-name>
+        <url-pattern>/product-update1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDeleteCtrl</servlet-name>
+        <url-pattern>/product-delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductAddCtrl</servlet-name>
+        <url-pattern>/product-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdate</servlet-name>
+        <url-pattern>/updateproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductUpdateServlet</servlet-name>
+        <url-pattern>/update-product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProduct</servlet-name>
+        <url-pattern>/updateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageAddControl</servlet-name>
+        <url-pattern>/storage-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageDeleteControl</servlet-name>
+        <url-pattern>/storage-delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StorageUpdateControl</servlet-name>
+        <url-pattern>/storage-update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

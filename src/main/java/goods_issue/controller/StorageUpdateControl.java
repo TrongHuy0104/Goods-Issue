@@ -5,19 +5,20 @@
  */
 package goods_issue.controller;
 
+import goods_issue.dataAccess.StorageDAO;
+import goods_issue.model.Storage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Trong Huy
  */
-public class HomeControl extends HttpServlet {
+public class StorageUpdateControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class HomeControl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeControl</title>");            
+            out.println("<title>Servlet StorageUpdateControl</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeControl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StorageUpdateControl at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +58,7 @@ public class HomeControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);     
+        processRequest(request, response);
     }
 
     /**
@@ -71,7 +72,29 @@ public class HomeControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        String id = request.getParameter("id");
+        System.out.println("id " + id);
+        String name = request.getParameter("name");
+        int size = Integer.parseInt(request.getParameter("size"));
+        String type = request.getParameter("type");
+        String address = request.getParameter("address");
+
+        request.setAttribute("name", name);
+        request.setAttribute("size", size);
+        request.setAttribute("type", type);
+        request.setAttribute("address", address);
+
+        Storage tempStorage = new Storage();
+        tempStorage.setsID(id);
+        StorageDAO storageDao = new StorageDAO();
+        Storage currentStorage = storageDao.selectById(tempStorage);
+        System.out.println(currentStorage);
+        String status = currentStorage.getStatus();
+        Storage storage = new Storage(id, name, size, address, type, status);
+        storageDao.update(storage);
+        request.setAttribute("note", "Information has been updated!");
+        request.getRequestDispatcher("storage-update.jsp").forward(request, response);
     }
 
     /**

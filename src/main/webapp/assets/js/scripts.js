@@ -139,10 +139,12 @@ const $ = document.querySelector.bind(document);
          * <button class="js-toggle" toggle-target="#box">Click</button>
          * <div id="box">Content show/hide</div>
          */
+        let curID;
         window.addEventListener("template-loaded", initJsToggle);
                 function initJsToggle() {
                 $$(".js-toggle").forEach((button) => {
                 const target = button.getAttribute("toggle-target");
+                let id = button.dataset.id;
                         if (!target) {
                 document.body.innerText = `Cần thêm toggle-target cho: ${button.outerHTML}`;
                 }
@@ -156,6 +158,7 @@ const $ = document.querySelector.bind(document);
                         $(target).classList.toggle("hide", !isHidden);
                                 $(target).classList.toggle("show", isHidden);
                         });
+                        if (id) curID = id;
                 };
                         document.onclick = function (e) {
                         if (!e.target.closest(target)) {
@@ -197,4 +200,4 @@ const $ = document.querySelector.bind(document);
                                 };
                                 });
                         });
-                });
+                });                         

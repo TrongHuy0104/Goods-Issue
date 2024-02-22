@@ -125,6 +125,7 @@ and open the template in the editor.
 
 .admin-top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -289,7 +290,7 @@ td {
     margin-top: 20px;
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    cursor: pointer;
     object-fit: contain;
 }
 
@@ -305,5 +306,5 @@ td {
 }
 
 .avatar-preview {
-    cursor: pointer;
+    border-radius: 50%;
 }

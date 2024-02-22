@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -208,7 +211,7 @@ public class UserDAO implements DAO<User> {
         }
         return user;
     }
-    
+
     public boolean checkUsernameEmailIsDuplicated(String username, String email) {
         boolean result = false;
         try {
@@ -232,7 +235,7 @@ public class UserDAO implements DAO<User> {
         }
         return result;
     }
-    
+
     public boolean resetPassword(User t) {
         boolean result = true;
         try {
@@ -252,7 +255,7 @@ public class UserDAO implements DAO<User> {
         }
         return result;
     }
-    
+
     public ArrayList<User> selectAllCustomer() {
         ArrayList<User> result = new ArrayList<>();
 
@@ -275,7 +278,7 @@ public class UserDAO implements DAO<User> {
                 user.setPhone(rs.getString("phone"));
                 user.setEmail(rs.getString("email"));
                 user.setAvatar(rs.getString("image"));
-                
+
                 result.add(user);
             }
             ptmt.close();
@@ -285,7 +288,7 @@ public class UserDAO implements DAO<User> {
         }
         return result;
     }
-    
+
     public boolean checkUserIsDuplicated(String userName) {
         boolean result = false;
         try {
@@ -331,7 +334,7 @@ public class UserDAO implements DAO<User> {
         }
         return result;
     }
-    
+
     public void updateAvatar(User t
     ) {
         try {
@@ -351,7 +354,7 @@ public class UserDAO implements DAO<User> {
             e.printStackTrace();
         }
     }
-    
+
     public void updateUserInfo(User t
     ) {
         try {
@@ -378,11 +381,123 @@ public class UserDAO implements DAO<User> {
             e.printStackTrace();
         }
     }
+    
+    public void updateUserInfoNonImg(User t
+    ) {
+        try {
+
+            String sql = "UPDATE users SET address = ?, full_name = ?, gender = ?, ship_address = ?, phone = ?, email = ? "
+                    + " WHERE u_id = ?";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, t.getAddress());
+            ptmt.setString(2, t.getFullName());
+            ptmt.setString(3, t.getGender());
+            ptmt.setString(4, t.getDeliveryAddress());
+            ptmt.setString(5, t.getPhone());
+            ptmt.setString(6, t.getEmail());
+            ptmt.setString(7, t.getId());
+
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int countTotal() {
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sql = "select count(*) from users WHERE role = 0";
+            ptmt = conn.prepareStatement(sql);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<User> paging(int index, int limit) {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role = 0\n"
+                + "ORDER BY u_id\n"
+                + "LIMIT ?\n"
+                + "OFFSET ?;";
+        Connection conn = CreateConnection();
+        try {
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, limit);
+            ptmt.setInt(2, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+
+                list.add(user);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<User> searchByName(String data) {
+        List<User> list = new ArrayList<>();
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        String sql = "SELECT * from users\n"
+                + "WHERE full_name LIKE ? AND role = 0; \n";
+
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+
+                list.add(user);
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         User us = new User();
         us.setId("1");
         UserDAO u = new UserDAO();
-        System.out.println(u.selectAllCustomer());
+        System.out.println(u.paging(3, 10));
     }
 }

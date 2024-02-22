@@ -5,19 +5,22 @@
  */
 package goods_issue.controller;
 
+import goods_issue.dataAccess.StorageDAO;
+import goods_issue.model.Storage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Trong Huy
  */
-public class HomeControl extends HttpServlet {
+public class StorageAddControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +39,10 @@ public class HomeControl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeControl</title>");            
+            out.println("<title>Servlet StorageAddControl</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeControl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StorageAddControl at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +60,7 @@ public class HomeControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);     
+        processRequest(request, response);
     }
 
     /**
@@ -71,7 +74,24 @@ public class HomeControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String name = request.getParameter("name");
+        int size = Integer.parseInt(request.getParameter("size"));
+        String type = request.getParameter("type");
+        String address = request.getParameter("address");
+
+        request.setAttribute("name", name);
+        request.setAttribute("size", size);
+        request.setAttribute("type", type);
+        request.setAttribute("address", address);
+
+        Random rd = new Random();
+        String id = "STR_0" + System.currentTimeMillis() + rd.nextInt(1000);
+
+        Storage s = new Storage(id, name, size, address, type);
+        StorageDAO storageDao = new StorageDAO();
+        storageDao.insert(s);
+        request.setAttribute("note", "Storage created successfully!");
+        request.getRequestDispatcher("storage-add.jsp").forward(request, response);
     }
 
     /**

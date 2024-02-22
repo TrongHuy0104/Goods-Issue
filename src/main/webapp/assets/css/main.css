@@ -3834,7 +3834,8 @@ html.dark {
 }
 
 .paging {
-    margin-top: 50px;
+    margin-top: 15px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -4563,9 +4564,7 @@ html.dark {
     height: 46px;
 }
 
-.paging {
-    margin-top: 50px;
-}
+
 .paging__list {
     display: flex;
     align-items: center;

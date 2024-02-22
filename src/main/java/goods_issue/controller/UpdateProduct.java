@@ -5,9 +5,9 @@
  */
 package goods_issue.controller;
 
-import goods_issue.dataAccess.UserDAO;
+import goods_issue.dataAccess.ProductDAO;
+import goods_issue.model.Product;
 import goods_issue.model.User;
-import static goods_issue.util.Encode.encodeToSHA256;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -26,7 +25,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author Trong Huy
  */
-public class CustomerUpdateControl extends HttpServlet {
+public class UpdateProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +44,10 @@ public class CustomerUpdateControl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CustomerUpdateControl</title>");
+            out.println("<title>Servlet UpdateProduct</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CustomerUpdateControl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -87,15 +86,15 @@ public class CustomerUpdateControl extends HttpServlet {
         }
         if (user != null) {
             try {
-                UserDAO userDAO = new UserDAO();
-                User tempUser = new User();
-                String folder = getServletContext().getRealPath("\\assets\\img\\avatar");
+                ProductDAO pDao = new ProductDAO();
+                Product tempProduct = new Product();
+                String folder = getServletContext().getRealPath("\\assets\\img\\product");
                 File file;
                 int maxFileSize = 5000 * 1024;
                 int maxMemSize = 5000 * 1024;
                 Boolean isValid = false;
                 String url = "";
-                String note = "";
+                String error = "";
 
                 String contentType = request.getContentType();
                 if (contentType.indexOf(contentType) >= 0) {
@@ -110,47 +109,79 @@ public class CustomerUpdateControl extends HttpServlet {
                     for (FileItem fileItem : files) {
                         if (fileItem.isFormField()) {
                             switch (fileItem.getFieldName()) {
-
                                 case "id": {
-                                    String id = fileItem.getString("UTF-8");
-                                    tempUser.setId(id);
-                                    request.setAttribute("id", id);
+                                    String pId = fileItem.getString("UTF-8");
+                                    tempProduct.setpId(pId);
+                                    request.setAttribute("pId", pId);
+                                    break;
                                 }
+                                case "productName": {
+                                    String productName = fileItem.getString("UTF-8");
+                                    tempProduct.setpName(productName);
+                                    request.setAttribute("productName", productName);
+                                    break;
+                                }
+                                case "from": {
+                                    String from = fileItem.getString("UTF-8");
+                                    tempProduct.setpOrigin(from);
+                                    request.setAttribute("from", from);
+                                    break;
+                                }
+                                case "price": {
+                                    String price = fileItem.getString("UTF-8");
+                                    tempProduct.setpPrice(Double.parseDouble(price));
+                                    request.setAttribute("price", price);
+                                    break;
+                                }
+                                case "quantity": {
+                                    int quantity = (int) Double.parseDouble(fileItem.getString());
 
-                                case "name": {
-                                    String name = fileItem.getString("UTF-8");
-                                    tempUser.setFullName(name);
-                                    request.setAttribute("name", name);
+                                    int status;
+                                    if (quantity == 0) {
+                                        status = 0;
+                                    } else if (quantity > 10) {
+                                        status = 2;
+                                    } else {
+                                        status = 1;
+                                    }
+                                    tempProduct.setpNumberLeft(quantity);
+                                    tempProduct.setpStatus(status);
+                                    request.setAttribute("quantity", quantity);
+                                    request.setAttribute("status", status);
                                     break;
                                 }
-                                case "gender": {
-                                    String gender = fileItem.getString("UTF-8");
-                                    tempUser.setGender(gender);
-                                    request.setAttribute("gender", gender);
+                                case "desc": {
+                                    String desc = fileItem.getString("UTF-8");
+                                    tempProduct.setpDescription(desc);
+                                    request.setAttribute("desc", desc);
                                     break;
                                 }
-                                case "address": {
-                                    String address = fileItem.getString("UTF-8");
-                                    tempUser.setAddress(address);
-                                    request.setAttribute("address", address);
+                                case "store": {
+                                    String store = fileItem.getString("UTF-8");
+                                    tempProduct.setsId(store);
+                                    request.setAttribute("store", store);
                                     break;
                                 }
-                                case "delivery-address": {
-                                    String shipAddress = fileItem.getString("UTF-8");
-                                    tempUser.setDeliveryAddress(shipAddress);
-                                    request.setAttribute("deliveryAddress", shipAddress);
-                                    break;
-                                }
-                                case "phone": {
-                                    String phone = fileItem.getString("UTF-8");
-                                    tempUser.setPhone(phone);
-                                    request.setAttribute("phone", phone);
-                                    break;
-                                }
-                                case "email": {
-                                    String email = fileItem.getString("UTF-8");
-                                    tempUser.setEmail(email);
-                                    request.setAttribute("email", email);
+                                case "category": {
+                                    int cId = Integer.valueOf(fileItem.getString("UTF-8"));
+                                    String category = null;
+                                    String code = null;
+                                    if (cId >= 4 && cId <= 11) {
+                                        category = "Mobile";
+                                        code = "1";
+                                    } else if ((cId >= 12 && cId <= 19) || cId == 27 || cId == 28) {
+                                        category = "Laptop";
+                                        code = "2";
+                                    } else if (cId >= 20 && cId <= 26) {
+                                        category = "Tablet";
+                                        code = "3";
+                                    }
+                                    tempProduct.setpCateId(cId);
+                                    tempProduct.setpCategory(category);
+                                    tempProduct.setpCode(code);
+                                    request.setAttribute("category", category);
+                                    request.setAttribute("code", code);
+
                                     break;
                                 }
                             }
@@ -158,23 +189,25 @@ public class CustomerUpdateControl extends HttpServlet {
                         if (!fileItem.isFormField()) {
                             if (!fileItem.getName().equals("")) {
                                 isValid = true;
+                                System.out.println("1");
                                 String fileName = System.currentTimeMillis() + fileItem.getName();
                                 String path = folder + "\\" + fileName;
                                 file = new File(path);
                                 fileItem.write(file);
-                                tempUser.setAvatar(fileName);
+                                tempProduct.setpThumb(fileName);
                             }
                         }
-
                     }
+                        pDao.updateProductDetail(tempProduct);
+                        pDao.updateProductCate(tempProduct);
                     if (isValid) {
-                        userDAO.updateUserInfo(tempUser);
+                        pDao.update(tempProduct);
                     } else {
-                        userDAO.updateUserInfoNonImg(tempUser);
+                        pDao.updateNonImg(tempProduct);
                     }
                 }
                 request.setAttribute("note", "Information has been updated!");
-                request.getRequestDispatcher("customer-update.jsp?id=" + tempUser.getId()).forward(request, response);
+                request.getRequestDispatcher("product-update.jsp?id=" + tempProduct.getpId()).forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }

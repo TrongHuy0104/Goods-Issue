@@ -41,10 +41,10 @@
     </head>
     <body>
         <%
-        if(user == null) {
+            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
-        <%} else {%>   
+        <%} else {%> 
         <!-- Sidebar -->
         <div class="admin-sidebar">
             <!-- Logo -->
@@ -54,6 +54,22 @@
             </a>
             <h3 class="sidebar__heading">APPLICATION</h3>
             <ul class="sidebar__list">
+                <li class="sidebar__item">
+                    <a href="dashboard.jsp" class="sidebar__link">
+                        <svg
+                            fill="rgb(143, 159, 188)"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 448 512"
+                            >
+                        <path
+                            d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"
+                            />
+                        </svg>
+
+                        Dashboard</a
+                    >
+                </li>
                 <li class="sidebar__item sidebar__item--active">
                     <a href="admin.jsp" class="sidebar__link">
                         <svg
@@ -70,8 +86,8 @@
                         Customer</a
                     >
                 </li>
-                <li class="sidebar__item">
-                    <a href="admin.jsp" class="sidebar__link">
+                <li class="sidebar__item ">
+                    <a href="storage.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -83,11 +99,11 @@
                             />
                         </svg>
 
-                        Admin</a
+                        Storage</a
                     >
                 </li>
                 <li class="sidebar__item">
-                    <a href="admin-product.jsp" class="sidebar__link">
+                    <a href="product.jsp" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -127,15 +143,16 @@
             <ul class="admin-navbar__list">
                 <div class="top-act__user top-act__btn-wrap">
                     <%
-                                    String url;
-                                    String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                    + request.getContextPath();
-                                    String avatarURL= user.getAvatar();
+                        String url;
+                        String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                                + request.getContextPath();
+                        String avatarURL = user.getAvatar();
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        if (avatarURL != null) {
+                        if (avatarURL != null) {
 //                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                                        url = root + "/assets/img/avatar/" + avatarURL;
-                                    } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                            url = root + "/assets/img/avatar/" + avatarURL;
+                        } else
+                            url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                     %>
                     <img src="<%=url%>" alt="" class="top-act__avatar" />
                     <!-- Dropdown -->
@@ -174,7 +191,6 @@
                 </div>
             </ul>
         </nav>
-        <!-- Main -->
         <!-- Main -->
         <main class="auth main">
 
