@@ -15,9 +15,9 @@
     StorageDAO strDao = new StorageDAO();
     List<Storage> strList = strDao.selectAll();
     List<Product> productList = productDao.selectAll();
-    Storage sID = new Storage();
+//    Storage sID = new Storage();
     
-    String psId = sID.getsID();
+//    String psId = sID.getsID();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -342,7 +342,7 @@
                                             <%
                                                 for(Storage s : strList){
                                             %>
-                                            <option value="<%=s.getsID()%>" <%=!sID.equals(s.getsID()) ? "" : "selected"%>><%=s.getsName()%></option>
+                                            <option value="<%=s.getsID()%>"><%=s.getsName()%></option>
                                             <%
                                                 }
                                             %>
