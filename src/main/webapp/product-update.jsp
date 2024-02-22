@@ -12,6 +12,9 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
+    StorageDAO strDao = new StorageDAO();
+    List<Storage> strList = strDao.selectAll();
+    List<Storage> strList1 = strDao.selectAllActiveStorage();
     List<Product> productList = productDao.selectAll();
     Product tempProduct = new Product();
     Product currentProduct = new Product();
@@ -65,7 +68,9 @@
                String psId = currentProduct.getsId();
                
                String cId = String.valueOf(currentProduct.getpCateId());
+               
 		
+               
         %>
         <!-- Sidebar -->
         <div class="admin-sidebar">
@@ -361,9 +366,14 @@
                                             rules="required">
                                         <option value="" hidden="">Store</option>
                                         <optgroup label="Store">
-                                            <option value="STR_01" <%=!psId.equals("STR_01") ? "" : "selected"%>>Store 1</option>
-                                            <option value="STR_02"<%=!psId.equals("STR_02") ? "" : "selected"%>>Store 2</option>
-                                            <option value="STR_03" <%=!psId.equals("STR_03") ? "" : "selected"%>>Store 3</option>
+                                            
+                                            <%
+                                                for(Storage s : strList1){
+                                            %>
+                                            <option value="<%=s.getsID()%>" <%=!psId.equals(s.getsID()) ? "" : "selected"%>><%=s.getsName()%></option>
+                                            <%
+                                                }
+                                            %>
                                         </optgroup>
                                     </select>
                                 </div>
