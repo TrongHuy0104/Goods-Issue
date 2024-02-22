@@ -50,6 +50,36 @@ public class StorageDAO implements DAO<Storage> {
         return result;
     }
 
+    public ArrayList<Storage> selectAllActiveStorage() {
+        ArrayList<Storage> result = new ArrayList<>();
+
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+
+            String sql = "SELECT *\n"
+                    + "FROM storage\n"
+                    + "WHERE status <> 'closed' AND status <> 'full' ;";
+            ptmt = conn.prepareStatement(sql);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("s_id");
+                String name = rs.getString("s_name");
+                int size = rs.getInt("s_size");
+                String address = rs.getString("s_address");
+                String type = rs.getString("type");
+                String status = rs.getString("status");
+
+                result.add(new Storage(id, name, size, address, type, status));
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public Storage selectById(Storage t) {
         Storage storage = null;
@@ -145,8 +175,8 @@ public class StorageDAO implements DAO<Storage> {
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }}
-    
+        }
+    }
 
     public static void main(String[] args) {
         StorageDAO sdao = new StorageDAO();

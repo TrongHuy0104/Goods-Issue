@@ -14,6 +14,7 @@
     ProductDAO productDao = new ProductDAO();
     StorageDAO strDao = new StorageDAO();
     List<Storage> strList = strDao.selectAll();
+    List<Storage> strList1 = strDao.selectAllActiveStorage();
     List<Product> productList = productDao.selectAll();
 //    Storage sID = new Storage();
     
@@ -340,7 +341,7 @@
                                         <option value="" hidden="">Store</option>
                                         <optgroup label="Store">
                                             <%
-                                                for(Storage s : strList){
+                                                for(Storage s : strList1){
                                             %>
                                             <option value="<%=s.getsID()%>"><%=s.getsName()%></option>
                                             <%
