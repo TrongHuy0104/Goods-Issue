@@ -32,7 +32,7 @@
                 Dashboard</a
             >
         </li>
-        <li class="sidebar__item sidebar__item--active">
+        <li class="${page eq 'customer' ? 'sidebar__item sidebar__item--active' : 'sidebar__item'}">
             <a href="admin.jsp" class="sidebar__link">
                 <svg
                     fill="rgb(143, 159, 188)"
@@ -48,7 +48,7 @@
                 Customer</a
             >
         </li>
-        <li class="sidebar__item ">
+        <li class="${page eq 'storage' ? 'sidebar__item sidebar__item--active' : 'sidebar__item'}">
             <a href="storage.jsp" class="sidebar__link">
                 <svg
                     fill="rgb(143, 159, 188)"
@@ -64,8 +64,8 @@
                 Storage</a
             >
         </li>
-        <li class="sidebar__item">
-            <a href="product.jsp" class="sidebar__link">
+        <li class="${page eq 'product' ? 'sidebar__item sidebar__item--active' : 'sidebar__item'}">
+            <a href="paging-search-product" class="sidebar__link">
                 <svg
                     fill="rgb(143, 159, 188)"
                     xmlns="http://www.w3.org/2000/svg"
