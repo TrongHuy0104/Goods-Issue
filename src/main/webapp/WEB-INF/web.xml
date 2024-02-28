@@ -76,6 +76,10 @@
         <servlet-name>StorageUpdateControl</servlet-name>
         <servlet-class>goods_issue.controller.StorageUpdateControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PagingSearchProductControl</servlet-name>
+        <servlet-class>goods_issue.controller.PagingSearchProductControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>StorageUpdateControl</servlet-name>
         <url-pattern>/storage-update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingSearchProductControl</servlet-name>
+        <url-pattern>/paging-search-product</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

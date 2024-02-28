@@ -7,41 +7,54 @@
 <%@page import="java.util.*"%>
 <%@page import="goods_issue.model.*" %>
 <%@page import="goods_issue.dataAccess.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     User user = (User) request.getSession().getAttribute("admin");
-    UserDAO userDao = new UserDAO();
-    ProductDAO productDao = new ProductDAO();
-    String dataSearch = request.getParameter("data-search");
-    List<Product> productListSearch = productDao.searchAllByName(dataSearch);
-    
-    String indexPage = request.getParameter("index");
-    if (indexPage == null) {
-        indexPage = "1";
-    }
-    
-    int index = Integer.parseInt(indexPage);
-    int pageLimit = 10;
-    int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
-    
-    int endPage = pCount / pageLimit;
-    if (endPage == 0 || endPage % pageLimit != 0) {
-        endPage++;
-    }
-    
-    int itemStart = (index - 1) * pageLimit + 1;
-    int itemEnd;
-    if (index == endPage || !productListSearch.isEmpty()) {
-        itemEnd = pCount;
-    } else {
-        itemEnd = index * pageLimit;
-    }
-    List<Product> productList = new ArrayList<>();
-    if (dataSearch != null) {
-        productList = productListSearch;
-    } else {
-        productList = productDao.paging(index, pageLimit);
-    }
+     ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("productList");
+    int endPage = (int)request.getAttribute("endPage");
+    int itemStart = (int)request.getAttribute("itemStart");
+    int itemEnd = (int)request.getAttribute("itemEnd");
+    int index = (int)request.getAttribute("index");
+    int pCount = (int)request.getAttribute("pCount");
+//    ProductDAO productDao = new ProductDAO();
+//HttpSession session = request.getSession();
+//        String dataSearch = (String) request.getSession().getAttribute("dataSearch");
+    String dataSearch =(String) request.getAttribute("data-search");
+//    List<Product> productListSearch = productDao.searchAllByName(dataSearch);
+//   
+//    
+//    String indexPage = request.getParameter("index");
+//    if (indexPage == null) {
+//        indexPage = "1";
+//    }
+//    
+//    int index = Integer.parseInt(indexPage);
+//    int pageLimit = 10;
+//    int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
+//    
+//    int endPage = pCount / pageLimit;
+//    if (endPage == 0 || endPage % pageLimit != 0) {
+//        endPage++;
+//    }
+//    
+//    int itemStart = (index - 1) * pageLimit + 1;
+//    int itemEnd;
+//    if (index == endPage ) {
+//        itemEnd = pCount;
+//    } else {
+//        itemEnd = index * pageLimit;
+//    }
+//    List<Product> productList = new ArrayList<>();
+//    if (dataSearch != null) {
+//        productList = productDao.searchByName(dataSearch, index, pageLimit);
+//        
+//        request.setAttribute("data-search", dataSearch);
+//     System.out.println(dataSearch);
+////     System.out.println(productListSearch.size());
+//    } else {
+//        productList = productDao.paging(index, pageLimit);
+//    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +142,7 @@
                     >
                 </li>
                 <li class="sidebar__item sidebar__item--active">
-                    <a href="product.jsp" class="sidebar__link">
+                    <a href="paging-search-product" class="sidebar__link">
                         <svg
                             fill="rgb(143, 159, 188)"
                             xmlns="http://www.w3.org/2000/svg"
@@ -165,73 +178,23 @@
             </ul>
         </div>
         <!-- Navbar -->
-        <nav class="admin-navbar">
-            <ul class="admin-navbar__list">
-                <div class="top-act__user top-act__btn-wrap">
-                    <%
-                        String url;
-                        String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                                + request.getContextPath();
-                        String avatarURL = user.getAvatar();
-//                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                        if (avatarURL != null) {
-//                                        D:\Workspace\Java\Shopping\src\main\webapp\assets\img\avatar
-                            url = root + "/assets/img/avatar/" + avatarURL;
-                        } else
-                            url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
-                    %>
-                    <img src="<%=url%>" alt="" class="top-act__avatar" />
-                    <!-- Dropdown -->
-                    <div class="act-dropdown user__dropdown">
-                        <div class="act-dropdown__inner user__dropdown-inner">
-
-                            <img
-                                src="./assets/icons/arrow-up.png"
-                                alt=""
-                                class="act-dropdown__arrow user__dropdown-arrow"
-                                />
-                            <h3 class="user__dropdown-heading">Account</h3>
-                            <ul class="user__dropdown-list">
-                                <li class="user__dropdown-item">
-                                    <span class="user__dropdown-text-wrap">
-                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg>
-                                        <span class="user__dropdown-text">${user.fullName}</span>
-                                    </span>
-                                </li>
-                                <div class="act-dropdown__separate" style="margin: 0 auto; width: calc(100% - 48px);"></div>
-                                <li class="user__dropdown-item">
-                                    <a href="user?action=log-out" class="user__dropdown-link">
-                                        <img
-                                            class="icon"
-                                            alt=""
-                                            aria-hidden="true"
-                                            loading="lazy"
-                                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNiAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1Ljg0MzggNi42NTYyNUwxMS4zNDM4IDIuMTU2MjVDMTEuMTU2MiAxLjk2ODc1IDEwLjgxMjUgMS45Njg3NSAxMC42MjUgMi4xNTYyNUMxMC40Mzc1IDIuMzQzNzUgMTAuNDM3NSAyLjY4NzUgMTAuNjI1IDIuODc1TDE0LjI4MTIgNi41SDUuNUM1LjIxODc1IDYuNSA1IDYuNzUgNSA3QzUgNy4yODEyNSA1LjIxODc1IDcuNSA1LjUgNy41SDE0LjI4MTJMMTAuNjI1IDExLjE1NjJDMTAuNDM3NSAxMS4zNDM4IDEwLjQzNzUgMTEuNjg3NSAxMC42MjUgMTEuODc1QzEwLjgxMjUgMTIuMDYyNSAxMS4xNTYyIDEyLjA2MjUgMTEuMzQzOCAxMS44NzVMMTUuODQzOCA3LjM3NUMxNS45Mzc1IDcuMjgxMjUgMTYgNy4xNTYyNSAxNiA3QzE2IDYuODc1IDE1LjkzNzUgNi43NSAxNS44NDM4IDYuNjU2MjVaTTUuNSAxM0gyLjVDMS42NTYyNSAxMyAxIDEyLjM0MzggMSAxMS41VjIuNUMxIDEuNjg3NSAxLjY1NjI1IDEgMi41IDFINS41QzUuNzUgMSA2IDAuNzgxMjUgNiAwLjVDNiAwLjI1IDUuNzUgMCA1LjUgMEgyLjVDMS4wOTM3NSAwIDAgMS4xMjUgMCAyLjVWMTEuNUMwIDEyLjkwNjIgMS4wOTM3NSAxNCAyLjUgMTRINS41QzUuNzUgMTQgNiAxMy43ODEyIDYgMTMuNUM2IDEzLjI1IDUuNzUgMTMgNS41IDEzWiIgZmlsbD0iIzgwOEI5QSIvPgo8L3N2Zz4K"
-                                            />
-                                        Log out</a
-                                    >
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
-        </nav>
+        <jsp:include page="assets/templates/header.jsp" /> 
         <!-- Main -->
         <main class="main">
             <div class="admin-top">
                 <h1 class="admin__heading">Product</h1>
-                <form action="product.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <form action="paging-search-product" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data-search"
+                        name="dataSearch"
                         id=""
-                        value=""
-                        <%--<%if(dataSearch == null) {
+
+                        <%if(dataSearch == null) {
                             dataSearch = "";
                         } else {
                             dataSearch = dataSearch;
-}%><%=dataSearch%>--%>
+                        }%>
+                        value="<%=dataSearch%>"
                         placeholder="Search for item"
                         class="search-bar__input"
                         />
@@ -273,9 +236,12 @@
                         <td>
                             <div class="table__user">
                                 <%
-                                     avatarURL= p.getpThumb();
-                                        if (avatarURL != null) {
-                                        url = root + "/assets/img/product/" + avatarURL;
+                                    String url;
+                                    String root = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                                + request.getContextPath();
+                                    String URL= p.getpThumb();
+                                        if (URL != null) {
+                                        url = root + "/assets/img/product/" + URL;
                                     } else url = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                                 %>
                                 <img
@@ -354,17 +320,17 @@
                 </div>
                 <ul class="paging__list">
                     <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="product.jsp?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                        <a class="paging__link" href="paging-search-product?index=1&data-search=<%=dataSearch%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
                     </li>
                     <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="product.jsp?index=<%=index - 1%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
+                        <a class="paging__link" href="paging-search-product?index=<%=index - 1%>&data-search=<%=dataSearch%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
                     </li>
                     <li class="paging__item  paging__item--active"><a class="paging__link"><%=index%></a></li>
                     <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="product.jsp?index=<%=index + 1%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
+                        <a class="paging__link" href="paging-search-product?index=<%=index + 1%>&data-search=<%=dataSearch%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
                     </li>
                     <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="product.jsp?index=<%=endPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
+                        <a class="paging__link" href="paging-search-product?index=<%=endPage%>&data-search=<%=dataSearch%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
                     </li>
                 </ul>
             </div>

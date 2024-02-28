@@ -89,6 +89,46 @@ public class ProductDAO implements DAO<Product> {
         }
         return list;
     }
+    
+    public List<Product> searchByName(String data, int index, int limit) {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,\n"
+                + "pd.number_of_product, pd.number_left, pd.status,p.s_id\n"
+                + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name LIKE ? \n"
+                + "ORDER BY `p`.`p_id` LIMIT ? OFFSET ?";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ptmt.setInt(2, limit);
+            ptmt.setInt(3, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("p_id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                String category = rs.getString("name_category");
+                int status = rs.getInt("status");
+                String store = rs.getString("s_id");
+                list.add(new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, category, status, store));
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public int countTotalByName(String data) {
         try {

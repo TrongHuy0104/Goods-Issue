@@ -110,10 +110,6 @@
                             <button class="btn btn--primary auth__btn form__submit-btn">Login</button>
                         </div>
                     </form>
-<!--                    <p class="auth__text">
-                        You have an account yet?
-                        <a href="./sign-up.jsp" class="auth__link auth__text-link">Sign Up</a>
-                    </p>-->
                 </div>
             </div>
         </main>
