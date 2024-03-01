@@ -11,50 +11,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     User user = (User) request.getSession().getAttribute("admin");
-     ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("productList");
+    ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("productList");
     int endPage = (int)request.getAttribute("endPage");
     int itemStart = (int)request.getAttribute("itemStart");
     int itemEnd = (int)request.getAttribute("itemEnd");
     int index = (int)request.getAttribute("index");
     int pCount = (int)request.getAttribute("pCount");
-//    ProductDAO productDao = new ProductDAO();
-//HttpSession session = request.getSession();
-//        String dataSearch = (String) request.getSession().getAttribute("dataSearch");
     String dataSearch =(String) request.getAttribute("data-search");
-//    List<Product> productListSearch = productDao.searchAllByName(dataSearch);
-//   
-//    
-//    String indexPage = request.getParameter("index");
-//    if (indexPage == null) {
-//        indexPage = "1";
-//    }
-//    
-//    int index = Integer.parseInt(indexPage);
-//    int pageLimit = 10;
-//    int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
-//    
-//    int endPage = pCount / pageLimit;
-//    if (endPage == 0 || endPage % pageLimit != 0) {
-//        endPage++;
-//    }
-//    
-//    int itemStart = (index - 1) * pageLimit + 1;
-//    int itemEnd;
-//    if (index == endPage ) {
-//        itemEnd = pCount;
-//    } else {
-//        itemEnd = index * pageLimit;
-//    }
-//    List<Product> productList = new ArrayList<>();
-//    if (dataSearch != null) {
-//        productList = productDao.searchByName(dataSearch, index, pageLimit);
-//        
-//        request.setAttribute("data-search", dataSearch);
-//     System.out.println(dataSearch);
-////     System.out.println(productListSearch.size());
-//    } else {
-//        productList = productDao.paging(index, pageLimit);
-//    }
 %>
 <!DOCTYPE html>
 <html lang="en">

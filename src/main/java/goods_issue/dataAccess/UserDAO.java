@@ -381,7 +381,7 @@ public class UserDAO implements DAO<User> {
             e.printStackTrace();
         }
     }
-    
+
     public void updateUserInfoNonImg(User t
     ) {
         try {
@@ -494,10 +494,50 @@ public class UserDAO implements DAO<User> {
         return list;
     }
 
+    public List<User> searchByName(String data, int index, int limit) {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role = 0 AND full_name LIKE ?\n"
+                + "ORDER BY u_id\n"
+                + "LIMIT ?\n"
+                + "OFFSET ?;";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ptmt.setInt(2, limit);
+            ptmt.setInt(3, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+
+                list.add(user);
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         User us = new User();
         us.setId("1");
         UserDAO u = new UserDAO();
-        System.out.println(u.paging(3, 10));
+        List<User> newList = new ArrayList<>();
+        newList = u.searchByName("a",3, 10);
+        for (User user : newList) {
+            System.out.println(user.toString());
+        }
     }
 }
