@@ -47,6 +47,10 @@ public class Product {
         this.pStatus = pStatus;
         this.sId = sId;
     }
+
+    public Product(String pId) {
+        this.pId = pId;
+    }
     
     
 

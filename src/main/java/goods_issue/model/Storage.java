@@ -21,6 +21,10 @@ public class Storage {
     public Storage() {
     }
 
+    public Storage(String sID) {
+        this.sID = sID;
+    }
+
     public Storage(String sID, String sName, int sSize, String sAddress, String sType, String status) {
         this.sID = sID;
         this.sName = sName;
@@ -29,7 +33,7 @@ public class Storage {
         this.sType = sType;
         this.status = status;
     }
-    
+
     public Storage(String sID, String sName, int sSize, String sAddress, String sType) {
         this.sID = sID;
         this.sName = sName;

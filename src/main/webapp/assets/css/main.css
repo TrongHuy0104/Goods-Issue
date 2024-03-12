@@ -2943,12 +2943,38 @@ html.dark {
     align-items: center;
     padding: 0 12px;
     border-radius: 10px;
+    margin-top: 10px;
     border: 1.5px solid #d2d1d6;
+    position: relative;
 }
 @media (max-width: 767.98px) {
     .form__text-input {
         height: 48px;
     }
+}
+
+.form__text-input ul {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    z-index: 1;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.form__text-input li {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 400;
+    transition: .2s;
+}
+
+.form__text-input li:hover {
+    background-color: #ddd;
+    cursor: pointer;
 }
 
 .form__text-area {
@@ -2966,6 +2992,12 @@ html.dark {
     font-weight: 500;
     line-height: 144.444%;
     background-color: var(--form-input-bg);
+}
+
+.form__input.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 @media (max-width: 767.98px) {

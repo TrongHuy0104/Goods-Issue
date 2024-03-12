@@ -146,7 +146,6 @@ and open the template in the editor.
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
-    margin-left: 10px;
 }
 
 .table {
@@ -207,7 +206,6 @@ td {
 .table__act-btn {
     padding: 10px;
     font-size: 2rem;
-    display: inline-block;
 }
 
 .table__act-btn-remove {
@@ -235,6 +233,13 @@ td {
 .form__group--inline {
     flex-direction: column;
     align-items: unset;
+}
+
+.form__group label {
+    font-size: 20px;
+    font-weight: 500;
+    padding-left: 12px;
+    display: inline-block;
 }
 
 .form__title {
@@ -277,6 +282,10 @@ td {
     margin-left: 15px;
 }
 
+.form__submit-btn {
+    margin-top: 10px;
+}
+
 .btn--primary {
     color: #fff;
     background-color: #0c2556;
@@ -307,4 +316,28 @@ td {
 
 .avatar-preview {
     border-radius: 50%;
+}
+
+.order-left__item-text {
+    line-height: 1.5;
+}
+
+.order-left__item-text:last-child {
+    margin-right: 15px;
+}
+
+.button-wrap {
+    padding: 20px 0;
+    border-top: 1px solid rgba(0,0,0,.125);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.issues__list {
+    padding: 15px;
+    margin-left: 0;
+    background-color: #fff;
+    margin-top: 15px;
+    border-radius: 10px;
 }

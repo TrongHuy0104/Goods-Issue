@@ -89,7 +89,7 @@ public class ProductDAO implements DAO<Product> {
         }
         return list;
     }
-    
+
     public List<Product> searchByName(String data, int index, int limit) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
@@ -613,9 +613,94 @@ public class ProductDAO implements DAO<Product> {
         }
     }
 
+    public Product selectByName(String data) {
+        Product p = new Product();
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,p.s_id, \n"
+                + "pd.number_of_product, pd.number_left, pd.status\n"
+                + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name LIKE ? \n";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("p_id");
+                String name = rs.getString("name");
+                double rating = rs.getInt("rating");
+                String thumb = rs.getString("thumb");
+                double price = rs.getDouble("price");
+                String desc = rs.getString("description");
+                int numberLeft = rs.getInt("number_left");
+                int totalNumber = rs.getInt("number_of_product");
+                String origin = rs.getString("place_product");
+                String category = rs.getString("name_category");
+                int status = rs.getInt("status");
+                String store = rs.getString("s_id");
+                p = new Product(id, name, rating, thumb, price, desc, numberLeft, totalNumber, category, status, store);
+
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
+    public boolean checkProductExistByName(String data) {
+        boolean result = false;
+        String sql = "SELECT p.p_id, p.name, p.rating, p.thumb, c.name_category, \n"
+                + "pd.p_id, pd.price, pd.description, pd.place_product,p.s_id, \n"
+                + "pd.number_of_product, pd.number_left, pd.status\n"
+                + "FROM  products p, product_detail pd, product_category pc, categories c \n"
+                + "WHERE p.p_id = pd.p_id AND pc.p_id = p.p_id AND c.c_id = pc.c_id AND p.name = ? \n";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "" + data);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                result = true;
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void updateNumberLeft(int qty, String id
+    ) {
+        try {
+
+            String sql = "UPDATE product_detail SET number_left = number_left - ?" + " WHERE p_id = ?";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, qty);
+            ptmt.setString(2, id);
+
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    UPDATE product
+//SET remaining_quantity = initial_quantity - sold_quantity
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        System.out.println(dao.countTotal());
+        System.out.println(dao.checkProductExistByName("Iphone 10 Pro"));
 
     }
 
