@@ -12,13 +12,56 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
+    IssuesDAO issuesDao = new IssuesDAO();
+        
     String dataSearch = request.getParameter("data-search");
     List<Product> productListSearch = productDao.searchAllByName(dataSearch);
     List<User> userListSearch = userDao.searchByName(dataSearch);
-
+    List<Issues> issuesList = issuesDao.selectAllIssues();
+    List<Model> modelList= issuesDao.countExportedByMonth();
+    int jan=0,feb=0,mar=0,apr=0, may=0, jun=0,jul=0, aug=0, sep=0, oct=0, nov=0, dec=0;  
+  
+    for(Model m: modelList){
+    if(m.getMonth().equals("1")){
+        jan = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("2")){
+        feb = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("3")){
+        mar = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("4")){
+        apr = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("5")){
+        may = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("6")){
+        jun = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("7")){
+        jul= Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("8")){
+        aug = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("9")){
+        sep = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("10")){
+        oct = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("11")){
+        nov = Integer.parseInt(m.getTotal_products());
+    }
+     if(m.getMonth().equals("12")){
+        dec = Integer.parseInt(m.getTotal_products());
+    }
+    }
     int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
     int cCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
-    int eCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
+    int eCount = !issuesList.isEmpty() ? issuesList.size() : issuesDao.selectAllIssues().size();
     
 %>
 <!DOCTYPE html>
@@ -129,7 +172,7 @@
 
                                     <!--Code dashboard table in here-->
                                     <div class="tab-content">
-                                    <div class='dashboard-chart' id="dashboard-days" role='tabpanel' aria-labelledby="dashboard-days">
+<!--                                    <div class='dashboard-chart' id="dashboard-days" role='tabpanel' aria-labelledby="dashboard-days">
                                         <canvas id="myChartByDays" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
                                     </div>
                                     <script>
@@ -154,14 +197,14 @@
                                                 }
                                             }
                                         });
-                                    </script>
+                                    </script>-->
                                     
                                     <div class='dashboard-chart' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
                                         <canvas id="myChartByMonth" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
                                     </div>
                                     <script>
                                         const xChartValues = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                                        const yChartValues = [55, 49, 44, 24, 22, 40, 21, 30, 35, 29, 9, 40];
+                                        const yChartValues = [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>];
                                         const barChartColors = ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"];
 
                                         new Chart("myChartByMonth", {
@@ -177,7 +220,7 @@
                                                 legend: {display: false},
                                                 title: {
                                                     display: true,
-                                                    text: "Chart of Exported in 2023"
+                                                    text: "Chart of Exported in 2024"
                                                 }
                                             }
                                         });

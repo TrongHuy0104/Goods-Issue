@@ -73,7 +73,7 @@
                         <th class="table__heading">ID</th>
                         <th class="table__heading">Name</th>
                         <th class="table__heading">Size(m2)</th>
-                        <th class="table__heading">Address</th>
+                        <th class="table__heading">Area</th>
                         <!--<th class="table__heading">Inventory</th>-->
                         <th class="table__heading">Type</th>
                         <th class="table__heading">Status</th>
