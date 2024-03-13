@@ -285,6 +285,160 @@ public class IssuesDAO {
             System.out.print(e.getMessage());
         }
     }
+     
+//     Dashboard
+     public int countExportedByMonth(String month){
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlMonth = "";
+            if (month.equals("january")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, product_date) = 1;";
+            }
+            if (month.equals("february")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 2;";
+            }
+            if (month.equals("march")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 3;";
+            }
+            if (month.equals("april")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 4;";
+            }
+            if (month.equals("may")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 5;";
+            }
+            if (month.equals("june")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 6;";
+            }
+            if (month.equals("july")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 7;";
+            }
+            if (month.equals("august")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 8;";
+            }
+            if (month.equals("september")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 9;";
+            }
+            if (month.equals("october")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 10;";
+            }
+            if (month.equals("november")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 11;";
+            }
+            if (month.equals("december")) {
+
+                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 12;";
+            }
+            ptmt = conn.prepareStatement(sqlMonth);
+            ResultSet rs = ptmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public int countExportedByDays(String days){
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlDays = "";
+            if (days.equals("monday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 2;";
+            }
+            if (days.equals("tuesday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 3;";
+            }
+            if (days.equals("wednesday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 4;";
+            }
+            if (days.equals("thursday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 5;";
+            }
+            if (days.equals("friday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 6;";
+            }
+            if (days.equals("saturday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 7;";
+            }
+            if (days.equals("sunday")) {
+
+                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 1;";
+            }
+            ptmt = conn.prepareStatement(sqlDays);
+            ResultSet rs = ptmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public int countExportedByYear(String year){
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlYear = "";
+            if (year.equals("year2020")) {
+
+                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
+            }
+            if (year.equals("year2021")) {
+
+                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
+            }
+            if (year.equals("year2022")) {
+
+                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
+            }
+            if (year.equals("year2023")) {
+
+                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
+            }
+            if (year.equals("year2024")) {
+
+                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
+            }
+            ptmt = conn.prepareStatement(sqlYear);
+            ResultSet rs = ptmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static void main(String[] args) {
         IssuesDAO dao = new IssuesDAO();
