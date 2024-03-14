@@ -341,3 +341,11 @@ td {
     margin-top: 15px;
     border-radius: 10px;
 }
+
+.sidebar__list {
+    padding-left: 0;
+}
+
+.sidebar__link {
+    line-height: 1.6;
+}

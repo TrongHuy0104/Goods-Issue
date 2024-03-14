@@ -79,11 +79,11 @@
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <!-- Fonts -->
-        <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
         <!-- Stylesheets -->
-        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./assets/css/main.css" />
         <link rel="stylesheet" href="./assets/css/admin.css" />
+        <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
 
         <!-- Scripts -->
         <script src="./assets/js/scripts.js"></script>
@@ -156,16 +156,16 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body" style="position: relative;">
+                                <div class="card-body js-tabs" style="position: relative;">
                                     <div class="dashboard__heading">
                                         <h4 class="card-body-h4">Total Exported</h4>
                                         <div class="dashboard-chart-heading">
                                             
                                             <!-- Tab List -->
                                             <div class="dashboard-chart-options" id="list-tab" role="tablist">
-                                                <a class="list-group-item" data-bs-toggle="list" href="#dashboard-days" role="tab" aria-selected="false">7 Days</a>
-                                                <a class="list-group-item active" data-bs-toggle="list" href="#dashboard-month" role="tab" aria-selected="true">Monthly</a>
-                                                <a class="list-group-item" data-bs-toggle="list" href="#dashboard-year" role="tab" aria-selected="false">Yearly</a>
+                                                <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-days" role="tab" aria-selected="false">7 Days</button>
+                                                <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-month" role="tab" aria-selected="true">Monthly</button>
+                                                <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-year" role="tab" aria-selected="false">Yearly</button>
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +199,7 @@
                                         });
                                     </script>-->
                                     
-                                    <div class='dashboard-chart' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
+                                    <div class='dashboard-chart product-tab__content' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
                                         <canvas id="myChartByMonth" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
                                     </div>
                                     <script>
@@ -226,7 +226,7 @@
                                         });
                                     </script>
                                     
-                                    <div class='dashboard-chart' id='dashboard-year' role='tabpanel' aria-labelledby='dashboard-year'>
+                                    <div class='dashboard-chart product-tab__content' id='dashboard-year' role='tabpanel' aria-labelledby='dashboard-year'>
                                         <canvas id="myChartByYear" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
                                     </div>
                                     <script>
@@ -320,6 +320,6 @@
         <%}%>
     </body>
     <script>window.dispatchEvent(new Event("template-loaded"));</script>
-    <script src='assets/js/chart.js'></script>
+    <!--<script src='assets/js/chart.js'></script>-->
 </html>
 
