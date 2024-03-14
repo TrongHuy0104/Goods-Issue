@@ -695,6 +695,40 @@ public class ProductDAO implements DAO<Product> {
             e.printStackTrace();
         }
     }
+    
+    //Dashboard
+    
+    public int countTotalCate(String category) {
+
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlProduct = "";
+            if (category.equals("mobile")) {
+
+                sqlProduct = "SELECT COUNT(*) FROM db.product_category WHERE c_id IN ( 4,5,6,7,8,9,10,11 )";
+            }
+            if (category.equals("tablet")) {
+
+                sqlProduct = "SELECT COUNT(*) FROM db.product_category WHERE c_id IN ( 12,13,14,15,16,17,18,19 )";
+            }
+            if (category.equals("laptop")) {
+
+                sqlProduct = "SELECT COUNT(*) FROM db.product_category WHERE c_id IN ( 20,21,22,23,24,25,26 )";
+            }
+            ptmt = conn.prepareStatement(sqlProduct);
+            ResultSet rs = ptmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 //    UPDATE product
 //SET remaining_quantity = initial_quantity - sold_quantity
