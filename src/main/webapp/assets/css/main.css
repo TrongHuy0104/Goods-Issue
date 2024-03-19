@@ -4914,7 +4914,7 @@ btn-wrap
     border-radius: 0.25rem;
 }
 
-.dashboard-chart-options a {
+.dashboard-chart-options button {
     border: none;
     background: #F3F4F7;
     font-size: 14px;
@@ -4924,7 +4924,7 @@ btn-wrap
     color: #5A5A5A;
 }
 
-.dashboard-chart-options a.active, .dashboard-chart-options a:hover {
+.dashboard-chart-options button.active, .dashboard-chart-options button:hover {
     background: #F9C200 !important;
     color: #1A1A1A;
 }
