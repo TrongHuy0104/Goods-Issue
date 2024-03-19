@@ -294,60 +294,11 @@ public class IssuesDAO {
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             String sqlMonth = "";
-            Model totalMonth = new Model();
             sqlMonth = "SELECT YEAR(i.i_date) AS year, MONTH(i.i_date) AS month, SUM(id.quantity) AS total_products\n"
                     + "FROM db.`issue-detail` id\n"
                     + "JOIN issues i ON id.i_id = i.i_id\n"
                     + "GROUP BY YEAR(i.i_date), MONTH(i.i_date)\n"
                     + "ORDER BY year, month;";
-//            if (month.equals("january")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db.issues WHERE DATEPART(month, i_date) = 1;";
-//            }
-//            if (month.equals("february")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 2;";
-//            }
-//            if (month.equals("march")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 3;";
-//            }
-//            if (month.equals("april")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 4;";
-//            }
-//            if (month.equals("may")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 5;";
-//            }
-//            if (month.equals("june")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 6;";
-//            }
-//            if (month.equals("july")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 7;";
-//            }
-//            if (month.equals("august")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 8;";
-//            }
-//            if (month.equals("september")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 9;";
-//            }
-//            if (month.equals("october")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 10;";
-//            }
-//            if (month.equals("november")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 11;";
-//            }
-//            if (month.equals("december")) {
-//
-//                sqlMonth = "SELECT COUNT(*) FROM db WHERE DATEPART(month, ) = 12;";
-//            }
             ptmt = conn.prepareStatement(sqlMonth);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
@@ -367,43 +318,25 @@ public class IssuesDAO {
         return result;
     }
 
-    public int countExportedByDays(String days) {
+    public ArrayList<Model> countExportedByDays() {
+        ArrayList<Model> result = new ArrayList<>();
         try {
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             String sqlDays = "";
-            if (days.equals("monday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 2;";
-            }
-            if (days.equals("tuesday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 3;";
-            }
-            if (days.equals("wednesday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 4;";
-            }
-            if (days.equals("thursday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 5;";
-            }
-            if (days.equals("friday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 6;";
-            }
-            if (days.equals("saturday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 7;";
-            }
-            if (days.equals("sunday")) {
-
-                sqlDays = "SELECT COUNT(*) FROM db WHERE DAYOFWEEK(product_date) = 1;";
-            }
+            sqlDays = "SELECT DAYOFWEEK(DATE(i.i_date)) AS day_of_week, SUM(id.quantity) AS total_products\n"
+                    + "FROM `db`.`issue-detail` id\n"
+                    + "JOIN `db`.`issues` i ON id.i_id = i.i_id\n"
+                    + "WHERE DATE(i.i_date) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)\n"
+                    + "GROUP BY DAYOFWEEK(DATE(i.i_date))\n"
+                    + "ORDER BY DAYOFWEEK(DATE(i.i_date));";
             ptmt = conn.prepareStatement(sqlDays);
             ResultSet rs = ptmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
+            while (rs.next()) {
+                String dayOfWeek = rs.getString("day_of_week");
+                String total_product = rs.getString("total_products");
+
+                result.add(new Model(dayOfWeek, total_product));
             }
             rs.close();
             ptmt.close();
@@ -411,63 +344,28 @@ public class IssuesDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
-    }
-
-    public int countExportedByYear(String year) {
-        try {
-            Connection conn = CreateConnection();
-            PreparedStatement ptmt = null;
-            String sqlYear = "";
-            if (year.equals("year2020")) {
-
-                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
-            }
-            if (year.equals("year2021")) {
-
-                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
-            }
-            if (year.equals("year2022")) {
-
-                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
-            }
-            if (year.equals("year2023")) {
-
-                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
-            }
-            if (year.equals("year2024")) {
-
-                sqlYear = "SELECT COUNT(*) FROM db WHERE YEAR(product_date) = 2023;";
-            }
-            ptmt = conn.prepareStatement(sqlYear);
-            ResultSet rs = ptmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-            rs.close();
-            ptmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return result;
     }
 
     public static void main(String[] args) {
         IssuesDAO dao = new IssuesDAO();
         System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
 
-        ArrayList<Model> modelList = dao.countExportedByMonth();
+        ArrayList<Model> modelList = dao.countExportedByDays();
         for (Model m : modelList) {
             System.out.println(m.toString());
         }
+        int mon = 0;
         int jan = 0;
         for (Model m : modelList) {
-            if (m.getMonth().equals("1")) {
-                jan = Integer.parseInt(m.getTotal_products());
-                
+//            if (m.getMonth().equals("1")) {
+//                jan = Integer.parseInt(m.getTotal_products());
+//
+//            }
+            if(m.getDayOfWeek().equals("1")){
+                mon = Integer.parseInt(m.getTotal_products());
             }
         }
-        System.out.println(jan);
+        System.out.println(mon);
     }
 }

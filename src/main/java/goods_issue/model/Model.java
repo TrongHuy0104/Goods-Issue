@@ -12,6 +12,7 @@ package goods_issue.model;
 public class Model {
     private String year;
     private String month;
+    private String day_of_week;
     private String total_products;
 
     public Model(String year, String month, String total_products) {
@@ -19,12 +20,17 @@ public class Model {
         this.month = month;
         this.total_products = total_products;
     }
+    
+    public Model(String day_of_week, String total_products) {
+        this.day_of_week = day_of_week;
+        this.total_products = total_products;
+    }
     public Model() {
+        this.day_of_week = null;
         this.year = null;
         this.month = null;
         this.total_products = null;
     }
-    
     
     public String getYear() {
         return year;
@@ -41,6 +47,16 @@ public class Model {
     public void setMonth(String month) {
         this.month = month;
     }
+
+    public String getDayOfWeek() {
+        return day_of_week;
+    }
+
+    public void setDayOfWeek(String day_of_week) {
+        this.day_of_week = day_of_week;
+    }
+    
+    
 
     public String getTotal_products() {
         return total_products;

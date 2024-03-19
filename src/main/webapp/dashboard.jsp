@@ -13,56 +13,102 @@
     UserDAO userDao = new UserDAO();
     ProductDAO productDao = new ProductDAO();
     IssuesDAO issuesDao = new IssuesDAO();
-        
+
     String dataSearch = request.getParameter("data-search");
     List<Product> productListSearch = productDao.searchAllByName(dataSearch);
     List<User> userListSearch = userDao.searchByName(dataSearch);
     List<Issues> issuesList = issuesDao.selectAllIssues();
-    List<Model> modelList= issuesDao.countExportedByMonth();
-    int jan=0,feb=0,mar=0,apr=0, may=0, jun=0,jul=0, aug=0, sep=0, oct=0, nov=0, dec=0;  
-  
-    for(Model m: modelList){
-    if(m.getMonth().equals("1")){
-        jan = Integer.parseInt(m.getTotal_products());
+    List<Model> modelListMonth = issuesDao.countExportedByMonth();
+    List<Model> modelListDays = issuesDao.countExportedByDays();
+    
+    int jan = 0, feb = 0, mar = 0, apr = 0, may = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, nov = 0, dec = 0;
+    for (Model m : modelListMonth) {
+        if (m.getMonth().equals("1")) {
+            jan = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("2")) {
+            feb = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("3")) {
+            mar = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("4")) {
+            apr = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("5")) {
+            may = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("6")) {
+            jun = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("7")) {
+            jul = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("8")) {
+            aug = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("9")) {
+            sep = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("10")) {
+            oct = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("11")) {
+            nov = Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getMonth().equals("12")) {
+            dec = Integer.parseInt(m.getTotal_products());
+        }
     }
-     if(m.getMonth().equals("2")){
-        feb = Integer.parseInt(m.getTotal_products());
+    
+        int year2020 = 0, year2021 = 0, year2022 = 0, year2023 = 0, year2024 = 0;
+        for (Model m : modelListMonth) {
+        if (m.getYear().equals("2020")) {
+            year2020 += Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getYear().equals("2021")) {
+            year2021 += Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getYear().equals("2022")) {
+            year2022 += Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getYear().equals("2023")) {
+            year2023 += Integer.parseInt(m.getTotal_products());
+        }
+        if (m.getYear().equals("2024")) {
+            year2024 += Integer.parseInt(m.getTotal_products());
+        }
     }
-     if(m.getMonth().equals("3")){
-        mar = Integer.parseInt(m.getTotal_products());
+        
+        int mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0, sun = 0;
+        for (Model d : modelListDays) {
+        if (d.getDayOfWeek().equals("1")) {
+            mon = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("2")) {
+            tue = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("3")) {
+            wed = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("4")) {
+            thu = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("5")) {
+            fri = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("6")) {
+            sat = Integer.parseInt(d.getTotal_products());
+        }
+        if (d.getDayOfWeek().equals("7")) {
+            sun = Integer.parseInt(d.getTotal_products());
+        }
     }
-     if(m.getMonth().equals("4")){
-        apr = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("5")){
-        may = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("6")){
-        jun = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("7")){
-        jul= Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("8")){
-        aug = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("9")){
-        sep = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("10")){
-        oct = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("11")){
-        nov = Integer.parseInt(m.getTotal_products());
-    }
-     if(m.getMonth().equals("12")){
-        dec = Integer.parseInt(m.getTotal_products());
-    }
-    }
+    
     int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
     int cCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
     int eCount = !issuesList.isEmpty() ? issuesList.size() : issuesDao.selectAllIssues().size();
-    
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +125,7 @@
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <!-- Fonts -->
-        <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
+        <!--<link rel="stylesheet" href="./assets/fonts/stylesheet.css" />-->
         <!-- Stylesheets -->
         <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./assets/css/main.css" />
@@ -90,8 +136,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     </head>
     <body>
-        <%
-            if (user == null) {
+        <%            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
@@ -158,106 +203,76 @@
                             <div class="card">
                                 <div class="card-body" style="position: relative;">
                                     <div class="dashboard__heading">
-                                        <h4 class="card-body-h4">Total Exported</h4>
+                                        <h4 class="card-body-h4">Total Products Exported</h4>
                                         <div class="dashboard-chart-heading">
-                                            
+
                                             <!-- Tab List -->
                                             <div class="dashboard-chart-options" id="list-tab" role="tablist">
-                                                <a class="list-group-item" data-bs-toggle="list" href="#dashboard-days" role="tab" aria-selected="false">7 Days</a>
-                                                <a class="list-group-item active" data-bs-toggle="list" href="#dashboard-month" role="tab" aria-selected="true">Monthly</a>
-                                                <a class="list-group-item" data-bs-toggle="list" href="#dashboard-year" role="tab" aria-selected="false">Yearly</a>
+                                                <button class="list-group-item" id="btn7Days">7 Days</button>
+                                                <button class="list-group-item" id="btnMonthly">Monthly</button>
+                                                <button class="list-group-item" id="btnYearly">Yearly</button>
                                             </div>
-                                        </div>
+                                            </div>
                                     </div>
+                                            <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
+                                            <script>
+                                                // Define the chart data for the 7 Days, Monthly, and Yearly charts
+                                                const chartData = {
+                                                    '7Days': {
+                                                        xValues: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                                                        yValues: [<%=mon%>, <%=tue%>, <%=wed%>, <%=thu%>, <%=fri%>, <%=sat%>, <%=sun%>],
+                                                        barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                                    },
+                                                    'Monthly': {
+                                                        xValues: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                                        yValues: [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>],
+                                                        barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                                    },
+                                                    'Yearly': {
+                                                        xValues: ["2020", "2021", "2022", "2023", "2024"],
+                                                        yValues: [<%=year2020%>, <%=year2021%>, <%=year2022%>, <%=year2023%>,<%=year2024%>],
+                                                        barColors: ["orange", "orange", "orange", "orange", "orange"]
+                                                    }
+                                                };
 
-                                    <!--Code dashboard table in here-->
-                                    <div class="tab-content">
-<!--                                    <div class='dashboard-chart' id="dashboard-days" role='tabpanel' aria-labelledby="dashboard-days">
-                                        <canvas id="myChartByDays" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
-                                    </div>
-                                    <script>
-                                        const xChartValues = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-                                        const yChartValues = [55, 100, 44, 24, 22, 40, 2];
-                                        const barChartColors = ["orange", "orange", "orange", "orange", "orange", "orange", "orange"];
+                                                // Initialize the chart
+                                                let myChart = null;
 
-                                        new Chart("myChartByDays", {
-                                            type: "bar",
-                                            data: {
-                                                labels: xChartValues,
-                                                datasets: [{
-                                                        backgroundColor: barChartColors,
-                                                        data: yChartValues
-                                                    }]
-                                            },
-                                            options: {
-                                                legend: {display: false},
-                                                title: {
-                                                    display: true,
-                                                    text: "Chart of Exported in this weekend"
+                                                // Function to create a chart
+                                                function createChart(type) {
+                                                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                                                    // If a chart already exists, destroy it to make way for the new one
+                                                    if (myChart) {
+                                                        myChart.destroy();
+                                                    }
+
+                                                    const data = chartData[type];
+
+                                                    myChart = new Chart(ctx, {
+                                                        type: 'bar',
+                                                        data: {
+                                                            labels: data.xValues,
+                                                            datasets: [{
+                                                                    backgroundColor: data.barColors,
+                                                                    data: data.yValues
+                                                                }]
+                                                        },
+                                                        options: {
+                                                            // Add your options here
+                                                        }
+                                                    });
                                                 }
-                                            }
-                                        });
-                                    </script>-->
-                                    
-                                    <div class='dashboard-chart' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
-                                        <canvas id="myChartByMonth" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
-                                    </div>
-                                    <script>
-                                        const xChartValues = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                                        const yChartValues = [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>];
-                                        const barChartColors = ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"];
 
-                                        new Chart("myChartByMonth", {
-                                            type: "bar",
-                                            data: {
-                                                labels: xChartValues,
-                                                datasets: [{
-                                                        backgroundColor: barChartColors,
-                                                        data: yChartValues
-                                                    }]
-                                            },
-                                            options: {
-                                                legend: {display: false},
-                                                title: {
-                                                    display: true,
-                                                    text: "Chart of Exported in 2024"
-                                                }
-                                            }
-                                        });
-                                    </script>
-                                    
-                                    <div class='dashboard-chart' id='dashboard-year' role='tabpanel' aria-labelledby='dashboard-year'>
-                                        <canvas id="myChartByYear" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
-                                    </div>
-                                    <script>
-                                        const xChartValues = ["2020", "2021", "2022", "2023", "2024"];
-                                        const yChartValues = [55, 49, 44, 24, 22];
-                                        const barChartColors = ["orange", "orange", "orange", "orange", "orange"];
+                                                // Event listeners for the buttons
+                                                document.getElementById('btn7Days').addEventListener('click', () => createChart('7Days'));
+                                                document.getElementById('btnMonthly').addEventListener('click', () => createChart('Monthly'));
+                                                document.getElementById('btnYearly').addEventListener('click', () => createChart('Yearly'));
 
-                                        new Chart("myChartByYear", {
-                                            type: "bar",
-                                            data: {
-                                                labels: xChartValues,
-                                                datasets: [{
-                                                        backgroundColor: barChartColors,
-                                                        data: yChartValues
-                                                    }]
-                                            },
-                                            options: {
-                                                legend: {display: false},
-                                                title: {
-                                                    display: true,
-                                                    text: "Chart of Exported in the most recent 5 years"
-                                                }
-                                            }
-                                        });
-                                    </script>
-                                    
-                                    <script>
-//                                        JS chart
-                                    </script>
-                                    
-                                    </div>
+                                                // Initially display the Monthly chart
+                                                createChart('Monthly');
+
+                                            </script>
 
                                     <svg id="SvgjsSvg1113" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
                                     <defs id="SvgjsDefs1114"></defs>
@@ -266,7 +281,8 @@
                                     </svg>
                                     <div class="resize-triggers">
                                         <div class="expand-trigger">
-                                            <div style="width: 799px; height: 351px;"></div></div>
+<!--                                            <div style="width: 799px; height: 351px;"></div>-->
+                                        </div>
                                         <div class="contract-trigger"></div></div></div>
                             </div>   
                         </div>
@@ -311,7 +327,8 @@
 
                             <div class="resize-triggers">
                                 <div class="expand-trigger">
-                                    <div style="width: 385px; height: 459px;"></div></div>
+                                    <div style="width: 385px; height: 160px;"></div>
+                                </div>
                                 <div class="contract-trigger"></div></div></div>
                     </div>
                 </div>
@@ -322,4 +339,3 @@
     <script>window.dispatchEvent(new Event("template-loaded"));</script>
     <script src='assets/js/chart.js'></script>
 </html>
-
