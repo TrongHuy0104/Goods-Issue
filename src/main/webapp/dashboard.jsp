@@ -82,25 +82,25 @@
         
         int mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0, sun = 0;
         for (Model d : modelListDays) {
-        if (d.getDayOfWeek().equals("1")) {
+        if (d.getDayOfWeek().equals("2")) {
             mon = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("2")) {
+        if (d.getDayOfWeek().equals("3")) {
             tue = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("3")) {
+        if (d.getDayOfWeek().equals("4")) {
             wed = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("4")) {
+        if (d.getDayOfWeek().equals("5")) {
             thu = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("5")) {
+        if (d.getDayOfWeek().equals("6")) {
             fri = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("6")) {
+        if (d.getDayOfWeek().equals("7")) {
             sat = Integer.parseInt(d.getTotal_products());
         }
-        if (d.getDayOfWeek().equals("7")) {
+        if (d.getDayOfWeek().equals("1")) {
             sun = Integer.parseInt(d.getTotal_products());
         }
     }
