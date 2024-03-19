@@ -65,9 +65,9 @@ public class AutoSuggestionServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/db";
+            String url = "jdbc:mysql://localhost:3306/exported";
             String username = "root";
-            String password = "Trunghoan2003";
+            String password = "";
             Connection connection = DriverManager.getConnection(url, username, password);
 
             String sql = "SELECT name FROM products WHERE name LIKE ?";
