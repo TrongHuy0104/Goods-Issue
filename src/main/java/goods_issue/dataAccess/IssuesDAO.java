@@ -8,18 +8,197 @@ package goods_issue.dataAccess;
 import static goods_issue.context.DBContext.CreateConnection;
 import goods_issue.model.Issues;
 import goods_issue.model.Product;
+import goods_issue.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Trong Huy
  */
 public class IssuesDAO {
+
+    public List<Issues> pagingIssues(String data, int index, int limit) {
+        List<Issues> list = new ArrayList<>();
+        String sql = "SELECT \n"
+                + "    u.u_id,\n"
+                + "    u.full_name,\n"
+                + "    i.i_id,\n"
+                + "    i.i_date,\n"
+                + "    i.status,\n"
+                + "    i.description,\n"
+                + "    i.e_id,  \n"
+                + "    GROUP_CONCAT(\n"
+                + "        CONCAT_WS('|', id.id_id, id.quantity, id.p_id, id.s_id)\n"
+                + "        SEPARATOR '; '\n"
+                + "    ) AS IssueDetails\n"
+                + "FROM users u\n"
+                + "JOIN issues i ON u.u_id = i.u_id\n"
+                + "JOIN `issue-detail` id ON i.i_id = id.i_id\n"
+                + "WHERE u.full_name LIKE ?\n"
+                + "GROUP BY i.i_id\n"
+                + "LIMIT ? OFFSET ?;";
+        Connection conn = CreateConnection();
+        try {
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ptmt.setInt(2, limit);
+            ptmt.setInt(3, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                Issues issue = new Issues();
+                issue.setiId(rs.getString("i_id"));
+                issue.setuId(rs.getString("u_id"));
+                issue.setDate(rs.getString("i_date"));
+                issue.setStatus(rs.getInt("status"));
+                issue.setDescription(rs.getString("description"));
+                issue.seteId(rs.getString("e_id"));
+
+                list.add(issue);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Issues> pagingIssues(int index, int limit) {
+        List<Issues> list = new ArrayList<>();
+        String sql = "SELECT *"
+                + "FROM issues u\n"
+                + "LIMIT ? OFFSET ?;";
+        Connection conn = CreateConnection();
+        try {
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+
+            ptmt.setInt(1, limit);
+            ptmt.setInt(2, (index - 1) * limit);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                Issues issue = new Issues();
+                issue.setiId(rs.getString("i_id"));
+                issue.setuId(rs.getString("u_id"));
+                issue.setDate(rs.getString("i_date"));
+                issue.setStatus(rs.getInt("status"));
+                issue.setDescription(rs.getString("description"));
+                issue.seteId(rs.getString("e_id"));
+
+                list.add(issue);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int countTotal() {
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sql = "SELECT COUNT(*) FROM issues";
+            ptmt = conn.prepareStatement(sql);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Issues> searchAllById(String data) {
+        List<Issues> list = new ArrayList<>();
+        String sql = "SELECT i.i_id, i.u_id, i.i_date, i.status, i.description, i.e_id\n"
+                + "FROM issues i\n"
+                + "WHERE i.i_id LIKE ? \n"
+                + "ORDER BY i.i_id\n";
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("i_id");
+                String uId = rs.getString("u_id");
+                String iDate = rs.getString("i_date");
+                int status = rs.getInt("status");
+                int qty = rs.getInt("qty");
+                String description = rs.getString("description");
+                String eId = rs.getString("e_id");
+                list.add(new Issues(id, uId, iDate, status, qty, description, eId));
+
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Issues> searchByName(String data) {
+        List<Issues> list = new ArrayList<>();
+        Connection conn = CreateConnection();
+        PreparedStatement ptmt = null;
+        String sql = "SELECT \n"
+                + "    u.u_id,\n"
+                + "    u.full_name,\n"
+                + "    i.i_id,\n"
+                + "    i.i_date,\n"
+                + "    i.status,\n"
+                + "    i.description,\n"
+                + "    i.e_id,  \n"
+                + "    GROUP_CONCAT(\n"
+                + "        CONCAT_WS('|', id.id_id, id.quantity, id.p_id, id.s_id)\n"
+                + "        SEPARATOR '; '\n"
+                + "    ) AS IssueDetails\n"
+                + "FROM users u\n"
+                + "JOIN issues i ON u.u_id = i.u_id\n"
+                + "JOIN `issue-detail` id ON i.i_id = id.i_id\n"
+                + "WHERE u.full_name LIKE ?\n"
+                + "GROUP BY i.i_id;";
+
+        try {
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, "%" + data + "%");
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                Issues issues = new Issues();
+                issues.setiId(rs.getString("i_id"));
+                issues.setuId(rs.getString("u_id"));
+                issues.setDate(rs.getString("i_date"));
+                issues.seteId(rs.getString("e_id"));
+                issues.setStatus(rs.getInt("status"));
+                list.add(issues);
+            }
+
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+
+    }
 
     public List<Issues> selectAllIssues() {
         List<Issues> list = new ArrayList<>();
@@ -47,8 +226,8 @@ public class IssuesDAO {
         }
         return list;
     }
-    
-    public Issues selectIssuesById (String id) {
+
+    public Issues selectIssuesById(String id) {
         Issues issues = new Issues();
         Connection conn = CreateConnection();
         PreparedStatement ptmt = null;
@@ -265,8 +444,8 @@ public class IssuesDAO {
             e.printStackTrace();
         }
     }
-    
-     public void updateStatus(String id, int status) {
+
+    public void updateStatus(String id, int status) {
         Connection conn = CreateConnection();
         PreparedStatement ptmt = null;
         try {
@@ -277,7 +456,7 @@ public class IssuesDAO {
             ptmt.setInt(1, status);
             ptmt.setString(2, id);
             ptmt.execute();
-            
+
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
@@ -288,6 +467,9 @@ public class IssuesDAO {
 
     public static void main(String[] args) {
         IssuesDAO dao = new IssuesDAO();
-        System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
+        System.out.println(dao.pagingIssues("Huu Phuc", 1, 2));
+
+        //System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
     }
+
 }

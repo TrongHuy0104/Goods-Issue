@@ -19,9 +19,21 @@ public class Issues extends Product {
     private int qty;
     private String date;
     private int status;
+    private String description; 
 
     public Issues() {
     }
+
+    public Issues(String id, String uId, String iDate, int status, int qty, String description, String eId) {
+        this.iId = iId;
+        this.uId = uId;
+        this.eId = eId;      
+        this.date = date;
+        this.status = status;
+        this.qty = qty;
+        this.description = description;
+    }
+   
 
     public String getiId() {
         return iId;
@@ -54,6 +66,10 @@ public class Issues extends Product {
     public int getStatus() {
         return status;
     }
+    public String getDescription() { 
+        return description;
+    }
+
 
     public void setiId(String iId) {
         this.iId = iId;
@@ -85,6 +101,9 @@ public class Issues extends Product {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+    public void setDescription(String description) { 
+        this.description = description;
     }
 
     @Override

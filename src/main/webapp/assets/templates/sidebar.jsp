@@ -82,7 +82,7 @@
             >
         </li>
         <li class="${page eq 'issues' ? 'sidebar__item sidebar__item--active' : 'sidebar__item'}">
-            <a href="issues.jsp" class="sidebar__link">
+            <a href="PagingSearchIssuesControl" class="sidebar__link">
                 <svg
                     fill="rgb(143, 159, 188)"
                     xmlns="http://www.w3.org/2000/svg"
