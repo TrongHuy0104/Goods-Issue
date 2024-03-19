@@ -1776,12 +1776,7 @@ html.dark {
 .top-act__group--single .top-act__btn {
     padding: 13px;
 }
-.top-act__btn-wrap {
-    position: relative;
-}
-.top-act__btn-wrap:hover .act-dropdown {
-    display: block;
-}
+btn-wrap
 .top-act__btn {
     column-gap: 10px;
     padding: 13px 20px;

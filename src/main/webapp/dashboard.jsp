@@ -163,7 +163,7 @@
                                             
                                             <!-- Tab List -->
                                             <div class="dashboard-chart-options" id="list-tab" role="tablist">
-                                                <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-days" role="tab" aria-selected="false">7 Days</button>
+                                                <button class="list-group-item active product-tab__item" data-bs-toggle="list" href="#dashboard-days" role="tab" aria-selected="false">7 Days</button>
                                                 <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-month" role="tab" aria-selected="true">Monthly</button>
                                                 <button class="list-group-item product-tab__item" data-bs-toggle="list" href="#dashboard-year" role="tab" aria-selected="false">Yearly</button>
                                             </div>
@@ -199,7 +199,7 @@
                                         });
                                     </script>-->
                                     
-                                    <div class='dashboard-chart product-tab__content' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
+                                    <div class='dashboard-chart product-tab__content--active' id='dashboard-month' role='tabpanel' aria-labelledby='dashboard-month'>
                                         <canvas id="myChartByMonth" style="width:100%;max-width:600px;height: 400px; margin: 0 auto"></canvas>
                                     </div>
                                     <script>
