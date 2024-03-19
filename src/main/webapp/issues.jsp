@@ -70,7 +70,7 @@
                                 dataSearch = "";
                             } else {
                                 dataSearch = dataSearch;
-                             }%>
+                            }%>
                         value="<%=dataSearch%>"
                         placeholder="Search for item"
                         class="search-bar__input"
@@ -180,7 +180,7 @@
                 </tbody>
 
             </table>
-           
+
             <%
                 if (issuesList != null && !issuesList.isEmpty()) {%>
             <div class="paging">
@@ -204,8 +204,8 @@
                 </ul>
             </div>
             <%}%>
-           <%}%>
         </main>
+        <%}%>
     </body>
     <script>window.dispatchEvent(new Event("template-loaded"));</script>
 </html>
