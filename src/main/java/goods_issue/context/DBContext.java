@@ -16,9 +16,9 @@ import java.sql.SQLException;
 public class DBContext {
      public static Connection CreateConnection() {
         Connection conn = null;
-        String url = "jdbc:mysql://localhost:3306/db"; 
+        String url = "jdbc:mysql://localhost:3306/exported"; 
         String name = "root";
-        String pass = "Trunghoan2003";
+        String pass = "";
 
         //load driver
         try {

@@ -125,11 +125,13 @@
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <!-- Fonts -->
-        <!--<link rel="stylesheet" href="./assets/fonts/stylesheet.css" />-->
+
+
         <!-- Stylesheets -->
-        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./assets/css/main.css" />
         <link rel="stylesheet" href="./assets/css/admin.css" />
+        <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
 
         <!-- Scripts -->
         <script src="./assets/js/scripts.js"></script>
@@ -201,17 +203,19 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body" style="position: relative;">
+                                <div class="card-body js-tabs" style="position: relative;">
                                     <div class="dashboard__heading">
                                         <h4 class="card-body-h4">Total Products Exported</h4>
                                         <div class="dashboard-chart-heading">
 
                                             <!-- Tab List -->
                                             <div class="dashboard-chart-options" id="list-tab" role="tablist">
+
                                                 <button class="list-group-item" id="btn7Days">7 Days</button>
                                                 <button class="list-group-item" id="btnMonthly">Monthly</button>
                                                 <button class="list-group-item" id="btnYearly">Yearly</button>
                                             </div>
+
                                             </div>
                                     </div>
                                             <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
@@ -238,6 +242,7 @@
                                                 // Initialize the chart
                                                 let myChart = null;
 
+
                                                 // Function to create a chart
                                                 function createChart(type) {
                                                     const ctx = document.getElementById('myChart').getContext('2d');
@@ -246,6 +251,7 @@
                                                     if (myChart) {
                                                         myChart.destroy();
                                                     }
+
 
                                                     const data = chartData[type];
 
