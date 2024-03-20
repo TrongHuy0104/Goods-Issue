@@ -83,7 +83,7 @@
                         <th class="table__heading">ID</th>
                         <th class="table__heading">Date</th>
                         <th class="table__heading">Customer</th>
-                        <th class="table__heading">Total</th>
+                        <th class="table__heading">Total($)</th>
                         <th class="table__heading">Status</th>
                         <th class="table__heading">Action</th>
                     </tr>

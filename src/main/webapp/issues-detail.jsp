@@ -122,7 +122,7 @@
                                     <th style="width: 100%; text-align: left">Product</th>
                                     <th style="min-width: 150px; text-align: right">Storage</th>
                                     <th style="min-width: 150px; text-align: right">Quantity</th>
-                                    <th style="min-width: 150px; text-align: right">Price</th>
+                                    <th style="min-width: 150px; text-align: right">Price($)</th>
                                 </tr>
                             </thead>
                             <tbody>
