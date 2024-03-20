@@ -10,7 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="admin-sidebar">
     <!-- Logo -->
-    <a href="customer.jsp" class="logo top-bar__logo admin-logo">
+    <a href="dashboard.jsp" class="logo top-bar__logo admin-logo">
         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
         <h1 class="logo__title top-bar__logo-title">grocerymart</h1>
     </a>

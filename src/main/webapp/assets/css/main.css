@@ -4931,7 +4931,6 @@ html.dark {
 }
 
 .list-group-item.active {
-    z-index: 2;
     color: #fff;
     background-color: #0d6efd;
     border-color: #0d6efd;

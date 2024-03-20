@@ -324,12 +324,18 @@ public class IssuesDAO {
             Connection conn = CreateConnection();
             PreparedStatement ptmt = null;
             String sqlDays = "";
-            sqlDays = "SELECT DAYOFWEEK(DATE(i.i_date)) AS day_of_week, SUM(id.quantity) AS total_products\n"
-                    + "FROM `db`.`issue-detail` id\n"
-                    + "JOIN `db`.`issues` i ON id.i_id = i.i_id\n"
-                    + "WHERE DATE(i.i_date) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)\n"
-                    + "GROUP BY DAYOFWEEK(DATE(i.i_date))\n"
-                    + "ORDER BY DAYOFWEEK(DATE(i.i_date));";
+            sqlDays = "SELECT DAYOFWEEK(i.i_date) AS day_of_week, SUM(id.quantity) AS total_products,\n"
+                    + "       MIN(i.i_date) AS min_date_for_group\n"
+                    + "FROM db.`issue-detail` id\n"
+                    + "JOIN issues i ON id.i_id = i.i_id\n"
+                    + "WHERE i.i_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)\n"
+                    + "GROUP BY DAYOFWEEK(i.i_date)\n"
+                    + "ORDER BY \n"
+                    + "    CASE\n"
+                    + "        WHEN DAYOFWEEK(NOW()) >= DAYOFWEEK(MIN(i.i_date))\n"
+                    + "        THEN DAYOFWEEK(NOW()) - DAYOFWEEK(MIN(i.i_date))\n"
+                    + "        ELSE DAYOFWEEK(NOW()) - DAYOFWEEK(MIN(i.i_date)) + 7\n"
+                    + "    END;";
             ptmt = conn.prepareStatement(sqlDays);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
@@ -349,23 +355,31 @@ public class IssuesDAO {
 
     public static void main(String[] args) {
         IssuesDAO dao = new IssuesDAO();
-        System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
+//        System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
 
         ArrayList<Model> modelList = dao.countExportedByDays();
         for (Model m : modelList) {
             System.out.println(m.toString());
         }
         int mon = 0;
-        int jan = 0;
+        int firstTotal = 0, secondTotal = 0, thirdTotal = 0, fourthTotal = 0, fifthTotal = 0, sixthTotal = 0, seventhTotal = 0;
         for (Model m : modelList) {
-//            if (m.getMonth().equals("1")) {
-//                jan = Integer.parseInt(m.getTotal_products());
-//
-//            }
-            if(m.getDayOfWeek().equals("1")){
-                mon = Integer.parseInt(m.getTotal_products());
-            }
+            if (modelList.get(0).getDayOfWeek().equals("4")) {
+            firstTotal = Integer.parseInt(modelList.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelList.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelList.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelList.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelList.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelList.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelList.get(6).getTotal_products());
         }
-        System.out.println(mon);
+        }
+        System.out.println(firstTotal);
+        System.out.println(secondTotal);
+        System.out.println(thirdTotal);
+        System.out.println(fourthTotal);
+        System.out.println(fifthTotal);
+        System.out.println(sixthTotal);
+        System.out.println(seventhTotal);
     }
 }

@@ -20,7 +20,7 @@
     List<Issues> issuesList = issuesDao.selectAllIssues();
     List<Model> modelListMonth = issuesDao.countExportedByMonth();
     List<Model> modelListDays = issuesDao.countExportedByDays();
-    
+
     int jan = 0, feb = 0, mar = 0, apr = 0, may = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, nov = 0, dec = 0;
     for (Model m : modelListMonth) {
         if (m.getMonth().equals("1")) {
@@ -60,9 +60,9 @@
             dec = Integer.parseInt(m.getTotal_products());
         }
     }
-    
-        int year2020 = 0, year2021 = 0, year2022 = 0, year2023 = 0, year2024 = 0;
-        for (Model m : modelListMonth) {
+
+    int year2020 = 0, year2021 = 0, year2022 = 0, year2023 = 0, year2024 = 0;
+    for (Model m : modelListMonth) {
         if (m.getYear().equals("2020")) {
             year2020 += Integer.parseInt(m.getTotal_products());
         }
@@ -79,32 +79,126 @@
             year2024 += Integer.parseInt(m.getTotal_products());
         }
     }
-        
-        int mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0, sun = 0;
-        for (Model d : modelListDays) {
-        if (d.getDayOfWeek().equals("2")) {
-            mon = Integer.parseInt(d.getTotal_products());
+
+    int firstTotal = 0, secondTotal = 0, thirdTotal = 0, fourthTotal = 0, fifthTotal = 0, sixthTotal = 0, seventhTotal = 0;
+    String first = null, second = null, third = null, fourth = null, fifth = null, sixth = null, seventh = null;
+//        if index(0) = 3 => first = "tuesday" firstTotal =d.getTotal
+
+    for (Model d : modelListDays) {
+        if (modelListDays.get(0).getDayOfWeek().equals("2")) {
+            first = "Mon";
+            second = "Sun";
+            third = "Sat";
+            fourth = "Fri";
+            fifth = "Thu";
+            sixth = "Wed";
+            seventh = "Tue";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("3")) {
-            tue = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("3")) {
+            first = "Tue";
+            second = "Mon";
+            third = "Sun";
+            fourth = "Sat";
+            fifth = "Fri";
+            sixth = "Thu";
+            seventh = "Wed";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("4")) {
-            wed = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("4")) {
+            first = "Wed";
+            second = "Tue";
+            third = "Mon";
+            fourth = "Sun";
+            fifth = "Sat";
+            sixth = "Fri";
+            seventh = "Thu";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("5")) {
-            thu = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("5")) {
+            first = "Thu";
+            second = "Wed";
+            third = "Tue";
+            fourth = "Mon";
+            fifth = "Sun";
+            sixth = "Sat";
+            seventh = "Fri";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("6")) {
-            fri = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("6")) {
+            first = "Fri";
+            second = "Thu";
+            third = "Wed";
+            fourth = "Tue";
+            fifth = "Mon";
+            sixth = "Sun";
+            seventh = "Sat";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("7")) {
-            sat = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("7")) {
+            first = "Sat";
+            second = "Fri";
+            third = "Thu";
+            fourth = "Wed";
+            fifth = "Tue";
+            sixth = "Mon";
+            seventh = "Sun";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
-        if (d.getDayOfWeek().equals("1")) {
-            sun = Integer.parseInt(d.getTotal_products());
+        if (modelListDays.get(0).getDayOfWeek().equals("1")) {
+            first = "Sun";
+            second = "Sat";
+            third = "Fri";
+            fourth = "Thu";
+            fifth = "Wed";
+            sixth = "Tue";
+            seventh = "Mon";
+            firstTotal = Integer.parseInt(modelListDays.get(0).getTotal_products());
+            secondTotal = Integer.parseInt(modelListDays.get(1).getTotal_products());
+            thirdTotal = Integer.parseInt(modelListDays.get(2).getTotal_products());
+            fourthTotal = Integer.parseInt(modelListDays.get(3).getTotal_products());
+            fifthTotal = Integer.parseInt(modelListDays.get(4).getTotal_products());
+            sixthTotal = Integer.parseInt(modelListDays.get(5).getTotal_products());
+            seventhTotal = Integer.parseInt(modelListDays.get(6).getTotal_products());
         }
     }
-    
+
     int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
     int cCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
     int eCount = !issuesList.isEmpty() ? issuesList.size() : issuesDao.selectAllIssues().size();
@@ -212,67 +306,67 @@
                                                 <button class="list-group-item" id="btnMonthly">Monthly</button>
                                                 <button class="list-group-item" id="btnYearly">Yearly</button>
                                             </div>
-                                            </div>
+                                        </div>
                                     </div>
-                                            <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
-                                            <script>
-                                                // Define the chart data for the 7 Days, Monthly, and Yearly charts
-                                                const chartData = {
-                                                    '7Days': {
-                                                        xValues: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-                                                        yValues: [<%=mon%>, <%=tue%>, <%=wed%>, <%=thu%>, <%=fri%>, <%=sat%>, <%=sun%>],
-                                                        barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]
-                                                    },
-                                                    'Monthly': {
-                                                        xValues: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                                        yValues: [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>],
-                                                        barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
-                                                    },
-                                                    'Yearly': {
-                                                        xValues: ["2020", "2021", "2022", "2023", "2024"],
-                                                        yValues: [<%=year2020%>, <%=year2021%>, <%=year2022%>, <%=year2023%>,<%=year2024%>],
-                                                        barColors: ["orange", "orange", "orange", "orange", "orange"]
-                                                    }
-                                                };
+                                    <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
+                                    <script>
+                                        // Define the chart data for the 7 Days, Monthly, and Yearly charts
+                                        const chartData = {
+                                            '7Days': {
+                                                xValues: ["<%=seventh%>", "<%=sixth%>", "<%=fifth%>", "<%=fourth%>", "<%=third%>", "<%=second%>", "<%=first%>"],
+                                                yValues: [<%=seventhTotal%>, <%=sixthTotal%>, <%=fifthTotal%>, <%=fourthTotal%>, <%=thirdTotal%>, <%=secondTotal%>, <%=firstTotal%>],
+                                                barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                            },
+                                            'Monthly': {
+                                                xValues: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                                yValues: [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>],
+                                                barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                            },
+                                            'Yearly': {
+                                                xValues: ["2020", "2021", "2022", "2023", "2024"],
+                                                yValues: [<%=year2020%>, <%=year2021%>, <%=year2022%>, <%=year2023%>,<%=year2024%>],
+                                                barColors: ["orange", "orange", "orange", "orange", "orange"]
+                                            }
+                                        };
 
-                                                // Initialize the chart
-                                                let myChart = null;
+                                        // Initialize the chart
+                                        let myChart = null;
 
-                                                // Function to create a chart
-                                                function createChart(type) {
-                                                    const ctx = document.getElementById('myChart').getContext('2d');
+                                        // Function to create a chart
+                                        function createChart(type) {
+                                            const ctx = document.getElementById('myChart').getContext('2d');
 
-                                                    // If a chart already exists, destroy it to make way for the new one
-                                                    if (myChart) {
-                                                        myChart.destroy();
-                                                    }
+                                            // If a chart already exists, destroy it to make way for the new one
+                                            if (myChart) {
+                                                myChart.destroy();
+                                            }
 
-                                                    const data = chartData[type];
+                                            const data = chartData[type];
 
-                                                    myChart = new Chart(ctx, {
-                                                        type: 'bar',
-                                                        data: {
-                                                            labels: data.xValues,
-                                                            datasets: [{
-                                                                    backgroundColor: data.barColors,
-                                                                    data: data.yValues
-                                                                }]
-                                                        },
-                                                        options: {
-                                                            // Add your options here
-                                                        }
-                                                    });
+                                            myChart = new Chart(ctx, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: data.xValues,
+                                                    datasets: [{
+                                                            backgroundColor: data.barColors,
+                                                            data: data.yValues
+                                                        }]
+                                                },
+                                                options: {
+                                                    // Add your options here
                                                 }
+                                            });
+                                        }
 
-                                                // Event listeners for the buttons
-                                                document.getElementById('btn7Days').addEventListener('click', () => createChart('7Days'));
-                                                document.getElementById('btnMonthly').addEventListener('click', () => createChart('Monthly'));
-                                                document.getElementById('btnYearly').addEventListener('click', () => createChart('Yearly'));
+                                        // Event listeners for the buttons
+                                        document.getElementById('btn7Days').addEventListener('click', () => createChart('7Days'));
+                                        document.getElementById('btnMonthly').addEventListener('click', () => createChart('Monthly'));
+                                        document.getElementById('btnYearly').addEventListener('click', () => createChart('Yearly'));
 
-                                                // Initially display the Monthly chart
-                                                createChart('Monthly');
+                                        // Initially display the Monthly chart
+                                        createChart('Monthly');
 
-                                            </script>
+                                    </script>
 
                                     <svg id="SvgjsSvg1113" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
                                     <defs id="SvgjsDefs1114"></defs>
@@ -281,7 +375,7 @@
                                     </svg>
                                     <div class="resize-triggers">
                                         <div class="expand-trigger">
-<!--                                            <div style="width: 799px; height: 351px;"></div>-->
+                                            <!--                                            <div style="width: 799px; height: 351px;"></div>-->
                                         </div>
                                         <div class="contract-trigger"></div></div></div>
                             </div>   
