@@ -55,7 +55,7 @@
                 <div class="auth__content-inner admin-content-inner">
                     <p class="form__error">${error == "" ? "" : error}</p>
                     <p class="form__note">${note == "" ? "" : note}</p>
-                    <p class="form__title">BASIC INFORMATION</p>
+                    <p class="form__title">ADD STORAGE</p>
                     <form
                         action="storage-add"
                         method="POST"
@@ -63,9 +63,12 @@
                         id="sign-up-form"
                         >
                         <div class="col">
+                            <label for="storage-name">Storage Name</label>
                             <div class="form__group">
                                 <div class="form__text-input">
+                                    
                                     <input
+                                        id="storage-name"
                                         type="text"
                                         placeholder="Storage Name"
                                         class="form__input"
@@ -77,9 +80,11 @@
                                 </div>
                                 <span class="form__message"></span>
                             </div>
+                            <label for="size">Size</label>
                             <div class="form__group">
                                 <div class="form__text-input">
                                     <input
+                                        id="size"
                                         type="number"
                                         placeholder="Size"
                                         class="form__input"
@@ -95,11 +100,13 @@
 
                         </div>
                         <div class="col">
+                            <label for="area">Area</label>
                             <div class="form__group">
                                 <div class="form__text-input">
                                     <input
+                                        id="area"
                                         type="text"
-                                        placeholder="Address"
+                                        placeholder="Area"
                                         class="form__input"
                                         name="address"
                                         value="${address != null ? address : ""}"

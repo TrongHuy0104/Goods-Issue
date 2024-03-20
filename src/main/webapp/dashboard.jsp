@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : admin
     Created on : Nov 21, 2023, 4:14:02 PM
@@ -232,11 +233,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     </head>
     <body>
-        <%            if (user == null) {
+        <%            
+            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
         <!-- Sidebar -->
+        <%
+            request.setAttribute("page", "dashboard");
+        %>
         <jsp:include page="assets/templates/sidebar.jsp" /> 
         <!-- Navbar -->
         <jsp:include page="assets/templates/header.jsp" /> 

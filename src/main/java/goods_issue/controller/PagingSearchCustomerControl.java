@@ -1,35 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package goods_issue.controller;
 
-import static goods_issue.context.DBContext.CreateConnection;
+import goods_issue.dataAccess.UserDAO;
+import goods_issue.model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import org.json.JSONArray;
 
 /**
  *
- * @author Trong Huy
+ * @author anhph
  */
-public class AutoSuggestionServlet extends HttpServlet {
+public class PagingSearchCustomerControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,7 +33,51 @@ public class AutoSuggestionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        UserDAO userDao = new UserDAO();
+        String dataSearch = request.getParameter("dataSearch");
+        String searchValue = (String) request.getParameter("data-search");
+        if (searchValue != null) {
+            dataSearch = searchValue;
+        }
+        List<User> customerListSearch = userDao.searchByName(dataSearch);
 
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+
+        int index = Integer.parseInt(indexPage);
+        int pageLimit = 10;
+        int pCount = !customerListSearch.isEmpty() ? customerListSearch.size() : userDao.countTotal();
+
+        int endPage = pCount / pageLimit;
+        if ((endPage == 0 || endPage % pageLimit != 0) && endPage != 1) {
+            endPage++;
+        }
+
+        int itemStart = (index - 1) * pageLimit + 1;
+        int itemEnd;
+        if (index == endPage) {
+            itemEnd = pCount;
+        } else {
+            itemEnd = index * pageLimit;
+        }
+        List<User> userList = new ArrayList<>();
+        if (dataSearch != null) {
+            userList = userDao.searchByName(dataSearch, index, pageLimit);
+
+            request.setAttribute("data-search", dataSearch);
+        } else {
+            userList = userDao.paging(index, pageLimit);
+        }
+
+        request.setAttribute("userList", userList);
+        request.setAttribute("pCount", pCount);
+        request.setAttribute("itemStart", itemStart);
+        request.setAttribute("itemEnd", itemEnd);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("index", index);
+        request.getRequestDispatcher("admin.jsp").forward(request, response);    
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,38 +92,7 @@ public class AutoSuggestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String input = request.getParameter("input");
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print("[");
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/issues2";
-            String username = "root";
-            String password = "";
-            Connection connection = DriverManager.getConnection(url, username, password);
-
-            String sql = "SELECT name FROM products WHERE name LIKE ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, input + "%");
-            ResultSet rs = statement.executeQuery();
-            boolean first = true;
-
-            while (rs.next()) {
-                if (!first) {
-                    out.print(",");
-                }
-                out.print("\"" + rs.getString("name") + "\"");
-                first = false;
-            }
-
-            out.print("]");
-            connection.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-
-        }
+        processRequest(request, response);
     }
 
     /**

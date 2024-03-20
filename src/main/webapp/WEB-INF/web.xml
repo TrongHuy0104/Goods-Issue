@@ -96,6 +96,16 @@
         <servlet-name>UpdateIssuesStatus</servlet-name>
         <servlet-class>goods_issue.controller.UpdateIssuesStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <servlet-class>goods_issue.controller.PagingSearchIssuesControl</servlet-class>
+
+    </servlet>
+    
+    <servlet>
+        <servlet-name>PagingSearchCustomerControl</servlet-name>
+        <servlet-class>goods_issue.controller.PagingSearchCustomerControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -177,6 +187,7 @@
         <url-pattern>/paging-search-product</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>GenerateIssuesPDFCtrl</servlet-name>
         <url-pattern>/generateIssuesPdf</url-pattern>
     </servlet-mapping>
@@ -191,6 +202,16 @@
     <servlet-mapping>
         <servlet-name>UpdateIssuesStatus</servlet-name>
         <url-pattern>/update-issues-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <url-pattern>/PagingSearchIssuesControl</url-pattern>
+
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>PagingSearchCustomerControl</servlet-name>
+        <url-pattern>/paging-search-customer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -91,6 +91,15 @@ video {
     vertical-align: baseline;
 }
 
+label {
+  display: block; /* Ensures the label appears on a new line and spans the full width */
+  color: #333; /* Sets the text color */
+  font-size: 16px; /* Sets the size of the label text */
+  font-weight: bold; /* Makes the label text bold */
+  margin-bottom: -20px;
+  margin-left: -200px;
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -187,7 +196,7 @@ ul {
 a,
 img,
 button,
-label,
+/*label,*/
 input,
 textarea,
 select {
@@ -1776,12 +1785,7 @@ html.dark {
 .top-act__group--single .top-act__btn {
     padding: 13px;
 }
-.top-act__btn-wrap {
-    position: relative;
-}
-.top-act__btn-wrap:hover .act-dropdown {
-    display: block;
-}
+btn-wrap
 .top-act__btn {
     column-gap: 10px;
     padding: 13px 20px;
@@ -1919,7 +1923,7 @@ html.dark {
 
 .user__dropdown {
     width: min(310px, 100vw);
-    right: -20px;
+    right: 1px;
     /* background-color: #f6f7f9; */
 }
 @media (max-width: 991.98px) {
