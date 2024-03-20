@@ -51,7 +51,7 @@ public class PagingSearchCustomerControl extends HttpServlet {
         int pCount = !customerListSearch.isEmpty() ? customerListSearch.size() : userDao.countTotal();
 
         int endPage = pCount / pageLimit;
-        if (endPage == 0 || endPage % pageLimit != 0) {
+        if ((endPage == 0 || endPage % pageLimit != 0) && endPage != 1) {
             endPage++;
         }
 
