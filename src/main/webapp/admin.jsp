@@ -10,38 +10,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     User user = (User) request.getSession().getAttribute("admin");
-    UserDAO userDao = new UserDAO();
-    List<User> userList = userDao.selectAllCustomer();
-    String dataSearch = request.getParameter("data-search");
-    List<User> userListSearch = userDao.searchByName(dataSearch);
-    
-    String indexPage = request.getParameter("index");
-    if (indexPage == null) {
-        indexPage = "1";
-    }
-    int index = Integer.parseInt(indexPage);
-    int pageLimit = 10;
-    int pCount = !userListSearch.isEmpty() ? userListSearch.size() : userDao.countTotal();
-    
-    int endPage = pCount / pageLimit;
-    if (endPage == 0 || endPage % pageLimit != 0) {
-        endPage++;
-    }
-
-    int itemStart = (index - 1) * pageLimit + 1;
-    int itemEnd;
-    if (index == endPage || !userListSearch.isEmpty()) {
-        itemEnd = pCount;
-    } else {
-        itemEnd = index * pageLimit;
-    }
-    List<User> customerList = new ArrayList<>();
-    if (dataSearch != null) {
-        customerList = userListSearch;
-    } else {
-        customerList = userDao.paging(index, pageLimit);
-    }
-    
+    ArrayList<User> customerList = (ArrayList<User>) request.getAttribute("userList");
+    int endPage = (int)request.getAttribute("endPage");
+    int itemStart = (int)request.getAttribute("itemStart");
+    int itemEnd = (int)request.getAttribute("itemEnd");
+    int index = (int)request.getAttribute("index");
+    int pCount = (int)request.getAttribute("pCount");
+    String dataSearch =(String) request.getAttribute("data-search");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,12 +57,17 @@
         <main class="main">
             <div class="admin-top">
                 <h1 class="admin__heading">Customer</h1>
-                <form action="admin.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <form action="paging-search-customer" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data-search"
+                        name="dataSearch"
                         id=""
-                        value=""
+                        <%if(dataSearch == null) {
+                            dataSearch = "";
+                        } else {
+                            dataSearch = dataSearch;
+                        }%>
+                        value="<%=dataSearch%>"
                         placeholder="Search for item"
                         class="search-bar__input"
                         />
@@ -199,17 +179,17 @@
                 </div>
                 <ul class="paging__list">
                     <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                        <a class="paging__link" href="paging-search-customer?index=1&data-search=<%=dataSearch%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
                     </li>
                     <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=index - 1%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
+                        <a class="paging__link" href="paging-search-customer?index=<%=index - 1%>&data-search=<%=dataSearch%>"><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
                     </li>
                     <li class="paging__item  paging__item--active"><a class="paging__link"><%=index%></a></li>
                     <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=index + 1%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
+                        <a class="paging__link" href="paging-search-customer?index=<%=index + 1%>&data-search=<%=dataSearch%>"><img src="./assets/icons/next.svg" class="icon" alt=""></a>
                     </li>
                     <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
-                        <a class="paging__link" href="admin.jsp?index=<%=endPage%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
+                        <a class="paging__link" href="paging-search-customer?index=<%=endPage%>&data-search=<%=dataSearch%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
                     </li>
                 </ul>
             </div>
