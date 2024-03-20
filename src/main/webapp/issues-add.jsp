@@ -99,7 +99,12 @@
                 });
             });
         </script>
-
+        <style>
+            .auth__form {
+                box-shadow: none;
+                padding-top: 0;
+            }
+        </style>
     </head>
     <body>
         <%
@@ -117,97 +122,115 @@
         <!-- Main -->
         <main class="main">
             <div class="order-right issues__list">
-                <h3 class="order-right__heading">Issues Items Add Form</h3>
+                <h3 class="order-right__heading">BASIC INFORMATION</h3>
                 <p class="form__note">${note == "" ? "" : note}</p>
                 <p class="form__error">${error == "" ? "" : error}</p>
-                <form action="issues-add" method="POST" class="form auth__form row row-cols-2 row-cols-md-1 g-4" id="sign-up-form" style="margin-left: 0;">
+                <form action="issues-add" method="POST"  id="issues-add-form" style="margin-left: 0;" >
                     <input type="hidden" name="i_id" value="<%=issuesID%>"/>
-                    <div class="col" style=" margin-top: 0;">
-                        <div class="form__group">
-                            <label for="customer-name">Customer Name: </label>
-                            <div class="form__text-input">
-                                <input type="text" class="form__input" name="name" value="<%=customerName == null ? "" : customerName%>" id="customer-name" rules="required|minLength:2">
-                                <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                    <div class="form auth__form row row-cols-2 row-cols-md-1 g-4">
+                        <div class="col" style=" margin-top: 0;">
+                            <%
+                                if (issues.getiId() != null) {
+                                    isExist = "true";
+                                }
+                            %>
+                            <div class="form__group">
+                                <label for="customer-name">Customer Name: </label>
+                                <div class="form__text-input">
+                                    <input type="text" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" name="name" value="<%=customerName == null ? "" : customerName%>" id="customer-name" rules="required|minLength:2">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                </div>
+                                <span class="form__message"></span>
                             </div>
-                            <span class="form__message"></span>
-                        </div>
-                        <div class="form__group">
-                            <label for="customer-address">Customer Address: </label>
-                            <div class="form__text-input">
-                                <input type="text" class="form__input" name="address" value="<%=customerAddress == null ? "" : customerAddress%>" rules="required|minLength:2" id="customer-address">
-                                <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                            <div class="form__group">
+                                <label for="customer-address">Customer Address: </label>
+                                <div class="form__text-input">
+                                    <input type="text" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" name="address" value="<%=customerAddress == null ? "" : customerAddress%>" rules="required|minLength:2" id="customer-address">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                </div>
+                                <span class="form__message"></span>
                             </div>
-                            <span class="form__message"></span>
-                        </div>
-                        <div class="form__group">
-                            <label for="customer-phone">Customer Phone: </label>
-                            <div class="form__text-input">
-                                <input type="text" class="form__input" name="phone" value="<%=customerPhone == null ? "" : customerPhone%>" rules="required|phone" id="customer-phone">
-                                <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                            <div class="form__group">
+                                <label for="customer-email">Customer Email(optional): </label>
+                                <div class="form__text-input">
+                                    <input type="text" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" name="email" value="<%=customerEmail == null ? "" : customerEmail%>" id="customer-email">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                </div>
                             </div>
-                            <span class="form__message"></span>
                         </div>
-                        <div class="form__group">
-                            <label for="customer-email">Customer Email(optional): </label>
-                            <div class="form__text-input">
-                                <input type="text" class="form__input" name="email" value="<%=customerEmail == null ? "" : customerEmail%>" id="customer-email">
-                                <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+
+                        <div class="col" style=" margin-top: 0;">
+                            <div class="form__group">
+                                <label for="customer-phone">Customer Phone: </label>
+                                <div class="form__text-input">
+                                    <input type="text" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" name="phone" value="<%=customerPhone == null ? "" : customerPhone%>" rules="required|phone" id="customer-phone">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                </div>
+                                <span class="form__message"></span>
+                            </div>
+                            <div class="form__group">
+                                <label>Employee: </label>
+                                <div class="form__text-input">
+                                    <%
+                                    if (issues.getiId() != null) {
+                                        isExist = "true";
+                                    }
+                                    %>
+                                    <select name="employee" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" rules="required">
+                                        <option value="" hidden></option>
+                                        <%
+                                        if (isExist != null && !isExist.equals("") ) {
+                                            User em = new User();
+                                            if (issues.getiId() != null) {
+                                                em = userDao.selectUserById(issues.geteId());
+                                            } else {
+                                                em = userDao.selectUserById(employee);
+                                            }
+                                        %>
+                                        <option selected value="<%=em.getId()%>"><%=em.getFullName()%></option>
+                                        <%} else {%>
+                                        <%for(User e : employees) {%>
+                                        <option value="<%=e.getId()%>"><%=e.getFullName()%></option>
+                                        <%}}%>
+                                    </select>
+                                </div>
+                                <span class="form__message"></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col" style=" margin-top: 0;">
-                        <div class="form__group">
-                            <label>Product: </label>
-                            <div class="form__text-input">
-                                <input name="text" class="form__input" id="product" value="<%=productName == null ? "" : productName%>" rules="required|minLength:2">
-                                <ul id="suggestionList"></ul>                            
+                    <h3 class="order-right__heading">PRODUCT INFORMATION</h3>
+                    <div class="form auth__form row row-cols-2 row-cols-md-1 g-4">
+                        <div class="col" style=" margin-top: 0;">
+                            <div class="form__group">
+                                <label>Product: </label>
+                                <div class="form__text-input">
+                                    <input name="text" class="form__input" value="<%=productName == null ? "" : productName%>" id="product" form="issues-add-form" rules="required|minLength:2">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                    <ul id="suggestionList"></ul>                            
 
+                                </div>
+                                <span class="form__message"></span>
                             </div>
-                            <span class="form__message"></span>
                         </div>
-                        <div class="form__group">
-                            <label for="quantity">Quantity: </label>
-                            <div class="form__text-input">
-                                <input type="number" class="form__input" name="quantity" value="" rules="required|integer|isNonNegative" id="quantity">
-                                <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                        <div class="col" style=" margin-top: 0;">
+                            <div class="form__group">
+                                <label for="quantity">Quantity: </label>
+                                <div class="form__text-input">
+                                    <input type="number" class="form__input" name="quantity" value="" rules="required|integer|isNonNegative" form="issues-add-form">
+                                    <svg class="icon form__input-icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg>
+                                </div>
+                                <span class="form__message"></span>
                             </div>
-                            <span class="form__message"></span>
-                        </div>
-                        <div class="form__group">
-                            <label>Employee: </label>
-                            <div class="form__text-input">
-                                <%
-                                if (issues.getiId() != null) {
-                                    isExist = "true";
-                                }
-                                %>
-                                <select name="employee" class="<%=(isExist != null && !isExist.equals("")) ? "form__input disabled" : "form__input"%>" rules="required">
-                                    <option value="" hidden></option>
-                                    <%
-                                    if (isExist != null && !isExist.equals("") ) {
-                                        User em = new User();
-                                        if (issues.getiId() != null) {
-                                            em = userDao.selectUserById(issues.geteId());
-                                        } else {
-                                            em = userDao.selectUserById(employee);
-                                        }
-                                    %>
-                                    <option selected value="<%=em.getId()%>"><%=em.getFullName()%></option>
-                                    <%} else {%>
-                                    <%for(User e : employees) {%>
-                                    <option value="<%=e.getId()%>"><%=e.getFullName()%></option>
-                                    <%}}%>
-                                </select>
+                            <div class="form__group auth__btn-group">
+                                <button class="btn btn--primary auth__btn form__submit-btn" type="submit" form="issues-add-form">Add</button>
                             </div>
-                            <span class="form__message"></span>
-                        </div>
-                        <div class="form__group auth__btn-group">
-                            <button class="btn btn--primary auth__btn form__submit-btn">Add</button>
                         </div>
                     </div>
                 </form> 
             </div>
+
+
 
             <div class="order-right issues__list">
                 <h3 class="order-right__heading">Issues Items</h3>
@@ -275,6 +298,6 @@
     <!--<script>window.dispatchEvent(new Event("template-loaded"));</script>-->
     <script src="./assets/js/validator.js"></script>
     <script>
-            new Validator("#sign-up-form");
+            new Validator("#issues-add-form");
     </script>
 </html>

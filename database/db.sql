@@ -6,7 +6,7 @@
 -- Thời gian đã tạo: Th3 12, 2024 lúc 05:03 PM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
-
+drop database db;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";

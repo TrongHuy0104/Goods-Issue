@@ -21,6 +21,8 @@ and open the template in the editor.
 
 .admin-logo {
     margin-left: 0;
+    padding: 15px 0;
+
 }
 
 .admin-logo h1 {
@@ -38,7 +40,7 @@ and open the template in the editor.
 .sidebar__link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
     width: 100%;
     padding: 10px 15px;
     font-size: 1.4rem;
@@ -66,7 +68,7 @@ and open the template in the editor.
     align-items: center;
     z-index: 99;
     margin: 0;
-    box-shadow: 0 0 30px rgba(12, 37, 86, 0.05);
+    box-shadow: 0 0 30px rgba(12, 37, 86, 0.1);
 }
 
 .admin-navbar__item {
@@ -117,6 +119,14 @@ and open the template in the editor.
     padding: 0 20px;
 }
 
+.top-act__user:hover .user__dropdown {
+    display: block;
+}
+
+.user__dropdown {
+    drop-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
 .main {
     margin-top: 73px;
     margin-left: 260px;
@@ -137,6 +147,8 @@ and open the template in the editor.
 
 .admin__search-bar {
     margin-left: auto;
+    margin-right: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .admin__add-btn {
@@ -146,11 +158,33 @@ and open the template in the editor.
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
+
+.search-bar__submit {
+    transition: .2s;
+}
+
+.search-bar__submit:hover {
+    background: #f2f9ff;
+    border-radius: 20px;
+}
+
 
 .table {
     margin-top: 20px;
     width: 100%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+.table tr:nth-child(even) {
+    background: #f2f9ff;
+}
+
+.table td, .table th {
+    border-top: 1px solid #f1f1f1;
 }
 
 .table__head {
@@ -214,11 +248,15 @@ td {
 }
 
 .admin-content-inner {
-    width: calc(100% - 260px);
+    width: calc(100% - 100px);
 }
 
 .auth__form {
-    margin-top: 0;
+    margin-top: 10px;
+    padding: 30px 0 30px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .sign-up-content-inner {
@@ -239,13 +277,13 @@ td {
     font-size: 20px;
     font-weight: 500;
     padding-left: 12px;
-    display: inline-block;
+    display: block;
 }
 
 .form__title {
     font-size: 2.4rem;
     font-weight: 600;
-    margin: 40px 0 20px;
+    margin: 0 0 20px;
     text-align: left;
 }
 
@@ -326,6 +364,11 @@ td {
     margin-right: 15px;
 }
 
+.order-left, 
+.order-right {
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
 .button-wrap {
     padding: 20px 0;
     border-top: 1px solid rgba(0,0,0,.125);
@@ -340,4 +383,12 @@ td {
     background-color: #fff;
     margin-top: 15px;
     border-radius: 10px;
+}
+
+.sidebar__list {
+    padding-left: 0;
+}
+
+.sidebar__link {
+    line-height: 1.6;
 }

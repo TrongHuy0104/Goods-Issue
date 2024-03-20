@@ -7,6 +7,7 @@ package goods_issue.dataAccess;
 
 import static goods_issue.context.DBContext.CreateConnection;
 import goods_issue.model.Issues;
+import goods_issue.model.Model;
 import goods_issue.model.Product;
 import goods_issue.model.User;
 import java.sql.Connection;
@@ -465,11 +466,67 @@ public class IssuesDAO {
         }
     }
 
-    public static void main(String[] args) {
-        IssuesDAO dao = new IssuesDAO();
-        System.out.println(dao.pagingIssues("Huu Phuc", 1, 2));
+//     Dashboard
+    public ArrayList<Model> countExportedByMonth() {
+        ArrayList<Model> result = new ArrayList<>();
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlMonth = "";
+            sqlMonth = "SELECT YEAR(i.i_date) AS year, MONTH(i.i_date) AS month, SUM(id.quantity) AS total_products\n"
+                    + "FROM `issue-detail` id\n"
+                    + "JOIN issues i ON id.i_id = i.i_id\n"
+                    + "GROUP BY YEAR(i.i_date), MONTH(i.i_date)\n"
+                    + "ORDER BY year, month;";
+            ptmt = conn.prepareStatement(sqlMonth);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+//                return rs.getInt(1);
+                String totalyear = rs.getString("year");
+                String totalmonth = rs.getString("month");
+                String total_product = rs.getString("total_products");
 
-        //System.out.println(dao.getAllIssuesDetail("I_17102339613sdsds55755").isEmpty());
+                result.add(new Model(totalyear, totalmonth, total_product));
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public ArrayList<Model> countExportedByDays() {
+        ArrayList<Model> result = new ArrayList<>();
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            String sqlDays = "";
+            sqlDays = "SELECT DAYOFWEEK(DATE(i.i_date)) AS day_of_week, SUM(id.quantity) AS total_products\n"
+                    + "FROM `db`.`issue-detail` id\n"
+                    + "JOIN `db`.`issues` i ON id.i_id = i.i_id\n"
+                    + "WHERE DATE(i.i_date) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)\n"
+                    + "GROUP BY DAYOFWEEK(DATE(i.i_date))\n"
+                    + "ORDER BY DAYOFWEEK(DATE(i.i_date));";
+            ptmt = conn.prepareStatement(sqlDays);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                String dayOfWeek = rs.getString("day_of_week");
+                String total_product = rs.getString("total_products");
+
+                result.add(new Model(dayOfWeek, total_product));
+            }
+            rs.close();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
     }
 
 }

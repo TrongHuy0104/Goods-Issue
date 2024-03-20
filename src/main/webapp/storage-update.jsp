@@ -76,7 +76,7 @@
                 <div class="auth__content-inner admin-content-inner">
                     <p class="form__error">${error == "" ? "" : error}</p>
                     <p class="form__note">${note == "" ? "" : note}</p>
-                    <p class="form__title">BASIC INFORMATION</p>
+                    <p class="form__title">UPDATE STORAGE</p>
                     <form
                         action="storage-update"
                         method="POST"

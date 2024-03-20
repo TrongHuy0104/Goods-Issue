@@ -86,6 +86,7 @@
                 <div class="auth__content-inner admin-content-inner">
                     <p class="form__error">${error == "" ? "" : error}</p>
                     <p class="form__note">${note == "" ? "" : note}</p>
+                    <p class="form__title">UPDATE CUSTOMER FORM</p>
                     <form
                         action="customer-update"
                         method="POST"

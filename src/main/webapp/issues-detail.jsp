@@ -78,22 +78,16 @@
                             <div class="order-left__item">
                                 <span class="order-left__item-text">Status</span>
                                 <%
-                                if(i.getStatus() == 1) {
+                            if(i.getStatus() == 1) {
                                 %>
-                                <p class="table__data order-left__item-text" style="color: #3cb72c; font-weight: 600">Completed</p>
+
+                                <p class="order-left__item-text" style="color: #db7e06; font-weight: 600">In Progress</p>
+                                <%} else if (i.getStatus() == 2) {%>
+                                <p class="order-left__item-text" style="color: #3cb72c; font-weight: 600">Completed</p>
+                                <% } else if (i.getStatus() == 0) {%>
+                                <p class="order-left__item-text" style="color: red; font-weight: 600">Canceled</p>
                                 <%}%>
-                                <%--<p class="table__data order-left__item-text" style="color: red; font-weight: 600">Canceled</p>
-                                <%} else if (o.getStatus() == 1) {%>
-                                <p class="table__data order-left__item-text" style="color: #db7e06; font-weight: 600">Pending</p>
-                                <% } else if (o.getStatus() == 2) {%>
-                                <p class="table__data order-left__item-text" style="color: #db7e06; font-weight: 600">Confirmed</p>
-                                <% } else if (o.getStatus() == 3) {%>
-                                <p class="table__data order-left__item-text" style="color: #db7e06; font-weight: 600">Packed</p>
-                                <% } else if (o.getStatus() == 4) {%>
-                                <p class="table__data order-left__item-text" style="color: #db7e06; font-weight: 600">In Transit</p>
-                                <%} else {%>
-                                <p class="table__data order-left__item-text" style="color: #3cb72c; font-weight: 600">Completed</p>
-                                <%}%>--%>
+
                             </div>
                             <div class="order-left__item">
                                 <span class="order-left__item-text">Employee</span>
@@ -128,7 +122,7 @@
                                     <th style="width: 100%; text-align: left">Product</th>
                                     <th style="min-width: 150px; text-align: right">Storage</th>
                                     <th style="min-width: 150px; text-align: right">Quantity</th>
-                                    <th style="min-width: 150px; text-align: right">Price</th>
+                                    <th style="min-width: 150px; text-align: right">Price($)</th>
                                 </tr>
                             </thead>
                             <tbody>

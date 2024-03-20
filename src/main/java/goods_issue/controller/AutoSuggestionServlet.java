@@ -65,7 +65,7 @@ public class AutoSuggestionServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/exported";
+            String url = "jdbc:mysql://localhost:3306/issues";
             String username = "root";
             String password = "";
             Connection connection = DriverManager.getConnection(url, username, password);
