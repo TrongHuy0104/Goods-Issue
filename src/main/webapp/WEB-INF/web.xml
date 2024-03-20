@@ -96,6 +96,10 @@
         <servlet-name>UpdateIssuesStatus</servlet-name>
         <servlet-class>goods_issue.controller.UpdateIssuesStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <servlet-class>goods_issue.controller.PagingSearchIssuesControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>/user</url-pattern>
@@ -191,6 +195,10 @@
     <servlet-mapping>
         <servlet-name>UpdateIssuesStatus</servlet-name>
         <url-pattern>/update-issues-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <url-pattern>/PagingSearchIssuesControl</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

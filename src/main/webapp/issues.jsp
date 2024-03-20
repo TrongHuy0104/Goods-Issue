@@ -12,8 +12,15 @@
     User user = (User) request.getSession().getAttribute("admin");
     UserDAO userDao = new UserDAO();
     IssuesDAO issuesDAO = new IssuesDAO();
-    List<Issues> issuesList = issuesDAO.selectAllIssues();
-    
+
+    ArrayList<Issues> issuesList = (ArrayList<Issues>) request.getAttribute("issuesList");
+    int endPage = (int) request.getAttribute("endPage");
+    int itemStart = (int) request.getAttribute("itemStart");
+    int itemEnd = (int) request.getAttribute("itemEnd");
+    int index = (int) request.getAttribute("index");
+    int iCount = (int) request.getAttribute("iCount");
+    String dataSearch = (String) request.getAttribute("data-search");
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,14 +45,14 @@
         <script src="./assets/js/scripts.js"></script>
     </head>
     <body>
-        <%
-            if (user == null) {
+        <%            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
+        <!-- Sidebar -->
         <%
             request.setAttribute("page", "issues");
-        %>
+        %> 
         <jsp:include page="assets/templates/sidebar.jsp" /> 
         <!-- Navbar -->
 
@@ -54,12 +61,17 @@
         <main class="main">
             <div class="admin-top">
                 <h1 class="admin__heading">Issues</h1>
-                <form action="customer.jsp" method="POST" class="search-bar d-flex admin__search-bar">
+                <form action="PagingSearchIssuesControl" method="POST" class="search-bar d-flex admin__search-bar">
                     <input
                         type="text"
-                        name="data"
+                        name="dataSearch"
                         id=""
-                        value=""
+                        <%if (dataSearch == null) {
+                                dataSearch = "";
+                            } else {
+                                dataSearch = dataSearch;
+                            }%>
+                        value="<%=dataSearch%>"
                         placeholder="Search for item"
                         class="search-bar__input"
                         />
@@ -70,7 +82,7 @@
                 <a href="issues-add.jsp" class="admin__add-btn">+ Add Issues</a>
             </div>
             <%
-            if(issuesList == null) {
+                if (issuesList == null) {
             %>
 
             <div style="font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center">
@@ -90,12 +102,12 @@
                 </thead>
                 <tbody>
                     <%
-                    for(Issues i : issuesList) {
-                        User u = new User();
-                        u = userDao.selectUserById(i.getuId());
-                        List<Issues> issuesItems = null;
-                        issuesItems = issuesDAO.getAllIssuesDetail(i.getiId(), u.getId());
-                        double total = issuesDAO.getTotalIssuesPrice(issuesItems);
+                        for (Issues i : issuesList) {
+                            User u = new User();
+                            u = userDao.selectUserById(i.getuId());
+                            List<Issues> issuesItems = null;
+                            issuesItems = issuesDAO.getAllIssuesDetail(i.getiId(), u.getId());
+                            double total = issuesDAO.getTotalIssuesPrice(issuesItems);
                     %>
                     <tr>
                         <td>
@@ -113,7 +125,7 @@
                         </td>
                         <td>
                             <%
-                            if(i.getStatus() == 1) {
+                                if (i.getStatus() == 1) {
                             %>
 
                             <p class="table__data" style="color: #db7e06; font-weight: 600">In Progress</p>
@@ -155,21 +167,47 @@
                                     </ul>
                                 </div>
                                 <%
-                                if(i.getStatus() == 1) {
+                                    if (i.getStatus() == 1) {
                                 %>
                                 <a href="issues-add.jsp?i-id=<%=i.getiId()%>" class="table__act-btn table__act-btn-avatar"  title="add">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(143, 159, 188);transform: msFilter;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path></svg> 
-                                <%}%>
-                            </div>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(143, 159, 188);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path></svg> 
+                                    <%}%>
                         </td>
                         <%}%>
                     </tr>
                     <%}%>
                 </tbody>
+
             </table>
+
+            <%
+                if (issuesList != null && !issuesList.isEmpty()) {%>
+            <div class="paging">
+                <div class="paging-info">
+                    Showing <span class="paging-start"><%=itemStart%></span> to <span class="paging-end"><%=itemEnd%></span> of <span class="paging-total"><%=iCount%></span> entries
+                </div>
+                <ul class="paging__list">
+                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="PagingSearchIssuesControl?index=1&data-search=<%=dataSearch%>"><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.<path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg></a>
+                    </li>
+                    <li class="paging__item <%=(index > 1) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="PagingSearchIssuesControl?index=<%=index - 1%>&data-search=<%=dataSearch%>""><img src="./assets/icons/previous.svg" class="icon" alt=""></a>
+                    </li>
+                    <li class="paging__item  paging__item--active"><a class="paging__link"><%=index%></a></li>
+                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="PagingSearchIssuesControl?index=<%=index + 1%>&data-search=<%=dataSearch%>""><img src="./assets/icons/next.svg" class="icon" alt=""></a>
+                    </li>
+                    <li class="paging__item <%=(index < endPage) ? "" : " paging__item--disable"%>">
+                        <a class="paging__link" href="PagingSearchIssuesControl?index=<%=endPage%>&data-search=<%=dataSearch%>""><svg class="icon" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.<path d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"/></svg></a>
+                    </li>
+                </ul>
+            </div>
             <%}%>
         </main>
+        <%}%>
     </body>
     <script>window.dispatchEvent(new Event("template-loaded"));</script>
 </html>
+<!--PagingSearchIssuesControl-->
 
