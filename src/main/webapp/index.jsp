@@ -60,9 +60,9 @@
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="logo__img top-bar__logo-img" />
                         <h2 class="logo__title top-bar__logo-title">grocerymart</h2>
                     </a>
-                    <h1 class="auth__heading">Hello Again!</h1>
+                    <h1 class="auth__heading">Hello!</h1>
                     <p class="auth__desc">
-                        Welcome back to sign in. As a returning customer, you have access to your previously saved all
+                        Welcome to sign in. As a returning customer, you have access to your previously saved all
                         information.
                     </p>
                     <p class="form__error">${error == "" ? "" : error}</p>
@@ -98,10 +98,6 @@
                             <span class="form__message"></span>
                         </div>
                         <div class="form__group form__group--inline">
-                            <label class="form__checkbox">
-                                <input type="checkbox" name="" id="" class="form__checkbox-input d-none" />
-                                <span class="form__checkbox-label">Set as default card</span>
-                            </label>
                             <a href="./reset-password.jsp" class="auth__link form__pull-right" previewlistener="true"
                                >Forgot password?</a
                             >

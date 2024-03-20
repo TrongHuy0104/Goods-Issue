@@ -3,10 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 20, 2024 lúc 09:59 AM
+-- Thời gian đã tạo: Th3 12, 2024 lúc 05:03 PM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
-
+drop database db;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -105,8 +105,17 @@ CREATE TABLE `issue-detail` (
   `id_id` varchar(30) NOT NULL,
   `i_id` varchar(20) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `p_id` varchar(30) NOT NULL
+  `p_id` varchar(30) NOT NULL,
+  `s_id` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `issue-detail`
+--
+
+INSERT INTO `issue-detail` (`id_id`, `i_id`, `quantity`, `p_id`, `s_id`) VALUES
+('1723453423223', '1723453423231', 10, '20', 'STR_01'),
+('1723453423224', '1723453423231', 10, '12', 'STR_01');
 
 -- --------------------------------------------------------
 
@@ -117,11 +126,18 @@ CREATE TABLE `issue-detail` (
 CREATE TABLE `issues` (
   `i_id` varchar(20) NOT NULL,
   `u_id` varchar(30) NOT NULL,
-  `i_date` varchar(450) NOT NULL,
+  `i_date` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
-  `s_id` varchar(30) NOT NULL,
+  `description` varchar(30) DEFAULT NULL,
   `e_id` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `issues`
+--
+
+INSERT INTO `issues` (`i_id`, `u_id`, `i_date`, `status`, `description`, `e_id`) VALUES
+('1723453423231', '1701924598555', '2024-03-05 02:14:31', 1, '', '1705550310741');
 
 -- --------------------------------------------------------
 
@@ -150,11 +166,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`p_id`, `name`, `slug`, `code`, `rating`, `banners`, `thumb`, `total_sale`, `tags`, `created_at`, `updated_at`, `deleted_at`, `s_id`) VALUES
-('1', 'Iphone 14 ', 'Iphone 14 ', '1', 3.4, 'https://down-vn.img.susercontent.com/file/ef7e86e59bc3f59667abe75b2cb523b4', 'Ihttps://down-vn.img.susercontent.com/file/ef7e86e59bc3f59667abe75b2cb523b4', 29, 'iphone', '2023-11-12 01:12:51', '2023-11-12 01:12:51', '2024-01-24 08:52:35', 'STR_03'),
-('10', 'Iphone 12 ProMax', 'Iphone 12 ProMax', '1', 4, 'https://down-vn.img.susercontent.com/file/vn-50009109-d4ab7ea32282932b07758609fd3d86c9', 'product-10.jpg', 67, 'iphone', '2023-11-12 01:14:15', '2023-11-12 01:14:15', '2024-01-24 09:26:48', 'STR_03'),
 ('100', 'Masstel IZI 26', 'Masstel IZI 26', '1', 4.3, 'https://cdn.tgdd.vn/Products/Images/42/299610/masstel-izi-26-4g-thum-600x600.jpg', 'product-100.jpg', 41, 'masstel', '2023-11-13 21:50:47', '2023-11-13 21:50:47', '2024-01-24 09:30:31', 'STR_03'),
 ('101', 'Masstel IZI 10 4G', 'Masstel IZI 10 4G', '1', 3.4, 'https://cdn.tgdd.vn/Products/Images/42/265311/masstel-izi-10-4g-xanh-thumb-600x600.jpg', 'product-101.jpg', 89, 'masstel', '2023-11-13 21:50:47', '2023-11-13 21:50:47', '2024-01-24 09:30:31', 'STR_03'),
-('102', 'vivo V29 5G', 'vivo V29 5G', '1', 4, 'https://shop.vivoglobal.ph/cdn/shop/products/V29_Magic-Maroon.png?v=1697702927', 'product-102.jpg', 47, 'vivo', '2023-11-13 21:51:09', '2023-11-13 21:51:09', '2024-01-24 09:30:31', 'STR_03'),
+('102', 'vivo V29 5G', 'vivo V29 5G', '1', 4, 'https://shop.vivoglobal.ph/cdn/shop/products/V29_Magic-Maroon.png?v=1697702927', 'product-102.jpg', 47, 'vivo', '2023-11-13 21:51:09', '2023-11-13 21:51:09', '2024-02-22 02:01:01', 'STR_04'),
 ('103', 'vivo V25 Pro 5g', 'vivo V25 Pro 5g', '1', 5, 'https://cdn.tgdd.vn/Products/Images/42/282389/vivo-v25-pro-5g-xanh-thumb-1-600x600.jpg', 'product-103.jpg', 93, 'vivo', '2023-11-13 21:51:09', '2023-11-13 21:51:09', '2024-01-24 09:30:31', 'STR_03'),
 ('105', 'vivo V27e', 'vivo V27e', '1', 4, 'https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1677147707045/abc22b1496dd81c01c4363d7e640b657.png', 'product-105.jpg', 45, 'vivo', '2023-11-13 21:51:09', '2023-11-13 21:51:09', '2024-01-24 09:30:31', 'STR_03'),
 ('106', 'vivo V25 series', 'vivo V25 series', '1', 3.8, 'https://cdn.tgdd.vn/Products/Images/42/283148/vivo-v25-5g-vang-thumb-1-1-600x600.jpg', 'product-106.jpg', 41, 'vivo', '2023-11-13 21:51:09', '2023-11-13 21:51:09', '2024-01-24 09:30:31', 'STR_03'),
@@ -185,7 +199,7 @@ INSERT INTO `products` (`p_id`, `name`, `slug`, `code`, `rating`, `banners`, `th
 ('129', 'Xiaomi Mi 11 Ultra', 'Xiaomi Mi 11 Ultra', '1', 4, 'https://cdn.tgdd.vn/Products/Images/42/235578/xiaomi-mi-11-ultra-600x600-2-600x600.jpg', 'product-129.jpg', 33, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
 ('13', 'Iphone 13 Pro', 'Iphone 13 Pro', '1', 4.6, 'https://down-vn.img.susercontent.com/file/vn-50009109-44e3741c10a3243bc338c5ba4be20ecf', 'product-13.jpg', 30, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
 ('130', 'Xiaomi Mi 10T', 'Xiaomi Mi 10T', '1', 4, 'https://cdn2.cellphones.com.vn/x/media/catalog/product/x/i/xiaomi-mi-10t-pro_2__2_3_1_1_1_3.jpg', 'product-130.jpg', 70, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
-('131', 'Xiaomi Mi 10T Pro', 'Xiaomi Mi 10T Pro', '1', 4, 'https://cdn.tgdd.vn/Products/Images/42/228136/xiaomi-mi-10t-pro-den-200x200.jpg', 'product-131.jpg', 20, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
+('131', 'Xiaomi Mi 10T Pro 1234', 'Xiaomi Mi 10T Pro', '1', 4, 'https://cdn.tgdd.vn/Products/Images/42/228136/xiaomi-mi-10t-pro-den-200x200.jpg', 'product-131.jpg', 20, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-02-22 06:13:51', 'STR_03'),
 ('132', 'Xiaomi Redmi Note 10', 'Xiaomi Redmi Note 10', '1', 3, 'https://cdn.tgdd.vn/Products/Images/42/222758/xiaomi-redmi-note-10-thumb-white-200x200.jpg', 'product-132.jpg', 72, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
 ('133', 'Xiaomi Note 10 Pro', 'Xiaomi Note 10 Pro', '1', 4, 'https://cdn.tgdd.vn/Products/Images/42/229228/xiaomi-redmi-note-10-pro-thumb-xam-600x600-600x600.jpg', 'product-133.jpg', 35, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
 ('134', 'Xiaomi Redmi K40', 'Xiaomi Redmi K40', '1', 5, 'https://cdn.tgdd.vn/Products/Images/42/229010/redmi-k40-600x600-600x600.jpg', 'product-134.jpg', 40, 'xiaomi', '2023-11-13 21:52:53', '2023-11-13 21:52:53', '2024-01-24 09:30:31', 'STR_03'),
@@ -194,9 +208,6 @@ INSERT INTO `products` (`p_id`, `name`, `slug`, `code`, `rating`, `banners`, `th
 ('15', 'Iphone 14 ProMax', 'Iphone 14 ProMax', '1', 5, 'https://down-vn.img.susercontent.com/file/5d40817b8aa13d6685a825e06cc9d932', 'product-15.jpg', 77, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
 ('16', 'Iphone 11 ', 'Iphone 11 ', '1', 4, 'https://down-vn.img.susercontent.com/file/99411138a5b2831af190ac1f12f3b881', 'product-16.jpg', 35, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
 ('17', 'Iphone 8 Pro', 'Iphone 8 Pro', '1', 3.4, 'https://down-vn.img.susercontent.com/file/vn-11134201-7qukw-leuyklu8n3be23', 'product-17.jpg', 38, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
-('1701750302', 'Samsung A12', NULL, '1', 5, NULL, '17017503283891701394929234product-1.jpg', NULL, NULL, '2023-12-05 11:25:02', NULL, '2024-01-24 09:30:31', 'STR_03'),
-('1701973551', 'Iphone 11 ProMax', NULL, '1', 5, NULL, '1701973675858product-28.jpg', NULL, NULL, '2023-12-08 01:25:51', NULL, '2024-01-24 09:30:31', 'STR_03'),
-('1706694961221', 'Masstell 66', NULL, '1', 5, NULL, '1706746976683item-3.png', NULL, NULL, '2024-01-31 16:56:00', NULL, '2024-02-01 00:22:56', 'STR_01'),
 ('18', 'Iphone 7 ', 'Iphone 7 ', '1', 4, 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lhdmr34m0xmaa0', 'product-18.jpg', 92, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
 ('19', 'Iphone 15 Pro', 'Iphone 15 Pro', '1', 3.3, 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-llxdfg3rk63j0e', 'product-19.jpg', 52, 'iphone', '2023-11-12 01:15:50', '2023-11-12 01:15:50', '2024-01-24 09:30:31', 'STR_03'),
 ('2', 'Iphone 7 ProMax', 'Iphone 7 ProMax', '1', 3.1, 'https://down-vn.img.susercontent.com/file/75e7e311159a0865febc31f5b12697b9', 'https://down-vn.img.susercontent.com/file/75e7e311159a0865febc31f5b12697b9', 95, 'iphone', '2023-11-12 01:14:15', '2023-11-12 01:14:15', '2024-01-24 09:30:31', 'STR_03'),
@@ -265,7 +276,7 @@ INSERT INTO `products` (`p_id`, `name`, `slug`, `code`, `rating`, `banners`, `th
 ('78', 'Asus ZenPad 3S 10', 'Asus ZenPad 3S 10', '3', 3.4, 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lha36crafoqb9d', 'product-78.jpg', 38, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
 ('79', 'Apple Xperia Tablet Z4', 'Apple Xperia Tablet Z4', '3', 4.8, 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmaktqxdqfofd7', 'product-79.jpeg', 77, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
 ('8', 'Iphone 15 ProMax', 'Iphone 15 ProMax', '1', 5, 'https://down-vn.img.susercontent.com/file/vn-50009109-d4ab7ea32282932b07758609fd3d86c9', 'product-8.jpg', 16, 'iphone', '2023-11-12 01:14:15', '2023-11-12 01:14:15', '2024-01-24 09:34:49', 'STR_03'),
-('80', 'Samsung Surface Pro 7', 'Samsung Surface Pro 7', '3', 4.4, 'https://down-vn.img.susercontent.com/file/vn-50009109-a2a6dac3396fbf056d8cbf1c66238aaa', 'product-80.jpg', 66, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
+('80', 'Samsung Surface Pro 7', 'Samsung Surface Pro 7', '3', 4.4, 'https://down-vn.img.susercontent.com/file/vn-50009109-a2a6dac3396fbf056d8cbf1c66238aaa', 'product-80.jpg', 66, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-03-12 01:37:07', 'STR_03'),
 ('81', 'Sony Surface Pro 7', 'Sony Surface Pro 7', '3', 4.8, 'https://down-vn.img.susercontent.com/file/bc562d07372fd6aa38a030d125aedf71', 'product-81.jpg', 67, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
 ('82', 'Acer Pixel Slate', 'Acer Pixel Slate', '3', 4.3, 'https://down-vn.img.susercontent.com/file/8ec6221d3b920d222e0883f7e2a5de50', 'product-82.jpg', 82, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
 ('83', 'Acer Surface Pro 7', 'Acer Surface Pro 7', '3', 4.5, 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lha36crao44zee', 'product-83.jpg', 70, 'tablet', '2023-11-12 01:20:19', '2023-11-12 01:20:19', '2024-01-24 09:39:17', 'STR_02'),
@@ -430,8 +441,7 @@ INSERT INTO `product_category` (`pc_id`, `c_id`, `p_id`, `created_at`, `updated_
 (132, '7', '132', '2023-11-17 13:54:01', '2023-11-17 13:54:01'),
 (133, '7', '133', '2023-11-17 13:54:01', '2023-11-17 13:54:01'),
 (134, '7', '134', '2023-11-17 13:54:01', '2023-11-17 13:54:01'),
-(135, '7', '135', '2023-11-17 13:54:01', '2023-11-17 13:54:01'),
-(175, '9', '1706694961221', '2024-01-31 16:56:00', NULL);
+(135, '7', '135', '2023-11-17 13:54:01', '2023-11-17 13:54:01');
 
 -- --------------------------------------------------------
 
@@ -541,20 +551,20 @@ INSERT INTO `product_detail` (`pd_id`, `p_id`, `size`, `price`, `description`, `
 (75, '77', 1, 1583, 'OLED, 6.1,Super Retina XDR   //   iOS   //   Single CameraMain: 48 MP, Secondary: 12 MP   //   44 MP   //   Qualcomm Snapdragon 870   //   DDR4 8GB   //   eSIM   //   4000mAh, 20W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'Japan', 100000, '0000-00-00 00:00:00', 143, 43, 'KO', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (76, '78', 1, 1442, 'Dynamic AMOLED 2X, 6.2 inch   //   KaiOS   //   Single CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   8 MP   //   Snapdragon 888   //   LPDDR4 4GB   //   Micro-SIM   //   4200mAh, 22.5W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'America', 100000, '0000-00-00 00:00:00', 160, 60, 'VN', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (77, '79', 1, 1685, 'OLED Super Retina XDR, proportion 5.4 inch    //   KaiOS   //   Dual CameraMain: 48 MP, Secondary: 12 MP   //   24 MP   //   Qualcomm Snapdragon 870   //   LPDDR4 4GB   //   Nano-SIM   //   4100mAh, 24W', 'Experience brilliance with this premium phone, sporting an impressive OLED display that brings content to life. Equipped with the Exynos 2200 processor, 12GB RAM, and 512GB storage, it delivers seamless performance and abundant storage space. The 4800mAh battery ensures extended usage, complemented by rapid charging technology.  With its exceptional camera capabilities and superior video recording features, this phone captures moments in stunning detail. Crafted with attention to detail and enhanced security measures, it offers a premium experience for the discerning user.', 'Korea', 100000, '0000-00-00 00:00:00', 180, 80, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(78, '80', 1, 1365, 'OLED Super Retina XDR, proportion 5.4 inch    //   KaiOS   //   Single Camera12 MP   //   36 MP   //   Apple A15 Bionic   //   DDR4 8GB   //   Micro-SIM   //   4800mAh, 27W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'America', 100000, '0000-00-00 00:00:00', 108, 8, 'VN', 1, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
+(78, '80', 1, 1365, 'OLED Super Retina XDR, proportion 5.4 inch    //   KaiOS   //   Single Camera12 MP   //   36 MP   //   Apple A15 Bionic   //   DDR4 8GB   //   Micro-SIM   //   4800mAh, 27W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'America', 100000, '0000-00-00 00:00:00', 108, 139, 'VN', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (79, '81', 1, 1851, 'Fluid AMOLED, proportion 6.55 inch   //   Android   //   Dual CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   10 MP   //   Apple A15 Bionic   //   LPDDR5X 16GB   //   eSIM   //   6000mAh, 40W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'America', 100000, '0000-00-00 00:00:00', 158, 58, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (80, '82', 1, 1043, 'OLED, 6.1,Super Retina XDR   //   HarmonyOS   //   Dual CameraMain: 48 MP, Secondary: 12 MP   //   20 MP   //   MediaTek Dimensity 1200   //   LPDDR4 6GB   //   Nano-SIM   //   3500mAh, 15W', 'This flagship phone redefines excellence. Its expansive AMOLED display, boasting high resolution and vibrant colors, offers an unparalleled visual treat. Powered by the Snapdragon 888 processor, in tandem with 12GB of RAM and 128GB storage, this device delivers unbridled performance, effortlessly handling multitasking and demanding applications. The robust 4500mAh battery ensures extensive usage, complemented by rapid charging capabilities for uninterrupted productivity.  Beyond its performance prowess, this flagship is a photography marvel. Its high-caliber camera system, equipped with an array of shooting modes from wide-angle to macro, captures breathtaking moments. Distinguished by its elegant design, premium construction, and top-tier security features including water and dust resistance, this phone stands as an epitome of sophistication and functionality.', 'Japan', 100000, '0000-00-00 00:00:00', 183, 83, 'CHI', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (81, '83', 1, 1476, 'AMOLED DotDisplay, proportion 6.81    //   iOS   //   Single CameraMain: 108 MP, Telephoto: 48 MP, Ultra-wide: 20 MP, Depth: 12 MP, Macro: 2 MP   //   28 MP   //   Snapdragon 888   //   DDR4 8GB   //   eSIM   //   4000mAh, 20W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'Vietnam', 100000, '0000-00-00 00:00:00', 117, 17, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(82, '84', 1, 1405, 'OLED Super Retina XDR, proportion 5.4 inch    //   iOS   //   Penta CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   20 MP   //   MediaTek Dimensity 1200   //   LPDDR5 12GB   //   Standard SIM (Mini-SIM)   //   4100mAh, 24W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'Korea', 100000, '0000-00-00 00:00:00', 132, 32, 'VN', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
+(82, '84', 1, 1405, 'OLED Super Retina XDR, proportion 5.4 inch    //   iOS   //   Penta CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   20 MP   //   MediaTek Dimensity 1200   //   LPDDR5 12GB   //   Standard SIM (Mini-SIM)   //   4100mAh, 24W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'Korea', 100000, '0000-00-00 00:00:00', 132, 25, 'VN', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (83, '85', 1, 1441, 'OLED Smooth Display, proportion 6.4 inch   //   KaiOS   //   Triple Camera12 MP   //   28 MP   //   Apple A14 Bionic   //   DDR4 6GB   //   Standard SIM (Mini-SIM)   //   4100mAh, 24W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'Japan', 100000, '0000-00-00 00:00:00', 180, 80, 'JP', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (84, '86', 1, 1277, 'Fluid AMOLED, proportion 6.55 inch   //   HarmonyOS   //   Penta CameraMain: 108 MP, Telephoto: 48 MP, Ultra-wide: 20 MP, Depth: 12 MP, Macro: 2 MP   //   16 MP   //   MediaTek Dimensity 1200   //   LPDDR5 12GB   //   Standard SIM (Mini-SIM)   //   5200mAh, 33W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'Korea', 100000, '0000-00-00 00:00:00', 109, 9, 'FR', 1, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (85, '87', 1, 1228, 'Fluid AMOLED, proportion 6.55 inch   //   HarmonyOS   //   Dual CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   24 MP   //   Apple A15 Bionic   //   DDR4 8GB   //   Nano-SIM   //   4000mAh, 20W', 'This cutting-edge flagship phone boasts an expansive edge-to-edge AMOLED display, delivering mesmerizing visuals with its high resolution and vibrant color reproduction. Powered by the latest Snapdragon 8 series processor paired with 16GB RAM and 256GB storage, it blazes through tasks effortlessly. The generous 5000mAh battery, combined with lightning-fast charging, ensures uninterrupted usage throughout the day.  Its camera setup is a marvel, capturing stunning details and offering a myriad of shooting modes for every scenario. Crafted with premium materials and boasting top-tier security features, this phone is a true statement of luxury and functionality.', 'America', 100000, '0000-00-00 00:00:00', 173, 73, 'CHI', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (86, '88', 1, 1453, 'Dynamic AMOLED 2X, 6.2 inch   //   Android   //   Penta CameraMain: 48 MP, Secondary: 12 MP   //   32 MP   //   Apple A13 Bionic   //   LPDDR4 6GB   //   Micro-SIM   //   3500mAh, 15W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'Japan', 100000, '0000-00-00 00:00:00', 195, 95, 'AME', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (87, '89', 1, 1952, 'OLED Smooth Display, proportion 6.4 inch   //   HarmonyOS   //   Dual CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   36 MP   //   Exynos 2100   //   LPDDR5X 16GB   //   Nano-SIM   //   6000mAh, 40W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'China', 100000, '0000-00-00 00:00:00', 133, 33, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(88, '90', 1, 1840, 'Dynamic AMOLED 2X, 6.2 inch   //   iOS   //   Dual CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   8 MP   //   Kirin 9000   //   LPDDR5X 16GB   //   Nano-SIM   //   3700mAh, 18W', 'Experience brilliance with this premium phone, sporting an impressive OLED display that brings content to life. Equipped with the Exynos 2200 processor, 12GB RAM, and 512GB storage, it delivers seamless performance and abundant storage space. The 4800mAh battery ensures extended usage, complemented by rapid charging technology.  With its exceptional camera capabilities and superior video recording features, this phone captures moments in stunning detail. Crafted with attention to detail and enhanced security measures, it offers a premium experience for the discerning user.', 'Vietnam', 100000, '0000-00-00 00:00:00', 120, 20, 'AME', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
+(88, '90', 1, 1840, 'Dynamic AMOLED 2X, 6.2 inch   //   iOS   //   Dual CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   8 MP   //   Kirin 9000   //   LPDDR5X 16GB   //   Nano-SIM   //   3700mAh, 18W', 'Experience brilliance with this premium phone, sporting an impressive OLED display that brings content to life. Equipped with the Exynos 2200 processor, 12GB RAM, and 512GB storage, it delivers seamless performance and abundant storage space. The 4800mAh battery ensures extended usage, complemented by rapid charging technology.  With its exceptional camera capabilities and superior video recording features, this phone captures moments in stunning detail. Crafted with attention to detail and enhanced security measures, it offers a premium experience for the discerning user.', 'Vietnam', 100000, '0000-00-00 00:00:00', 120, 15, 'AME', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (89, '91', 1, 1177, 'OLED Super Retina XDR, proportion 5.4 inch    //   KaiOS   //   Quad CameraMain: 48 MP, Secondary: 12 MP   //   28 MP   //   Exynos 2100   //   DDR4 6GB   //   Nano-SIM   //   6000mAh, 40W', 'Experience brilliance with this premium phone, sporting an impressive OLED display that brings content to life. Equipped with the Exynos 2200 processor, 12GB RAM, and 512GB storage, it delivers seamless performance and abundant storage space. The 4800mAh battery ensures extended usage, complemented by rapid charging technology.  With its exceptional camera capabilities and superior video recording features, this phone captures moments in stunning detail. Crafted with attention to detail and enhanced security measures, it offers a premium experience for the discerning user.', 'France', 100000, '0000-00-00 00:00:00', 177, 77, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (90, '92', 1, 1014, 'AMOLED DotDisplay, proportion 6.81    //   iOS   //   Single Camera12 MP   //   28 MP   //   Apple A14 Bionic   //   LPDDR3 4GB   //   Standard SIM (Mini-SIM)   //   4200mAh, 22.5W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'Japan', 100000, '0000-00-00 00:00:00', 158, 59, 'JP', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(91, '93', 1, 1096, 'OLED Smooth Display, proportion 6.4 inch   //   KaiOS   //   Single CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   36 MP   //   Apple A15 Bionic   //   DDR4 6GB   //   Micro-SIM   //   6000mAh, 40W', 'Embodying innovation, this mid-range phone features a stunning LCD display, offering immersive visuals for entertainment and work alike. The MediaTek Dimensity 1100 processor, accompanied by 6GB RAM and 128GB storage, strikes the perfect balance between performance and affordability. The 4500mAh battery with fast charging keeps you powered up for all your tasks.  The versatile camera system offers a range of photography options, ensuring every shot is picture-perfect. With its sleek design and robust build quality, this phone is designed to cater to your daily needs efficiently.', 'America', 100000, '0000-00-00 00:00:00', 105, 5, 'KO', 1, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
+(91, '93', 1, 1096, 'OLED Smooth Display, proportion 6.4 inch   //   KaiOS   //   Single CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   36 MP   //   Apple A15 Bionic   //   DDR4 6GB   //   Micro-SIM   //   6000mAh, 40W', 'Embodying innovation, this mid-range phone features a stunning LCD display, offering immersive visuals for entertainment and work alike. The MediaTek Dimensity 1100 processor, accompanied by 6GB RAM and 128GB storage, strikes the perfect balance between performance and affordability. The 4500mAh battery with fast charging keeps you powered up for all your tasks.  The versatile camera system offers a range of photography options, ensuring every shot is picture-perfect. With its sleek design and robust build quality, this phone is designed to cater to your daily needs efficiently.', 'America', 100000, '0000-00-00 00:00:00', 105, 4, 'KO', 1, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (92, '94', 1, 1789, 'OLED, 6.1,Super Retina XDR   //   HarmonyOS   //   Penta CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   36 MP   //   Apple A15 Bionic   //   LPDDR3 4GB   //   Standard SIM (Mini-SIM)   //   3700mAh, 18W', 'The mid-range marvel presents a broad and vivid LCD display, offering an immersive visual experience. Equipped with the MediaTek Dimensity 1200 processor and 8GB RAM, it strikes a fine balance between entertainment and daily usage. Featuring a capacious 256GB storage, it easily accommodates your data without compromise.  Besides its performance, the device boasts a versatile camera setup. With quality lenses and diverse shooting functionalities, it effortlessly captures life moments. The substantial 5000mAh battery, coupled with rapid charging technology, ensures prolonged usage without interruptions.', 'Japan', 100000, '0000-00-00 00:00:00', 157, 57, 'JP', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (93, '95', 1, 1029, 'OLED Super Retina XDR, proportion 5.4 inch    //   iOS   //   Quad CameraMain: 64 MP, Ultra-wide: 16 MP, Telephoto: 12 MP   //   20 MP   //   Apple A15 Bionic   //   LPDDR4 4GB   //   Standard SIM (Mini-SIM)   //   6000mAh, 40W', 'Embodying innovation, this mid-range phone features a stunning LCD display, offering immersive visuals for entertainment and work alike. The MediaTek Dimensity 1100 processor, accompanied by 6GB RAM and 128GB storage, strikes the perfect balance between performance and affordability. The 4500mAh battery with fast charging keeps you powered up for all your tasks.  The versatile camera system offers a range of photography options, ensuring every shot is picture-perfect. With its sleek design and robust build quality, this phone is designed to cater to your daily needs efficiently.', 'Korea', 100000, '0000-00-00 00:00:00', 180, 80, 'KO', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (94, '96', 1, 1892, 'OLED Smooth Display, proportion 6.4 inch   //   Android   //   Single CameraMain: 48 MP, Secondary: 12 MP   //   16 MP   //   Apple A13 Bionic   //   LPDDR5 12GB   //   Standard SIM (Mini-SIM)   //   4000mAh, 20W', 'This premium phone flaunts a large OLED display that exudes vivid and crisp visuals. Fueled by the Exynos 2100 processor, accompanied by 16GB RAM and 512GB storage, it embodies unparalleled performance and limitless data storage. Noteworthy for its exceptional camera capabilities and high-fidelity video recording.  Featuring an exquisite design with premium materials, this phone integrates cutting-edge security measures such as an in-display fingerprint sensor. The 4800mAh battery boasts extended usage without frequent recharging, supported by fast-charging functionality for seamless usability.', 'China', 100000, '0000-00-00 00:00:00', 183, 83, 'FR', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
@@ -593,8 +603,7 @@ INSERT INTO `product_detail` (`pd_id`, `p_id`, `size`, `price`, `description`, `
 (130, '132', 1, 1630, 'AMOLED DotDisplay, proportion 6.81    //   Android   //   Quad CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   20 MP   //   Snapdragon 888   //   LPDDR3 4GB   //   Nano-SIM   //   4000mAh, 20W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'China', 100000, '0000-00-00 00:00:00', 167, 67, 'VN', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (131, '133', 1, 1645, 'OLED Smooth Display, proportion 6.4 inch   //   iOS   //   Single CameraMain: 48 MP, Secondary: 12 MP   //   28 MP   //   Apple A15 Bionic   //   DDR4 6GB   //   Standard SIM (Mini-SIM)   //   3700mAh, 18W', 'This premium phone flaunts a large OLED display that exudes vivid and crisp visuals. Fueled by the Exynos 2100 processor, accompanied by 16GB RAM and 512GB storage, it embodies unparalleled performance and limitless data storage. Noteworthy for its exceptional camera capabilities and high-fidelity video recording.  Featuring an exquisite design with premium materials, this phone integrates cutting-edge security measures such as an in-display fingerprint sensor. The 4800mAh battery boasts extended usage without frequent recharging, supported by fast-charging functionality for seamless usability.', 'France', 100000, '0000-00-00 00:00:00', 170, 70, 'CHI', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
 (132, '134', 1, 1037, 'AMOLED DotDisplay, proportion 6.81    //   Android   //   Triple CameraMain: 108 MP, Ultra-wide: 20 MP, Depth: 5 MP, Macro: 2 MP   //   12 MP   //   Apple A14 Bionic   //   LPDDR4 4GB   //   Micro-SIM   //   4800mAh, 27W', 'Compact yet powerful, this pocket-friendly phone boasts a Super Retina XDR display, delivering striking visuals in a smaller form factor. Running on the A14 Bionic chip, with 4GB RAM and 256GB storage, it is an ideal companion for those seeking performance in a compact size.  The camera system excels in precision photography, capturing vibrant images and supporting high-quality video recording. Backed by a reliable 3500mAh battery and efficient charging, this phone keeps up with your busy lifestyle.', 'Japan', 100000, '0000-00-00 00:00:00', 148, 48, 'AME', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(133, '135', 1, 1259, 'Dynamic AMOLED 2X, 6.2 inch   //   Android   //   Triple CameraMain: 48 MP, Secondary: 12 MP   //   20 MP   //   Apple A13 Bionic   //   LPDDR5 12GB   //   eSIM   //   4000mAh, 20W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'China', 100000, '0000-00-00 00:00:00', 186, 86, 'CHI', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10),
-(174, '1706694961221', NULL, 20000, 'dsdf', NULL, 'Japan', NULL, NULL, NULL, 25, NULL, 2, '2024-01-31 16:56:00', NULL, NULL, NULL, NULL, 10);
+(133, '135', 1, 1259, 'Dynamic AMOLED 2X, 6.2 inch   //   Android   //   Triple CameraMain: 48 MP, Secondary: 12 MP   //   20 MP   //   Apple A13 Bionic   //   LPDDR5 12GB   //   eSIM   //   4000mAh, 20W', 'Despite its compact size, this phone Super AMOLED display delivers sharp and vibrant visuals. Running on the powerful Apple A15 Bionic processor, with 6GB RAM and 128GB storage, it is a pocket-sized powerhouse.  Highlighting its prowess is a top-notch camera system, enabling sharp and detailed photography, alongside high-definition video recording. The 4000mAh battery ensures all-day usage, complemented by swift charging capabilities, optimizing your experience on the go.', 'China', 100000, '0000-00-00 00:00:00', 186, 86, 'CHI', 2, '2023-11-17 13:58:48', '2023-11-17 13:58:48', '0000-00-00 00:00:00', 1, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -619,6 +628,9 @@ INSERT INTO `storage` (`s_id`, `s_name`, `s_size`, `s_address`, `type`, `status`
 ('STR_01', 'Laptop Storehouse ', 1000, 'Quy Nhon BInh Dinh', 'storehouse', 'using'),
 ('STR_01708412490344682', 'STORE 3', 5000, 'Binh Dinh', 'factory', 'closed'),
 ('STR_01708413735673899', 'STORE 3', 5000, 'Binh Dinh', 'store', 'closed'),
+('STR_01708561309226940', 'STORE 3', 5000, 'Binh Dinh', 'store', 'closed'),
+('STR_01708567225136733', 'STORE 321', 5000, 'Binh Dinh', 'store', 'empty'),
+('STR_01708582657872101', 'laptoppp', 100000, 'fpt ', 'store', 'closed'),
 ('STR_02', 'Tablet Storehouse', 700, 'Tuy Hoa Phu Yen', 'factory', 'full'),
 ('STR_03', 'Mobiphone Storehouse', 1100, 'Phu Cat Binh Dinh', 'storehouse', 'using'),
 ('STR_04', 'Electronic Components Store', 1200, 'An Nhon Binh Dinh', 'storehouse', 'empty'),
@@ -655,7 +667,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`u_id`, `full_name`, `address`, `ship_address`, `phone`, `cmnd`, `status`, `image`, `age`, `gender`, `username`, `password`, `email`, `created_at`, `updated_at`, `role`) VALUES
 ('1', 'Trong Huyy', 'Binh Dinh', 'Binh DInh', '0968674534', '0', 1, '1701766306906map.jpg', 20, 'male', 'huy01040104', 'FkZdXdoRm/PikEmaF+eiY+iY2t1uxloDDsW3W5NBUeo=', 'huy123@gmail.com', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1),
-('1700557164893', 'Trọng Huy', 'HN', 'Nguyễn Thái Học Quy Nhơn Bình Định', '0863853634', '0', 0, '1702004784327bandmember.jpg', 0, 'male', 'MrA', '3g08JkNvwZkdmLt6gu6bMaVZ8ulxAWyOpXX7fSdG6uQ=', 'tronghuy01040@gmail.com', NULL, NULL, 2),
+('1700557164893', 'Trọng Huy', 'HN', 'Nguyễn Thái Học Quy Nhơn Bình Định', '0863853634', '0', 0, '1702004784327bandmember.jpg', 0, 'male', 'MrA', '3g08JkNvwZkdmLt6gu6bMaVZ8ulxAWyOpXX7fSdG6uQ=', 'tronghuy01040@gmail.com', NULL, NULL, 0),
 ('1701400360432', 'Au Cong Danh', 'Nguyễn Thái Học', 'Nguyễn Thái Học', '0862901849', '0', 0, NULL, 0, 'male', 'congxdanh', 'FkZdXdoRm/PikEmaF+eiY+iY2t1uxloDDsW3W5NBUeo=', 'danhmuto@gmail.com', NULL, NULL, 0),
 ('1701400389796', 'duyen', 'HCM', 'HCM', '0943846727', '0', 0, '1705594880443avatar-1.png', 0, 'female', 'duyen', 'FkZdXdoRm/PikEmaF+eiY+iY2t1uxloDDsW3W5NBUeo=', 'duyentm0602@gmail.com', NULL, NULL, 0),
 ('1701886666204', 'Nguyen Quy', 'Quy Nhơn', 'Quy Nhơn', '0384568434', '0', 0, NULL, 0, 'male', 'quy', 'heRmdavB880/KJMHNyylNPq+X1JWtFl/Hf/ls+OLdXg=', 'nguyenxuanquy147@gmail.com', NULL, NULL, 0),
@@ -675,10 +687,14 @@ INSERT INTO `users` (`u_id`, `full_name`, `address`, `ship_address`, `phone`, `c
 ('1702004059349', 'hotrongninhhqv2003', '1039/16 Tran Hung Dao', '1039/16 Tran Hung Dao', '0914996090', '0', 0, NULL, 0, 'male', 'hotrongninh321', 'mIw+S2JsydeCFktdkvHQKwITV1vIOCIehAGikVZ9aLc=', '3qcuhanhtamquoc123@gmail.com', NULL, NULL, 0),
 ('1702009355112', 'Lê Nguyễn Phúc Anh', 'Viet Nam', 'Phu Yen, Viet Nam', '0989394515', '0', 0, '1702009382172_MG_8097.JPG', 0, 'male', 'anh1', 'n6Lg2MaxlQte5iYX56BCtIlKRqHEvqncUgnoz5rLb4E=', 'AVC@gmail.com', NULL, NULL, 0),
 ('1705494035437', 'huy', 'dfsd', 'sdsds', '0922444444', '0', 0, '1705545069560map.jpg', 0, 'male', 'MrH', 'FkZdXdoRm/PikEmaF+eiY+iY2t1uxloDDsW3W5NBUeo=', 'aasa@sds.dsd', NULL, NULL, 0),
-('1705550310741', 'Ha', 'HN', 'BD', '0988674307', '0', 0, '1705550310203place1.jpg', 0, 'male', 'MsAA', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'bcccd@gmail.com', NULL, NULL, 0),
-('1706090149701', 'Ha', 'HN', 'BD', '0988674307', '0', 0, '1706090148906avatar-3.png', 0, 'female', 'MrAaaaa', '3SKG6sfAQZ0rHRk9LGWhyQUAy0Xhjo70gQMWV3tipDc=', 'bcddccgdfdd@gmail.com', NULL, NULL, 0),
-('1706090224874', 'Hadfdfdf', 'HN', 'BD', '0988674307', '0', 0, '1706090224753avatar-2.png', 0, 'female', 'MrAaaasds', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'gdfdd@gmail.com', NULL, NULL, 0),
-('1706603752914', 'Hadfdfdf', 'HN', 'BD', '0988674307', '0', 0, '1706603752667avatar-2.png', 0, 'female', 'MrAaaasdsfdfd', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'gdfdddd@gmail.com', NULL, NULL, 0);
+('1705550310741', 'Au Cong Danh', 'HN', 'BD', '0988674307', '0', 0, '1705550310203place1.jpg', 0, 'male', 'congdanh123', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'danh123@gmail.com', NULL, NULL, 0),
+('1706090149701', 'Cao Trung Hoan', 'HN', 'BD', '0988674308', '0', 0, '1706090148906avatar-3.png', 0, 'female', 'trunghoan123', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'hoan@gmail.com', NULL, NULL, 2),
+('1706090224874', 'Thanh Tuyen', 'HN', 'BD', '0988674309', '0', 0, '1706090224753avatar-2.png', 0, 'female', 'tuyen', 'i+9OYMUWet6VnJh0JGg9pReIMXxnslQh0BFIwrX7ugk=', 'tuyen@gmail.com', NULL, NULL, 2),
+('1710176288237', 'huy', '', '123', '0936456789', '0', 0, '', 0, 'male', '', '', 'aasa@sds.dsd', NULL, NULL, 0),
+('1710176492444', 'sdsd 12', '', 'dfsd', '0999456789', '0', 0, '', 0, 'male', '', '', 'aasa@sds.dsd', NULL, NULL, 0),
+('1710177308281', 'sdd 12', '', 'dfsd', '0993456789', '0', 0, '', 0, 'male', '', '', 'aasa@sds.dsd', NULL, NULL, 0),
+('1710178485670', 'sdsd 12', '', 'dfsd', '0993456789', '0', 0, '', 0, 'male', '', '', 'aasa@sds.dsd', NULL, NULL, 0),
+('1710232530632', 'huyy', '', '123', '0936456789', '0', 0, '', 0, 'male', '', '', 'aasa@sds.dsd', NULL, NULL, 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -700,18 +716,13 @@ ALTER TABLE `employee`
 -- Chỉ mục cho bảng `issue-detail`
 --
 ALTER TABLE `issue-detail`
-  ADD PRIMARY KEY (`id_id`),
-  ADD UNIQUE KEY `i_id` (`i_id`,`p_id`),
-  ADD KEY `p_id` (`p_id`);
+  ADD PRIMARY KEY (`id_id`);
 
 --
 -- Chỉ mục cho bảng `issues`
 --
 ALTER TABLE `issues`
-  ADD PRIMARY KEY (`i_id`),
-  ADD UNIQUE KEY `u_id` (`u_id`,`s_id`,`e_id`),
-  ADD KEY `e_id` (`e_id`),
-  ADD KEY `s_id` (`s_id`);
+  ADD PRIMARY KEY (`i_id`);
 
 --
 -- Chỉ mục cho bảng `products`
@@ -755,32 +766,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `product_category`
 --
 ALTER TABLE `product_category`
-  MODIFY `pc_id` bigint(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+  MODIFY `pc_id` bigint(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
 
 --
 -- AUTO_INCREMENT cho bảng `product_detail`
 --
 ALTER TABLE `product_detail`
-  MODIFY `pd_id` bigint(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `pd_id` bigint(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
-
---
--- Các ràng buộc cho bảng `issue-detail`
---
-ALTER TABLE `issue-detail`
-  ADD CONSTRAINT `issue-detail_ibfk_1` FOREIGN KEY (`i_id`) REFERENCES `issues` (`i_id`),
-  ADD CONSTRAINT `issue-detail_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `products` (`p_id`);
-
---
--- Các ràng buộc cho bảng `issues`
---
-ALTER TABLE `issues`
-  ADD CONSTRAINT `issues_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`u_id`),
-  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`e_id`) REFERENCES `employee` (`e_id`),
-  ADD CONSTRAINT `issues_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `storage` (`s_id`);
 
 --
 -- Các ràng buộc cho bảng `products`

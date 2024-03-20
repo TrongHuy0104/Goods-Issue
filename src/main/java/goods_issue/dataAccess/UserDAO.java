@@ -86,6 +86,39 @@ public class UserDAO implements DAO<User> {
         }
         return user;
     }
+    
+    public User selectUserById(String id) {
+        User user = new User();
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+
+            String sql = "SELECT * FROM users WHERE u_id = ?";
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, id);
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
+    
 
     @Override
     public void insert(User t) {
@@ -493,6 +526,123 @@ public class UserDAO implements DAO<User> {
         }
         return list;
     }
+    
+    public ArrayList<User> selectAllEmployee() {
+        ArrayList<User> result = new ArrayList<>();
+
+        try {
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+
+            String sql = "SELECT * FROM users WHERE role = 2";
+            ptmt = conn.prepareStatement(sql);
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+                result.add(user);
+            }
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public boolean checkCustomerDuplicated(String name, String phone) {
+        boolean result = false;
+        try {
+            Connection conn = CreateConnection();
+
+            String sql = "SELECT * FROM users WHERE full_name = ? AND phone = ?";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, name);
+            ptmt.setString(2, phone);
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                result = true;
+            }
+            ptmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public User selectCustomer(String name, String phone) {
+        User user = new User();
+        try {
+            Connection conn = CreateConnection();
+
+            String sql = "SELECT * FROM users WHERE full_name = ? AND phone = ?";
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, name);
+            ptmt.setString(2, phone);
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                user.setId(rs.getString("u_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+                user.setDeliveryAddress(rs.getString("ship_address"));
+                user.setGender(rs.getString("gender"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setAvatar(rs.getString("image"));
+            }
+            ptmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
+    
+    public void insertCustomer(User t) {
+        try {
+            String sql = "INSERT INTO users (u_id, username, password, address, full_name, gender, ship_address, phone, email, image) "
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)";
+            Connection conn = CreateConnection();
+            PreparedStatement ptmt = null;
+            ptmt = conn.prepareStatement(sql);
+
+            ptmt.setString(1, t.getId());
+            ptmt.setString(2, "");
+            ptmt.setString(3, "");
+            ptmt.setString(4, "");
+            ptmt.setString(5, t.getFullName());
+            ptmt.setString(6, "male");
+            ptmt.setString(7, t.getDeliveryAddress());
+            ptmt.setString(8, t.getPhone());
+            ptmt.setString(9, t.getEmail() != "" ? t.getEmail() : "");
+            ptmt.setString(10, "");
+
+            ptmt.executeUpdate();
+            ptmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<User> searchByName(String data, int index, int limit) {
         List<User> list = new ArrayList<>();
@@ -531,13 +681,6 @@ public class UserDAO implements DAO<User> {
     }
 
     public static void main(String[] args) {
-        User us = new User();
-        us.setId("1");
-        UserDAO u = new UserDAO();
-        List<User> newList = new ArrayList<>();
-        newList = u.searchByName("a",3, 10);
-        for (User user : newList) {
-            System.out.println(user.toString());
-        }
+        
     }
 }

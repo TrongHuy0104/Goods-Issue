@@ -81,8 +81,25 @@
         <servlet-class>goods_issue.controller.PagingSearchProductControl</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PagingSearchCustomerControl</servlet-name>
-        <servlet-class>goods_issue.controller.PagingSearchCustomerControl</servlet-class>
+        <servlet-name>GenerateIssuesPDFCtrl</servlet-name>
+        <servlet-class>goods_issue.controller.GenerateIssuesPDFCtrl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AutoSuggestionServlet</servlet-name>
+        <servlet-class>goods_issue.controller.AutoSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IssuesAddServlet</servlet-name>
+        <servlet-class>goods_issue.controller.IssuesAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateIssuesStatus</servlet-name>
+        <servlet-class>goods_issue.controller.UpdateIssuesStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <servlet-class>goods_issue.controller.PagingSearchIssuesControl</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
@@ -165,8 +182,26 @@
         <url-pattern>/paging-search-product</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PagingSearchCustomerControl</servlet-name>
-        <url-pattern>/paging-search-customer</url-pattern>
+
+        <servlet-name>GenerateIssuesPDFCtrl</servlet-name>
+        <url-pattern>/generateIssuesPdf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AutoSuggestionServlet</servlet-name>
+        <url-pattern>/AutoSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IssuesAddServlet</servlet-name>
+        <url-pattern>/issues-add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateIssuesStatus</servlet-name>
+        <url-pattern>/update-issues-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingSearchIssuesControl</servlet-name>
+        <url-pattern>/PagingSearchIssuesControl</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>
