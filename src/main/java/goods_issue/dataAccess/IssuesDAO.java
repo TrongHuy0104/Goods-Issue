@@ -295,7 +295,7 @@ public class IssuesDAO {
             PreparedStatement ptmt = null;
             String sqlMonth = "";
             sqlMonth = "SELECT YEAR(i.i_date) AS year, MONTH(i.i_date) AS month, SUM(id.quantity) AS total_products\n"
-                    + "FROM db.`issue-detail` id\n"
+                    + "FROM `issue-detail` id\n"
                     + "JOIN issues i ON id.i_id = i.i_id\n"
                     + "GROUP BY YEAR(i.i_date), MONTH(i.i_date)\n"
                     + "ORDER BY year, month;";

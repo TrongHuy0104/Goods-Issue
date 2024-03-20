@@ -140,11 +140,11 @@ const $ = document.querySelector.bind(document);
          * <div id="box">Content show/hide</div>
          */
         let curID;
-        window.addEventListener("template-loaded", initJsToggle);
+                window.addEventListener("template-loaded", initJsToggle);
                 function initJsToggle() {
                 $$(".js-toggle").forEach((button) => {
                 const target = button.getAttribute("toggle-target");
-                let id = button.dataset.id;
+                        let id = button.dataset.id;
                         if (!target) {
                 document.body.innerText = `Cần thêm toggle-target cho: ${button.outerHTML}`;
                 }
@@ -184,12 +184,16 @@ const $ = document.querySelector.bind(document);
 // Tab
                 window.addEventListener("template-loaded", () => {
                 const tabsSelector = "product-tab__item";
+//                const tabsSelector = "list-group-item";
                         const contentsSelector = "product-tab__content";
+//                        const tabActive = `${tabsSelector}--active`;
                         const tabActive = `${tabsSelector}--active`;
+//                        const contentActive = `${contentsSelector}--active`;
                         const contentActive = `${contentsSelector}--active`;
                         const tabContainers = $$(".js-tabs");
                         tabContainers.forEach((tabContainer) => {
                         const tabs = tabContainer.querySelectorAll(`.${tabsSelector}`);
+                        console.log(tabs);
                                 const contents = tabContainer.querySelectorAll(`.${contentsSelector}`);
                                 tabs.forEach((tab, index) => {
                                 tab.onclick = () => {

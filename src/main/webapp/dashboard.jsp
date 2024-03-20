@@ -219,11 +219,13 @@
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <!-- Fonts -->
-        <!--<link rel="stylesheet" href="./assets/fonts/stylesheet.css" />-->
+
+
         <!-- Stylesheets -->
-        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./assets/css/main.css" />
         <link rel="stylesheet" href="./assets/css/admin.css" />
+        <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
 
         <!-- Scripts -->
         <script src="./assets/js/scripts.js"></script>
@@ -295,18 +297,20 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body" style="position: relative;">
+                                <div class="card-body js-tabs" style="position: relative;">
                                     <div class="dashboard__heading">
                                         <h4 class="card-body-h4">Total Products Exported</h4>
                                         <div class="dashboard-chart-heading">
 
                                             <!-- Tab List -->
                                             <div class="dashboard-chart-options" id="list-tab" role="tablist">
+
                                                 <button class="list-group-item" id="btn7Days">7 Days</button>
                                                 <button class="list-group-item" id="btnMonthly">Monthly</button>
                                                 <button class="list-group-item" id="btnYearly">Yearly</button>
                                             </div>
                                         </div>
+                                            </div>
                                     </div>
                                     <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
                                     <script>
@@ -336,13 +340,16 @@
                                         function createChart(type) {
                                             const ctx = document.getElementById('myChart').getContext('2d');
 
+                                                // Function to create a chart
+                                                function createChart(type) {
+                                                    const ctx = document.getElementById('myChart').getContext('2d');
                                             // If a chart already exists, destroy it to make way for the new one
                                             if (myChart) {
                                                 myChart.destroy();
                                             }
 
                                             const data = chartData[type];
-
+                                                    const data = chartData[type];
                                             myChart = new Chart(ctx, {
                                                 type: 'bar',
                                                 data: {
@@ -352,8 +359,13 @@
                                                             data: data.yValues
                                                         }]
                                                 },
-                                                options: {
+                                                    options: {
                                                     // Add your options here
+                                                    legend: {display: false},
+                                                    title: {
+                                                        display: true,
+                                                        text: "Grocerymart exported 2024"
+                                                    }
                                                 }
                                             });
                                         }
@@ -362,10 +374,39 @@
                                         document.getElementById('btn7Days').addEventListener('click', () => createChart('7Days'));
                                         document.getElementById('btnMonthly').addEventListener('click', () => createChart('Monthly'));
                                         document.getElementById('btnYearly').addEventListener('click', () => createChart('Yearly'));
+                                    }
+                                    
+                                     function updateActiveButton(activeButtonId) {
+                                            // List of all buttons
+                                            const buttons = ['btn7Days', 'btnMonthly', 'btnYearly'];
 
-                                        // Initially display the Monthly chart
+                                            // Remove the 'active' class from all buttons and then add it to the clicked one
+                                            buttons.forEach(buttonId => {
+                                                const button = document.getElementById(buttonId);
+                                                if (buttonId === activeButtonId) {
+                                                    button.classList.add('active');
+                                                } else {
+                                                    button.classList.remove('active');
+                                                }
+                                            });
+                                        }
+
+                                        document.getElementById('btn7Days').addEventListener('click', () => {
+                                            createChart('7Days');
+                                            updateActiveButton('btn7Days');
+                                        });
+                                        document.getElementById('btnMonthly').addEventListener('click', () => {
+                                            createChart('Monthly');
+                                            updateActiveButton('btnMonthly');
+                                        });
+                                        document.getElementById('btnYearly').addEventListener('click', () => {
+                                            createChart('Yearly');
+                                            updateActiveButton('btnYearly');
+                                        });
+
+                                        // Initially display the Monthly chart and set it as active
                                         createChart('Monthly');
-
+                                        updateActiveButton('btnMonthly');
                                     </script>
 
                                     <svg id="SvgjsSvg1113" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
