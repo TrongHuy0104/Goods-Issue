@@ -18,7 +18,7 @@ public class DBContext {
         Connection conn = null;
         String url = "jdbc:mysql://localhost:3306/issues2"; 
         String name = "root";
-        String pass = "";
+        String pass = "Trunghoan2003";
 
         //load driver
         try {
