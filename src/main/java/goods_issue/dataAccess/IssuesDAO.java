@@ -505,7 +505,7 @@ public class IssuesDAO {
             String sqlDays = "";
             sqlDays = "SELECT DAYOFWEEK(i.i_date) AS day_of_week, SUM(id.quantity) AS total_products,\n"
                     + "       MIN(i.i_date) AS min_date_for_group\n"
-                    + "FROM db.`issue-detail` id\n"
+                    + "FROM `issue-detail` id\n"
                     + "JOIN issues i ON id.i_id = i.i_id\n"
                     + "WHERE i.i_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)\n"
                     + "GROUP BY DAYOFWEEK(i.i_date)\n"
