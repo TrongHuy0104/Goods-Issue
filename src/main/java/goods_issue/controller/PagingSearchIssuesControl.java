@@ -15,15 +15,30 @@ public class PagingSearchIssuesControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         IssuesDAO issuesDao = new IssuesDAO();
         
+         String action = request.getParameter("action");
+        String id = request.getParameter("id");
+        if (action != null && !id.equals("")) {
+//            IssuesDAO dao = new IssuesDAO();
+            if (action.equals("completed")) {
+                issuesDao.updateStatus(id, 2);
+//                url = "issues.jsp";
+            }
+            if (action.equals("cancel")) {
+                issuesDao.updateStatus(id, 0);
+//                url = "issues.jsp";
+            }
+        } 
+
         String dataSearch = request.getParameter("dataSearch");
-        String searchValue = request.getParameter("data-search");  
+        String searchValue = request.getParameter("data-search");
+        String url = "";
         if (searchValue != null) {
             dataSearch = searchValue;
         }
-        
+
         List<Issues> issuesListSearch = issuesDao.searchByName(dataSearch);
 
         String indexPage = request.getParameter("index");
@@ -47,15 +62,17 @@ public class PagingSearchIssuesControl extends HttpServlet {
         } else {
             itemEnd = index * pageLimit;
         }
-        
+
         List<Issues> issuesList = new ArrayList<>();
         if (dataSearch != null) {
-            issuesList = issuesDao.pagingIssues(dataSearch,index, pageLimit); 
+            issuesList = issuesDao.pagingIssues(dataSearch, index, pageLimit);
             request.setAttribute("data-search", dataSearch);
         } else {
-            issuesList = issuesDao.pagingIssues(index, pageLimit); 
+            issuesList = issuesDao.pagingIssues(index, pageLimit);
         }
-        
+
+       
+
         request.setAttribute("issuesList", issuesList);
         request.setAttribute("iCount", iCount);
         request.setAttribute("itemStart", itemStart);
@@ -63,9 +80,7 @@ public class PagingSearchIssuesControl extends HttpServlet {
         request.setAttribute("endPage", endPage);
         request.setAttribute("index", index);
         request.getRequestDispatcher("issues.jsp").forward(request, response);
-    
-       
-                
+
     }
 
     @Override

@@ -157,12 +157,12 @@
                                     </svg>
                                     <ul class="order-status__list">
                                         <li class="order-status__item">
-                                            <a href="update-issues-status?action=completed&id=<%=i.getiId()%>" class="order-status__link">
+                                            <a href="PagingSearchIssuesControl?action=completed&id=<%=i.getiId()%>" class="order-status__link">
                                                 Completed
                                             </a>
                                         </li>
                                         <li class="order-status__item">
-                                            <a href="update-issues-status?action=cancel&id=<%=i.getiId()%>" class="order-status__link">
+                                            <a href="PagingSearchIssuesControl?action=cancel&id=<%=i.getiId()%>" class="order-status__link">
                                                 Cancel
                                             </a>
                                         </li>
