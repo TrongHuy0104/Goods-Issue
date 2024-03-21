@@ -36,6 +36,14 @@ public class PagingSearchProductControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         ProductDAO productDao = new ProductDAO();
+        String id = request.getParameter("d-id");
+        Product product = new Product();
+        if (id != null && !id.equals("")) {
+            product.setpId(id);
+            productDao.deleteProductDetail(product);
+            productDao.deleteProductCategory(product);
+            productDao.deleteProduct(product);
+        }
         String dataSearch = request.getParameter("dataSearch");
         String searchValue = (String) request.getParameter("data-search");
         if (searchValue != null) {

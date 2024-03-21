@@ -33,7 +33,15 @@ public class PagingSearchCustomerControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String id = request.getParameter("d-id");
+        System.out.println(id);
         UserDAO userDao = new UserDAO();
+        if (id != null && !id.equals("")) {
+            User user = new User();
+            user.setId(id);
+            userDao.delete(user);
+        }
         String dataSearch = request.getParameter("dataSearch");
         String searchValue = (String) request.getParameter("data-search");
         if (searchValue != null) {
@@ -77,7 +85,7 @@ public class PagingSearchCustomerControl extends HttpServlet {
         request.setAttribute("itemEnd", itemEnd);
         request.setAttribute("endPage", endPage);
         request.setAttribute("index", index);
-        request.getRequestDispatcher("admin.jsp").forward(request, response);    
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

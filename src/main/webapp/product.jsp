@@ -231,7 +231,7 @@
     <script>
         function handleDelete(e) {
             if (curID)
-                window.location.href = 'product-delete?id=' + curID;
+                window.location.href = 'paging-search-product?d-id=' + curID;
         }
     </script>
 </html>

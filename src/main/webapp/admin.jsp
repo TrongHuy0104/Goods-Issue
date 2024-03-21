@@ -211,11 +211,11 @@
             <div class="modal__overlay js-toggle" toggle-target="#delete-confirm"></div>
         </div>
     </body>
-    <script>window.dispatchEvent(new Event("template-loaded");</script>
+    <script>window.dispatchEvent(new Event("template-loaded"));</script>
     <script>
         function handleDelete(e) {
             if (curID)
-                window.location.href = 'customer-delete?id=' + curID;
+                window.location.href = 'paging-search-customer?d-id=' + curID;
         }
     </script>
 </html>
