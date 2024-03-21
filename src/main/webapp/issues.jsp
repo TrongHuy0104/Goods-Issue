@@ -20,8 +20,6 @@
     int index = (int) request.getAttribute("index");
     int iCount = (int) request.getAttribute("iCount");
     String dataSearch = (String) request.getAttribute("data-search");
-    System.out.println("index:" + index);
-    System.out.println("endPage" + endPage);
 
 %>
 <!DOCTYPE html>
