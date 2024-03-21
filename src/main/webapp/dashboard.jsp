@@ -24,41 +24,43 @@
 
     int jan = 0, feb = 0, mar = 0, apr = 0, may = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, nov = 0, dec = 0;
     for (Model m : modelListMonth) {
-        if (m.getMonth().equals("1")) {
-            jan = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("2")) {
-            feb = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("3")) {
-            mar = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("4")) {
-            apr = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("5")) {
-            may = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("6")) {
-            jun = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("7")) {
-            jul = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("8")) {
-            aug = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("9")) {
-            sep = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("10")) {
-            oct = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("11")) {
-            nov = Integer.parseInt(m.getTotal_products());
-        }
-        if (m.getMonth().equals("12")) {
-            dec = Integer.parseInt(m.getTotal_products());
+        if (m.getYear().equals("2024")) {
+            if (m.getMonth().equals("1")) {
+                jan = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("2")) {
+                feb = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("3")) {
+                mar = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("4")) {
+                apr = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("5")) {
+                may = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("6")) {
+                jun = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("7")) {
+                jul = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("8")) {
+                aug = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("9")) {
+                sep = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("10")) {
+                oct = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("11")) {
+                nov = Integer.parseInt(m.getTotal_products());
+            }
+            if (m.getMonth().equals("12")) {
+                dec = Integer.parseInt(m.getTotal_products());
+            }
         }
     }
 
@@ -233,8 +235,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     </head>
     <body>
-        <%            
-            if (user == null) {
+        <%            if (user == null) {
         %>
         <h3 style='color:crimson; font-size: 30px; font-weight: 500; text-align: center'>You are not logged into the system! <a href='./index.jsp'>Sign In</a></h3>")
         <%} else {%> 
@@ -315,106 +316,106 @@
                                                 <button class="list-group-item" id="btnYearly">Yearly</button>
                                             </div>
                                         </div>
-                                            </div>
                                     </div>
-                                    <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
-                                    <script>
-                                        // Define the chart data for the 7 Days, Monthly, and Yearly charts
-                                        const chartData = {
-                                            '7Days': {
-                                                xValues: ["<%=seventh%>", "<%=sixth%>", "<%=fifth%>", "<%=fourth%>", "<%=third%>", "<%=second%>", "<%=first%>"],
-                                                yValues: [<%=seventhTotal%>, <%=sixthTotal%>, <%=fifthTotal%>, <%=fourthTotal%>, <%=thirdTotal%>, <%=secondTotal%>, <%=firstTotal%>],
-                                                barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]
-                                            },
-                                            'Monthly': {
-                                                xValues: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                                yValues: [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>],
-                                                barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
-                                            },
-                                            'Yearly': {
-                                                xValues: ["2020", "2021", "2022", "2023", "2024"],
-                                                yValues: [<%=year2020%>, <%=year2021%>, <%=year2022%>, <%=year2023%>,<%=year2024%>],
-                                                barColors: ["orange", "orange", "orange", "orange", "orange"]
-                                            }
-                                        };
-
-                                        // Initialize the chart
-                                        let myChart = null;
-
-                                                // Function to create a chart
-                                                function createChart(type) {
-                                                    const ctx = document.getElementById('myChart').getContext('2d');
-                                            // If a chart already exists, destroy it to make way for the new one
-                                            if (myChart) {
-                                                myChart.destroy();
-                                            }
-                                            
-                                                    const data = chartData[type];
-                                            myChart = new Chart(ctx, {
-                                                type: 'bar',
-                                                data: {
-                                                    labels: data.xValues,
-                                                    datasets: [{
-                                                            backgroundColor: data.barColors,
-                                                            data: data.yValues
-                                                        }]
-                                                },
-                                                    options: {
-                                                    // Add your options here
-                                                    legend: {display: false},
-                                                    title: {
-                                                        display: true,
-                                                        text: "Grocerymart exported 2024"
-                                                    }
-                                                }
-                                            });
+                                </div>
+                                <canvas id="myChart" style="width:100%;max-width:800px;height: 500px; margin: 0 auto"></canvas>
+                                <script>
+                                    // Define the chart data for the 7 Days, Monthly, and Yearly charts
+                                    const chartData = {
+                                        '7Days': {
+                                            xValues: ["<%=seventh%>", "<%=sixth%>", "<%=fifth%>", "<%=fourth%>", "<%=third%>", "<%=second%>", "<%=first%>"],
+                                            yValues: [<%=seventhTotal%>, <%=sixthTotal%>, <%=fifthTotal%>, <%=fourthTotal%>, <%=thirdTotal%>, <%=secondTotal%>, <%=firstTotal%>],
+                                            barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                        },
+                                        'Monthly': {
+                                            xValues: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                            yValues: [<%=jan%>, <%=feb%>, <%=mar%>, <%=apr%>, <%=may%>, <%=jun%>, <%=jul%>, <%=aug%>, <%=sep%>, <%=oct%>, <%=nov%>, <%=dec%>],
+                                            barColors: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+                                        },
+                                        'Yearly': {
+                                            xValues: ["2020", "2021", "2022", "2023", "2024"],
+                                            yValues: [<%=year2020%>, <%=year2021%>, <%=year2022%>, <%=year2023%>,<%=year2024%>],
+                                            barColors: ["orange", "orange", "orange", "orange", "orange"]
                                         }
-                                    
-                                     function updateActiveButton(activeButtonId) {
-                                            // List of all buttons
-                                            const buttons = ['btn7Days', 'btnMonthly', 'btnYearly'];
+                                    };
 
-                                            // Remove the 'active' class from all buttons and then add it to the clicked one
-                                            buttons.forEach(buttonId => {
-                                                const button = document.getElementById(buttonId);
-                                                if (buttonId === activeButtonId) {
-                                                    button.classList.add('active');
-                                                } else {
-                                                    button.classList.remove('active');
-                                                }
-                                            });
+                                    // Initialize the chart
+                                    let myChart = null;
+
+                                    // Function to create a chart
+                                    function createChart(type) {
+                                        const ctx = document.getElementById('myChart').getContext('2d');
+                                        // If a chart already exists, destroy it to make way for the new one
+                                        if (myChart) {
+                                            myChart.destroy();
                                         }
 
-                                        document.getElementById('btn7Days').addEventListener('click', () => {
-                                            createChart('7Days');
-                                            updateActiveButton('btn7Days');
+                                        const data = chartData[type];
+                                        myChart = new Chart(ctx, {
+                                            type: 'bar',
+                                            data: {
+                                                labels: data.xValues,
+                                                datasets: [{
+                                                        backgroundColor: data.barColors,
+                                                        data: data.yValues
+                                                    }]
+                                            },
+                                            options: {
+                                                // Add your options here
+                                                legend: {display: false},
+                                                title: {
+                                                    display: true,
+                                                    text: "Grocerymart exported 2024"
+                                                }
+                                            }
                                         });
-                                        document.getElementById('btnMonthly').addEventListener('click', () => {
-                                            createChart('Monthly');
-                                            updateActiveButton('btnMonthly');
-                                        });
-                                        document.getElementById('btnYearly').addEventListener('click', () => {
-                                            createChart('Yearly');
-                                            updateActiveButton('btnYearly');
-                                        });
+                                    }
 
-                                        // Initially display the Monthly chart and set it as active
+                                    function updateActiveButton(activeButtonId) {
+                                        // List of all buttons
+                                        const buttons = ['btn7Days', 'btnMonthly', 'btnYearly'];
+
+                                        // Remove the 'active' class from all buttons and then add it to the clicked one
+                                        buttons.forEach(buttonId => {
+                                            const button = document.getElementById(buttonId);
+                                            if (buttonId === activeButtonId) {
+                                                button.classList.add('active');
+                                            } else {
+                                                button.classList.remove('active');
+                                            }
+                                        });
+                                    }
+
+                                    document.getElementById('btn7Days').addEventListener('click', () => {
+                                        createChart('7Days');
+                                        updateActiveButton('btn7Days');
+                                    });
+                                    document.getElementById('btnMonthly').addEventListener('click', () => {
                                         createChart('Monthly');
                                         updateActiveButton('btnMonthly');
-                                    </script>
+                                    });
+                                    document.getElementById('btnYearly').addEventListener('click', () => {
+                                        createChart('Yearly');
+                                        updateActiveButton('btnYearly');
+                                    });
 
-                                    <svg id="SvgjsSvg1113" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
-                                    <defs id="SvgjsDefs1114"></defs>
-                                    <polyline id="SvgjsPolyline1115" points="0,0"></polyline>
-                                    <path id="SvgjsPath1116" d="M0 0 "></path>
-                                    </svg>
-                                    <div class="resize-triggers">
-                                        <div class="expand-trigger">
-                                            <!--                                            <div style="width: 799px; height: 351px;"></div>-->
-                                        </div>
-                                        <div class="contract-trigger"></div></div></div>
-                            </div>   
-                        
+                                    // Initially display the Monthly chart and set it as active
+                                    createChart('Monthly');
+                                    updateActiveButton('btnMonthly');
+                                </script>
+
+                                <svg id="SvgjsSvg1113" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+                                <defs id="SvgjsDefs1114"></defs>
+                                <polyline id="SvgjsPolyline1115" points="0,0"></polyline>
+                                <path id="SvgjsPath1116" d="M0 0 "></path>
+                                </svg>
+                                <div class="resize-triggers">
+                                    <div class="expand-trigger">
+                                        <!--                                            <div style="width: 799px; height: 351px;"></div>-->
+                                    </div>
+                                    <div class="contract-trigger"></div></div></div>
+                        </div>   
+
                     </div>
                 </div>
 
