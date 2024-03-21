@@ -341,10 +341,6 @@
                                         // Initialize the chart
                                         let myChart = null;
 
-                                        // Function to create a chart
-                                        function createChart(type) {
-                                            const ctx = document.getElementById('myChart').getContext('2d');
-
                                                 // Function to create a chart
                                                 function createChart(type) {
                                                     const ctx = document.getElementById('myChart').getContext('2d');
@@ -352,8 +348,7 @@
                                             if (myChart) {
                                                 myChart.destroy();
                                             }
-
-                                            const data = chartData[type];
+                                            
                                                     const data = chartData[type];
                                             myChart = new Chart(ctx, {
                                                 type: 'bar',
@@ -374,12 +369,6 @@
                                                 }
                                             });
                                         }
-
-                                        // Event listeners for the buttons
-                                        document.getElementById('btn7Days').addEventListener('click', () => createChart('7Days'));
-                                        document.getElementById('btnMonthly').addEventListener('click', () => createChart('Monthly'));
-                                        document.getElementById('btnYearly').addEventListener('click', () => createChart('Yearly'));
-                                    }
                                     
                                      function updateActiveButton(activeButtonId) {
                                             // List of all buttons
@@ -425,7 +414,7 @@
                                         </div>
                                         <div class="contract-trigger"></div></div></div>
                             </div>   
-                        </div>
+                        
                     </div>
                 </div>
 
