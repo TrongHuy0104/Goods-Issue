@@ -61,7 +61,7 @@ public class PagingSearchProductControl extends HttpServlet {
         int pCount = !productListSearch.isEmpty() ? productListSearch.size() : productDao.countTotal();
 
         int endPage = pCount / pageLimit;
-        if ((endPage == 0 || endPage % pageLimit != 0) && endPage != 1) {
+        if (endPage == 0 || pCount % pageLimit != 0) {
             endPage++;
         }
 

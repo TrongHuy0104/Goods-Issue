@@ -51,7 +51,7 @@ public class PagingSearchIssuesControl extends HttpServlet {
         int iCount = !issuesListSearch.isEmpty() ? issuesListSearch.size() : issuesDao.countTotal();
 
         int endPage = iCount / pageLimit;
-        if ((endPage == 0 || endPage % pageLimit != 0) && endPage != 1) {
+        if (endPage == 0 || iCount % pageLimit != 0) {
             endPage++;
         }
 

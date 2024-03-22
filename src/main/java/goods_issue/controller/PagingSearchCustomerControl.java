@@ -35,7 +35,6 @@ public class PagingSearchCustomerControl extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String id = request.getParameter("d-id");
-        System.out.println(id);
         UserDAO userDao = new UserDAO();
         if (id != null && !id.equals("")) {
             User user = new User();
@@ -59,7 +58,10 @@ public class PagingSearchCustomerControl extends HttpServlet {
         int pCount = !customerListSearch.isEmpty() ? customerListSearch.size() : userDao.countTotal();
 
         int endPage = pCount / pageLimit;
-        if ((endPage == 0 || endPage % pageLimit != 0) && endPage != 1) {
+        System.out.println("endPage " + endPage);
+        System.out.println("pageLimit " + pageLimit);
+        System.out.println("endPage % pageLimit " + (endPage % pageLimit));
+        if ((endPage == 0 || pCount % pageLimit != 0)) {
             endPage++;
         }
 
