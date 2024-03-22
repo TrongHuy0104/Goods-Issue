@@ -533,6 +533,5 @@ public class IssuesDAO {
     }
 
     public static void main(String[] args) {
-    }
-
+        }
 }
